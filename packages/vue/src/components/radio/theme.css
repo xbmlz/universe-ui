@@ -1,0 +1,235 @@
+.ud-radio {
+  /* 框 16、字 14、间距 8、热区最低 22，文档写的。圆是状态图的形状，描边 1px 是量的。 */
+  --ud-radio-size: 16px;
+  --ud-radio-gap: 8px;
+  --ud-radio-line: var(--ud-line-body);
+  --ud-radio-border: var(--ud-color-icon-tertiary);
+  --ud-radio-bg: var(--ud-color-bg-white);
+  --ud-radio-dot: var(--ud-color-bg-white);
+  --ud-radio-color: var(--ud-color-text);
+
+  position: relative;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--ud-radio-gap);
+  min-height: var(--ud-radio-size);
+  margin: 0;
+  color: var(--ud-radio-color);
+  font-family: var(--ud-font-family);
+  font-size: var(--ud-font-size-body);
+  font-weight: var(--ud-font-weight-regular);
+  line-height: var(--ud-radio-line);
+  cursor: pointer;
+}
+
+.ud-radio:has(.ud-radio__label) {
+  min-height: var(--ud-radio-line);
+}
+
+.ud-radio__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  border: 0;
+}
+
+.ud-radio__box {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--ud-radio-size);
+  height: var(--ud-radio-size);
+  border: 1px solid var(--ud-radio-border);
+  border-radius: var(--ud-radius-full);
+  background: var(--ud-radio-bg);
+}
+
+.ud-radio:has(.ud-radio__label) .ud-radio__box {
+  margin-top: calc((var(--ud-radio-line) - var(--ud-radio-size)) / 2);
+}
+
+.ud-radio--align-center {
+  align-items: center;
+}
+
+.ud-radio.ud-radio--align-center .ud-radio__box {
+  margin-top: 0;
+}
+
+/* 选中圆点白芯 11×12（2 倍图），按 6px 画。 */
+.ud-radio__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--ud-radius-full);
+  background: var(--ud-radio-dot);
+}
+
+.ud-radio__label {
+  min-width: 0;
+}
+
+/* 状态图旧蓝：常态 #3370FF，悬停/聚焦 #4E83FD，按下 #245BDB。对到品牌色三档。 */
+.ud-radio:hover:not(.ud-radio--disabled):not(.ud-radio--button),
+.ud-radio:focus-within:not(.ud-radio--disabled):not(.ud-radio--button) {
+  --ud-radio-border: var(--ud-color-brand);
+}
+
+.ud-radio:active:not(.ud-radio--disabled):not(.ud-radio--button) {
+  --ud-radio-border: var(--ud-color-brand-pressed);
+}
+
+.ud-radio--checked:not(.ud-radio--button) {
+  --ud-radio-bg: var(--ud-color-brand);
+  --ud-radio-border: var(--ud-color-brand);
+}
+
+.ud-radio--checked:not(.ud-radio--button):hover:not(.ud-radio--disabled),
+.ud-radio--checked:not(.ud-radio--button):focus-within:not(.ud-radio--disabled) {
+  --ud-radio-bg: var(--ud-color-brand-hover);
+  --ud-radio-border: var(--ud-color-brand-hover);
+}
+
+.ud-radio--checked:not(.ud-radio--button):active:not(.ud-radio--disabled) {
+  --ud-radio-bg: var(--ud-color-brand-pressed);
+  --ud-radio-border: var(--ud-color-brand-pressed);
+}
+
+/* 报错图只画了未选中，文字仍是正文色。 */
+.ud-radio--error,
+.ud-radio--error:hover:not(.ud-radio--disabled),
+.ud-radio--error:focus-within:not(.ud-radio--disabled),
+.ud-radio--error:active:not(.ud-radio--disabled) {
+  --ud-radio-border: var(--ud-color-danger);
+}
+
+.ud-radio--disabled:not(.ud-radio--button) {
+  --ud-radio-bg: var(--ud-color-fill-disabled);
+  --ud-radio-border: var(--ud-color-text-disabled);
+  --ud-radio-color: var(--ud-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.ud-radio--disabled.ud-radio--checked:not(.ud-radio--button) {
+  --ud-radio-bg: var(--ud-color-text-disabled);
+  --ud-radio-border: var(--ud-color-text-disabled);
+  --ud-radio-dot: var(--ud-color-fill-disabled);
+}
+
+.ud-radio-group {
+  /* 竖排 8、横排 24，文档写的。 */
+  --ud-radio-group-gap: 8px;
+  --ud-radio-group-gap-horizontal: 24px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ud-radio-group-gap);
+}
+
+.ud-radio-group--horizontal {
+  flex-direction: row;
+  flex-wrap: wrap;
+  column-gap: var(--ud-radio-group-gap-horizontal);
+  row-gap: var(--ud-radio-group-gap);
+}
+
+/* 按钮型。尺寸图：small、medium 选中块都是 24px 高，large 是 32px。small 字墨高更矮，用 12px。 */
+.ud-radio-group--button {
+  --ud-radio-button-height: 24px;
+  --ud-radio-button-font: var(--ud-font-size-body);
+  --ud-radio-button-line: var(--ud-line-body);
+
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 0;
+}
+
+.ud-radio-group--button[data-size='sm'] {
+  --ud-radio-button-font: var(--ud-font-size-body-sm);
+  --ud-radio-button-line: var(--ud-line-body-sm);
+}
+
+.ud-radio-group--button[data-size='lg'] {
+  --ud-radio-button-height: 32px;
+}
+
+.ud-radio--button {
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  box-sizing: border-box;
+  flex: 0 1 auto;
+  min-width: 0;
+  height: var(--ud-radio-button-height);
+  min-height: var(--ud-radio-button-height);
+  max-width: 100%;
+  /* 尺寸图字墨到块边约 5px（2 倍图 9–11px）。文档没写这个内边距。 */
+  padding: 0 5px;
+  border: 1px solid transparent;
+  border-radius: var(--ud-radius-xs);
+  background: transparent;
+  font-size: var(--ud-radio-button-font);
+  line-height: var(--ud-radio-button-line);
+}
+
+.ud-radio--button .ud-tooltip {
+  display: block;
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.ud-radio--button .ud-radio__label {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 未选悬停底 #E9E9EA，对到背景 1。按下 #D2D3D4，对到描边色。 */
+.ud-radio--button:hover:not(.ud-radio--disabled):not(.ud-radio--checked),
+.ud-radio--button:focus-within:not(.ud-radio--disabled):not(.ud-radio--checked) {
+  background: var(--ud-color-bg-1);
+}
+
+.ud-radio--button:active:not(.ud-radio--disabled):not(.ud-radio--checked) {
+  background: var(--ud-color-border);
+}
+
+/* 选中底 #EBF1FF，对到 blue-11。按下 #D6E2FF，对到 blue-10。字和描边是旧品牌蓝。 */
+.ud-radio--button.ud-radio--checked {
+  border-color: var(--ud-color-brand);
+  background: var(--ud-blue-11);
+  color: var(--ud-color-brand);
+}
+
+.ud-radio--button.ud-radio--checked:hover:not(.ud-radio--disabled),
+.ud-radio--button.ud-radio--checked:focus-within:not(.ud-radio--disabled) {
+  border-color: var(--ud-color-brand);
+  background: var(--ud-blue-11);
+  color: var(--ud-color-brand);
+}
+
+.ud-radio--button.ud-radio--checked:active:not(.ud-radio--disabled) {
+  border-color: var(--ud-color-brand-pressed);
+  background: var(--ud-blue-10);
+  color: var(--ud-color-brand-pressed);
+}
+
+.ud-radio--button.ud-radio--disabled {
+  color: var(--ud-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.ud-radio--button.ud-radio--disabled.ud-radio--checked {
+  border-color: transparent;
+  background: var(--ud-color-border-card);
+  color: var(--ud-color-icon-tertiary);
+}
