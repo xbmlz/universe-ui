@@ -1,6 +1,6 @@
 <script setup lang="ts" vapor>
 import { computed, useTemplateRef, shallowRef } from 'vue'
-import { Button, ButtonGroup, Checkbox, CheckboxGroup, Input, InputAddon, InputArea, InputChars, InputGroup, InputNumber, Select } from '@universe-ui/vue'
+import { Button, ButtonGroup, Checkbox, CheckboxGroup, Input, InputAddon, InputArea, InputChars, InputGroup, InputNumber, Radio, RadioGroup, Select } from '@universe-ui/vue'
 import type { InputAddonOption, SelectOption } from '@universe-ui/vue'
 import { Info, Search } from '@icon-park/vue-next'
 import ParkIcon from '../../packages/vue/src/internal/park-icon.vue'
@@ -139,6 +139,9 @@ const meetingAll = computed(() => meeting.value.length === meetingOptions.length
 const meetingSome = computed(() => meeting.value.length > 0 && !meetingAll.value)
 const rowOptions = shallowRef<string[]>(['mail'])
 const agreed = shallowRef(false)
+const leaveUnit = shallowRef('day')
+const priceMode = shallowRef('fixed')
+const buttonChoice = shallowRef('a')
 
 function setMeetingAll(next: boolean) {
   meeting.value = next ? [...meetingOptions] : []
@@ -381,6 +384,46 @@ function focusPrimary() {
         <Checkbox align="center">这是一段比较长的选项描述，用来看复选框和整段文字居中。继续写到第二行，框应该对着两行的中线。</Checkbox>
         <Checkbox />
       </div>
+      <h2>单选框</h2>
+      <div class="checks">
+        <RadioGroup v-model="leaveUnit">
+          <Radio value="day">按天</Radio>
+          <Radio value="hour">按小时</Radio>
+          <Radio value="minute" disabled>按分钟</Radio>
+        </RadioGroup>
+        <p class="hint">请假单位 {{ leaveUnit }}</p>
+        <RadioGroup v-model="priceMode" direction="horizontal">
+          <Radio value="fixed">固定</Radio>
+          <Radio value="tier">阶梯</Radio>
+          <Radio value="free">免费</Radio>
+        </RadioGroup>
+        <Radio model-value="on" value="on" disabled>已选禁用</Radio>
+        <Radio error value="bad">未选报错</Radio>
+        <Radio value="long">这是一段比较长的选项描述，用来看单选框和首行文字对齐。继续写到第二行，确认圆点还停在第一行中间。</Radio>
+        <Radio value="long-center" align="center">这是一段比较长的选项描述，用来看单选框和整段文字居中。继续写到第二行，圆点应该对着两行的中线。</Radio>
+        <RadioGroup v-model="buttonChoice" variant="button" size="sm">
+          <Radio value="a">Option 1</Radio>
+          <Radio value="b">Option 2</Radio>
+          <Radio value="c">Option 3</Radio>
+        </RadioGroup>
+        <RadioGroup v-model="buttonChoice" variant="button">
+          <Radio value="a">Option 1</Radio>
+          <Radio value="b">Option 2</Radio>
+          <Radio value="c">Option 3</Radio>
+        </RadioGroup>
+        <RadioGroup v-model="buttonChoice" variant="button" size="lg">
+          <Radio value="a">Option 1</Radio>
+          <Radio value="b">Option 2</Radio>
+          <Radio value="c" disabled>Option 3</Radio>
+        </RadioGroup>
+        <RadioGroup model-value="long" variant="button">
+          <Radio class="radio-narrow" value="long">这是一段放不进按钮的选项名称</Radio>
+          <Radio value="short">短</Radio>
+        </RadioGroup>
+        <RadioGroup model-value="on" variant="button">
+          <Radio value="on" disabled>已选禁用</Radio>
+        </RadioGroup>
+      </div>
       <h2>尺寸对照</h2>
       <div class="spec-sizes">
         <template v-for="item in specSizes" :key="item.size">
@@ -565,6 +608,10 @@ function focusPrimary() {
   flex-direction: column;
   align-items: flex-start;
   gap: 8px;
+}
+
+.ud-radio.radio-narrow {
+  max-width: 160px;
 }
 
 .inputs--select .ud-select {
