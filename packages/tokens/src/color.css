@@ -1,0 +1,83 @@
+:root {
+  /* 品牌色板从深到浅。图上没有阶名，第 4 档是圆点标出的品牌色。 */
+  --ud-blue-1: #002270;
+  --ud-blue-2: #002f9e;
+  --ud-blue-3: #0442d2;
+  --ud-blue-4: #1456f0;
+  --ud-blue-5: #336df4;
+  --ud-blue-6: #5083fb;
+  --ud-blue-7: #7aa2ff;
+  --ud-blue-8: #94b4ff;
+  --ud-blue-9: #c2d4ff;
+  --ud-blue-10: #e0e9ff;
+  --ud-blue-11: #f0f4ff;
+  --ud-color-brand: var(--ud-blue-4);
+  --ud-color-brand-hover: var(--ud-blue-5);
+  --ud-color-brand-pressed: var(--ud-blue-3);
+  --ud-color-brand-loading: var(--ud-blue-8);
+  --ud-color-focus-ring: #aec5fb;
+
+  /* 功能色。文字色用于文字，内容色用于色块。Error 两处都是 #F54A45。 */
+  --ud-color-success-text: #32a645;
+  --ud-color-success: #35bd4b;
+  --ud-color-warning-text: #ed6d0c;
+  --ud-color-warning: #ff811a;
+  --ud-color-danger-text: #f54a45;
+  --ud-color-danger: #f54a45;
+  --ud-color-info: var(--ud-color-brand);
+
+  /* 文字 */
+  --ud-color-text: #1f2329;
+  --ud-color-text-secondary: #646a73;
+  --ud-color-text-placeholder: #8f959e;
+  --ud-color-text-disabled: #bbbfc4;
+
+  /* 图标 */
+  --ud-color-icon: #2b2f36;
+  --ud-color-icon-secondary: #646a73;
+  --ud-color-icon-tertiary: #8f959e;
+  --ud-color-icon-disabled: #bbbfc4;
+
+  /* color.md 背景 */
+  --ud-color-bg-1: #eff0f1;
+  --ud-color-bg-2: #f5f6f7;
+  --ud-color-bg-3: #f8f9fa;
+  /* style.md 把产品详情页背景写成 #F2F3F5，和 Background 2 不是同一个值。 */
+  --ud-color-bg-page: #f2f3f5;
+  --ud-color-bg-white: #ffffff;
+
+  /* 描边与填充 */
+  --ud-color-border: #d0d3d6;
+  --ud-color-border-card: #dee0e3;
+  --ud-color-fill-disabled: #eff0f1;
+  --ud-color-divider: rgb(31 35 41 / 15%);
+  --ud-color-mask: rgb(0 0 0 / 55%);
+
+  /* 投影用色 */
+  --ud-color-shadow: #1f2327;
+  --ud-color-shadow-brand: #245bdb;
+
+  /* 中性色透明度只允许叠在 #1F2329 和 #FFFFFF 上。 */
+  --ud-color-text-a5: rgb(31 35 41 / 5%);
+  --ud-color-text-a10: rgb(31 35 41 / 10%);
+  --ud-color-text-a15: rgb(31 35 41 / 15%);
+  --ud-color-text-a20: rgb(31 35 41 / 20%);
+  --ud-color-text-a30: rgb(31 35 41 / 30%);
+  --ud-color-text-a40: rgb(31 35 41 / 40%);
+  --ud-color-text-a50: rgb(31 35 41 / 50%);
+  --ud-color-text-a60: rgb(31 35 41 / 60%);
+  --ud-color-text-a69: rgb(31 35 41 / 69%);
+  --ud-color-text-a80: rgb(31 35 41 / 80%);
+  --ud-color-text-a89: rgb(31 35 41 / 89%);
+  --ud-color-white-a5: rgb(255 255 255 / 5%);
+  --ud-color-white-a10: rgb(255 255 255 / 10%);
+  --ud-color-white-a15: rgb(255 255 255 / 15%);
+  --ud-color-white-a20: rgb(255 255 255 / 20%);
+  --ud-color-white-a30: rgb(255 255 255 / 30%);
+  --ud-color-white-a40: rgb(255 255 255 / 40%);
+  --ud-color-white-a50: rgb(255 255 255 / 50%);
+  --ud-color-white-a60: rgb(255 255 255 / 60%);
+  --ud-color-white-a69: rgb(255 255 255 / 69%);
+  --ud-color-white-a80: rgb(255 255 255 / 80%);
+  --ud-color-white-a89: rgb(255 255 255 / 89%);
+}

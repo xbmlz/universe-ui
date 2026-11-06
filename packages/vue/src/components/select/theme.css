@@ -1,0 +1,477 @@
+.ud-select {
+  --ud-select-height: 32px;
+  --ud-select-tag-height: 24px;
+  --ud-select-min-width: 240px;
+  --ud-select-max-width: 600px;
+  --ud-select-padding-inline: 12px;
+  --ud-select-radius: var(--ud-radius-s);
+  --ud-select-border-color: var(--ud-color-border);
+  --ud-select-border-color-hover: var(--ud-color-brand);
+  --ud-select-bg: var(--ud-color-bg-white);
+  --ud-select-color: var(--ud-color-text);
+  --ud-select-placeholder: var(--ud-color-text-placeholder);
+  --ud-select-label-gap: 8px;
+  /* 状态图按 2 倍量，报错字形顶部距外框 7.5px，和输入框一致。 */
+  --ud-select-message-gap: 2px;
+  --ud-select-message-color: var(--ud-color-text-secondary);
+  --ud-select-required-color: var(--ud-color-danger);
+  /* 标题行共用 .ud-input__label，它读的是输入框的变量。 */
+  --ud-input-label-gap: var(--ud-select-label-gap);
+  --ud-input-required-color: var(--ud-select-required-color);
+  /* 尺寸图按 2 倍量：标签间距 8px，标签距框内约 6px。 */
+  --ud-select-tag-gap: 4px;
+  --ud-select-tag-pad: 3px;
+  /* 状态图按 2 倍量，菜单与选择框间距约 8px。 */
+  --ud-select-menu-gap: 4px;
+  /* 优先与选择框等宽。120 / 420 是菜单自己的推荐范围，不拿来把更宽的选择框裁窄。 */
+  --ud-select-menu-min-width: 120px;
+  --ud-select-menu-max-height: 246px;
+  --ud-select-tag-max-height: 188px;
+  /* 尺寸图标签底 #E9E9EA，状态图激活项底 #EDEEEF。都不是现有色板色。 */
+  --ud-select-tag-bg: #e9e9ea;
+  --ud-select-tag-bg-hover: #dddedf;
+  --ud-select-option-bg-active: #edeeef;
+  /* 尺寸图按 2 倍量：选择框内文字 S 12/20、M 14/22、L 16/24，标签文字同档。 */
+  --ud-select-font-size: var(--ud-font-size-body);
+  --ud-select-line-height: var(--ud-line-body);
+  /* 箭头字形宽约 8 / 9.5 / 13px。Down 的折线占画布 28/48，对应 13 / 16 / 22。 */
+  --ud-select-arrow-size: 16px;
+  --ud-select-clear-size: 12px;
+  /* 标签：文字距标签边约 6 / 6 / 8px，关闭叉字形约 7 / 8 / 10px，Close 占画布 36/48。 */
+  --ud-select-tag-padding-inline: 6px;
+  --ud-select-tag-close-size: 10px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  min-width: var(--ud-select-min-width);
+  max-width: var(--ud-select-max-width);
+  color: var(--ud-select-color);
+  font-family: inherit;
+  font-size: var(--ud-font-size-body);
+  font-weight: var(--ud-font-weight-regular);
+  line-height: var(--ud-line-body);
+}
+
+/* 清除圆钮只有 M 的图，S / L 按箭头比例推算。 */
+.ud-select--sm {
+  --ud-select-height: 28px;
+  --ud-select-tag-height: 20px;
+  --ud-select-padding-inline: 8px;
+  --ud-select-font-size: var(--ud-font-size-caption);
+  --ud-select-line-height: var(--ud-line-caption);
+  --ud-select-arrow-size: 13px;
+  --ud-select-clear-size: 10.5px;
+  --ud-select-tag-close-size: 9px;
+}
+
+.ud-select--lg {
+  --ud-select-height: 40px;
+  --ud-select-tag-height: 32px;
+  --ud-select-font-size: var(--ud-font-size-h4);
+  --ud-select-line-height: var(--ud-line-h4);
+  --ud-select-arrow-size: 22px;
+  --ud-select-clear-size: 15px;
+  --ud-select-tag-padding-inline: 8px;
+  --ud-select-tag-close-size: 13px;
+}
+
+.ud-select--error {
+  --ud-select-border-color: var(--ud-color-danger);
+  --ud-select-border-color-hover: var(--ud-color-danger);
+  --ud-select-message-color: var(--ud-color-danger);
+}
+
+.ud-select--disabled,
+.ud-select--readonly {
+  --ud-select-bg: var(--ud-color-fill-disabled);
+  --ud-select-border-color-hover: var(--ud-color-border);
+  /* 状态图按 2 倍量：灰底上的标签加深一档，和长文本禁用态的计数芯片同色。 */
+  --ud-select-tag-bg: #dadcdd;
+}
+
+.ud-select--disabled {
+  --ud-select-color: var(--ud-color-text-placeholder);
+}
+
+.ud-select__field {
+  position: relative;
+}
+
+.ud-select__trigger {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: var(--ud-select-height);
+  height: var(--ud-select-height);
+  padding-inline: var(--ud-select-padding-inline);
+  border: 1px solid var(--ud-select-border-color);
+  border-radius: var(--ud-select-radius);
+  background: var(--ud-select-bg);
+  color: inherit;
+  font: inherit;
+  font-size: var(--ud-select-font-size);
+  line-height: var(--ud-select-line-height);
+  text-align: left;
+  cursor: pointer;
+}
+
+/* 尺寸图按 2 倍量：S/M/L 标签距外框都是 4px（边框 1 + 3），占位文字仍是 12px。 */
+.ud-select--tags .ud-select__trigger {
+  padding-left: var(--ud-select-tag-pad);
+}
+
+.ud-select--tags:not(.ud-select--collapsed) .ud-select__trigger {
+  height: auto;
+  max-height: var(--ud-select-tag-max-height);
+  padding-block: var(--ud-select-tag-pad);
+  overflow: auto;
+}
+
+/* 状态图按 2 倍量：标签换行后箭头仍停在第一行中线，不随框高居中。 */
+.ud-select--tags:not(.ud-select--collapsed) .ud-select__suffix {
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  height: var(--ud-select-tag-height);
+}
+
+.ud-select__trigger:hover {
+  border-color: var(--ud-select-border-color-hover);
+}
+
+/* 文档：多选超出推荐高度后，鼠标悬停时才显示滚动条。 */
+.ud-select__trigger::-webkit-scrollbar {
+  width: 11px;
+}
+
+.ud-select__trigger::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: var(--ud-radius-full);
+  background: transparent padding-box;
+}
+
+.ud-select__trigger:hover::-webkit-scrollbar-thumb {
+  background-color: #bcbdbf;
+}
+
+.ud-select--open .ud-select__trigger,
+.ud-select:focus-within .ud-select__trigger {
+  border-color: var(--ud-select-border-color-hover);
+}
+
+.ud-select--disabled .ud-select__trigger {
+  cursor: not-allowed;
+}
+
+.ud-select--readonly .ud-select__trigger {
+  cursor: default;
+}
+
+.ud-select__value {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ud-select-tag-gap);
+  min-width: 0;
+}
+
+.ud-select__value.is-placeholder {
+  color: var(--ud-select-placeholder);
+  flex-wrap: nowrap;
+}
+
+.ud-select__value.is-dim {
+  opacity: 0.5;
+}
+
+.ud-select__single {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ud-select__search {
+  flex: 1 1 auto;
+  width: 0;
+  min-width: 12px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: inherit;
+}
+
+.ud-select__search::placeholder {
+  color: var(--ud-select-placeholder);
+}
+
+.ud-select__tag {
+  display: inline-flex;
+  align-items: center;
+  /* 文字到关闭叉的字形间距三档量出来约 7 / 8.5 / 8px。 */
+  gap: 6px;
+  box-sizing: border-box;
+  max-width: 100%;
+  height: var(--ud-select-tag-height);
+  padding-inline: var(--ud-select-tag-padding-inline);
+  border-radius: var(--ud-radius-xs);
+  background: var(--ud-select-tag-bg);
+  color: var(--ud-color-text);
+}
+
+/*
+ * 状态图按 2 倍量：悬停 +N 时底色变为 #DDDEDF，下方 6px 弹出其余标签。
+ * 浮层以 +N 为中心，留白上下 12px、左右 16px，圆角 8px，标签间距 4px，标签不带关闭叉。
+ */
+.ud-select__more {
+  position: relative;
+  cursor: default;
+}
+
+.ud-select__more-pop {
+  position: absolute;
+  z-index: 21;
+  top: calc(100% + (var(--ud-select-height) - var(--ud-select-tag-height)) / 2 + 6px);
+  left: 50%;
+  display: none;
+  flex-wrap: wrap;
+  gap: var(--ud-select-tag-gap);
+  box-sizing: border-box;
+  width: max-content;
+  max-width: var(--ud-select-max-width);
+  padding: 12px 16px;
+  border: 1px solid var(--ud-color-border-card);
+  border-radius: var(--ud-radius-m);
+  background: var(--ud-color-bg-white);
+  box-shadow: var(--ud-shadow-down-s4);
+  transform: translateX(-50%);
+}
+
+.ud-select__more-pop::before {
+  position: absolute;
+  inset: auto 0 100%;
+  height: calc((var(--ud-select-height) - var(--ud-select-tag-height)) / 2 + 7px);
+  content: "";
+}
+
+.ud-select__more:hover {
+  background: var(--ud-select-tag-bg-hover);
+}
+
+.ud-select:not(.ud-select--open) .ud-select__more:hover .ud-select__more-pop {
+  display: flex;
+}
+
+.ud-select--disabled .ud-select__tag {
+  color: var(--ud-color-text-placeholder);
+}
+
+.ud-select__tag-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ud-select__tag-remove,
+.ud-select__clear {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ud-color-icon-secondary);
+  cursor: pointer;
+}
+
+.ud-select__clear {
+  display: none;
+  font-size: var(--ud-select-clear-size);
+}
+
+.ud-select__tag-remove {
+  font-size: var(--ud-select-tag-close-size);
+}
+
+.ud-select__arrow {
+  font-size: var(--ud-select-arrow-size);
+}
+
+/* 图上箭头字形右缘贴着留白边。Down / Up 的折线左右各空出画布的 10/48。 */
+.ud-select__arrow:last-child {
+  margin-right: calc(var(--ud-select-arrow-size) * -10 / 48);
+}
+
+/* 清除图上圆钮到箭头字形 9.5px：圆钮留白约 0.5，间距 8，剩下 1px 加上抵掉箭头左侧留白。 */
+.ud-select__clear + .ud-select__arrow {
+  margin-left: calc(1px - var(--ud-select-arrow-size) * 10 / 48);
+}
+
+.ud-select:hover .ud-select__clear,
+.ud-select--open .ud-select__clear {
+  display: inline-flex;
+}
+
+.ud-select__clear:hover,
+.ud-select__tag-remove:hover {
+  color: var(--ud-color-brand);
+}
+
+.ud-select__suffix {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  color: var(--ud-color-icon-secondary);
+}
+
+.ud-select__menu {
+  position: absolute;
+  z-index: 20;
+  left: 0;
+  top: calc(100% + var(--ud-select-menu-gap));
+  box-sizing: border-box;
+  width: 100%;
+  min-width: var(--ud-select-menu-min-width);
+  max-height: var(--ud-select-menu-max-height);
+  margin: 0;
+  padding-block: 4px;
+  overflow: auto;
+  border: 1px solid var(--ud-color-border-card);
+  border-radius: var(--ud-select-radius);
+  background: var(--ud-color-bg-white);
+  /* s2 只有 2% 透明度，图上的浮层阴影能看出来，用 s4。 */
+  box-shadow: var(--ud-shadow-down-s4);
+}
+
+/* 菜单图按 2 倍量：滑块宽 7px、离边框 2px、两端圆头，色值 #BCBDBF 不在色板里。 */
+.ud-select__menu::-webkit-scrollbar {
+  width: 11px;
+}
+
+.ud-select__menu::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: var(--ud-radius-full);
+  background: #bcbdbf padding-box;
+}
+
+.ud-select__menu::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  .ud-select__menu {
+    scrollbar-width: thin;
+    scrollbar-color: #bcbdbf transparent;
+  }
+}
+
+.ud-select--top .ud-select__menu {
+  top: auto;
+  bottom: calc(100% + var(--ud-select-menu-gap));
+  box-shadow: var(--ud-shadow-up-s4);
+}
+
+.ud-select--end .ud-select__menu {
+  left: auto;
+  right: 0;
+}
+
+.ud-select__option,
+.ud-select__empty {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-sizing: border-box;
+  width: calc(100% - 8px);
+  min-height: 32px;
+  margin: 0 4px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--ud-radius-xs);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+}
+
+.ud-select__option {
+  cursor: pointer;
+}
+
+.ud-select__option.is-active {
+  background: var(--ud-select-option-bg-active);
+}
+
+.ud-select__option.is-selected {
+  color: var(--ud-color-brand);
+}
+
+.ud-select__option.is-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ud-select__option-label {
+  display: -webkit-box;
+  width: 100%;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--ud-select-option-lines, 1);
+  overflow-wrap: anywhere;
+}
+
+.ud-select__match {
+  color: var(--ud-color-brand);
+}
+
+/* 搜索图和状态图按 2 倍量：加载、无结果、无选项的菜单外框都是 38px，扣掉菜单上下 4px 留白和描边剩 28px。 */
+.ud-select__empty,
+.ud-select__loading {
+  min-height: 28px;
+}
+
+.ud-select__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 搜索图量到转圈外径约 19.5px。 */
+.ud-select__spinner {
+  box-sizing: border-box;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--ud-color-brand);
+  border-right-color: transparent;
+  border-radius: var(--ud-radius-full);
+  /* 转动时长沿用按钮，规范没有给选择器单独的时间。 */
+  animation: ud-button-spin 0.7s linear infinite;
+}
+
+.ud-select__check {
+  flex: none;
+  margin-left: auto;
+}
+
+.ud-select__empty {
+  color: var(--ud-color-text-placeholder);
+}
+
+.ud-select__message {
+  display: -webkit-box;
+  margin: var(--ud-select-message-gap) 0 0;
+  overflow: hidden;
+  color: var(--ud-select-message-color);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}

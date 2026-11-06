@@ -1,0 +1,60 @@
+:root {
+  --ud-font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", system-ui, sans-serif;
+  --ud-font-weight-regular: 400;
+  --ud-font-weight-medium: 500;
+  --ud-font-weight-semibold: 600;
+
+  /* PC 字阶。字号 / 行高 / 字重 */
+  --ud-font-size-display: 30px;
+  --ud-line-display: 46px;
+  --ud-font-size-h1: 24px;
+  --ud-line-h1: 36px;
+  --ud-font-size-h2: 20px;
+  --ud-line-h2: 30px;
+  --ud-font-size-h3: 18px;
+  --ud-line-h3: 28px;
+  --ud-font-size-h4: 16px;
+  --ud-line-h4: 24px;
+  --ud-font-size-h5: 16px;
+  --ud-line-h5: 24px;
+  --ud-font-size-title: 14px;
+  --ud-line-title: 22px;
+  --ud-font-size-body: 14px;
+  --ud-line-body: 22px;
+  --ud-font-size-body-sm: 12px;
+  --ud-line-body-sm: 20px;
+  --ud-font-size-caption: 12px;
+  --ud-line-caption: 20px;
+  --ud-font-size-label: 10px;
+  --ud-line-label: 16px;
+  --ud-font-size-label-sm: 10px;
+  --ud-line-label-sm: 16px;
+
+  /* 移动端 1 倍 */
+  --ud-font-size-display-mobile: 26px;
+  --ud-line-display-mobile: 40px;
+  --ud-font-size-h1-mobile: 24px;
+  --ud-line-h1-mobile: 36px;
+  --ud-font-size-h2-mobile: 20px;
+  --ud-line-h2-mobile: 30px;
+  --ud-font-size-h3-mobile: 17px;
+  --ud-line-h3-mobile: 26px;
+  --ud-font-size-h4-mobile: 17px;
+  --ud-line-h4-mobile: 26px;
+  --ud-font-size-title-mobile: 16px;
+  --ud-line-title-mobile: 24px;
+  --ud-font-size-body-mobile: 16px;
+  --ud-line-body-mobile: 24px;
+  --ud-font-size-body-lg-mobile: 14px;
+  --ud-line-body-lg-mobile: 22px;
+  --ud-font-size-body-sm-mobile: 14px;
+  --ud-line-body-sm-mobile: 22px;
+  --ud-font-size-caption-mobile: 12px;
+  --ud-line-caption-mobile: 20px;
+  --ud-font-size-caption-sm-mobile: 12px;
+  --ud-line-caption-sm-mobile: 20px;
+  --ud-font-size-label-mobile: 10px;
+  --ud-line-label-mobile: 16px;
+  --ud-font-size-label-sm-mobile: 10px;
+  --ud-line-label-sm-mobile: 16px;
+}

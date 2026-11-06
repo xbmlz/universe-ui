@@ -1,0 +1,19 @@
+{
+  "name": "@universe-ui/playground",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite"
+  },
+  "dependencies": {
+    "@icon-park/vue-next": "1.4.2",
+    "@universe-ui/tokens": "workspace:*",
+    "@universe-ui/vue": "workspace:*",
+    "vue": "3.6.0-rc.14"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "6.0.10",
+    "vite": "^7.1.12"
+  }
+}

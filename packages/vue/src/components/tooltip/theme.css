@@ -1,0 +1,43 @@
+.ud-tooltip {
+  display: block;
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.ud-tooltip__bubble {
+  position: fixed;
+  z-index: 30;
+  box-sizing: border-box;
+  max-width: 320px;
+  /* 尺寸图：左右 12、上下 8。气泡在两条 8px 标注之间约 28px，行高按 12px 字号本身，不用 20px 的辅助行高。 */
+  padding: 8px 12px;
+  border-radius: var(--ud-radius-s);
+  /* 尺寸图气泡填充 31,35,41，即文字色。文字是白的。圆角被标注线挡住，用小圆角。 */
+  background: var(--ud-color-text);
+  color: var(--ud-color-bg-white);
+  font-size: var(--ud-font-size-caption);
+  font-weight: var(--ud-font-weight-regular);
+  line-height: 12px;
+  overflow-wrap: anywhere;
+  box-shadow: var(--ud-shadow-down-s4);
+}
+
+.ud-tooltip__arrow {
+  position: absolute;
+  left: var(--ud-tooltip-arrow-left);
+  width: 12px;
+  height: 6px;
+  margin-left: -6px;
+  background: var(--ud-color-text);
+}
+
+.ud-tooltip__bubble--top .ud-tooltip__arrow {
+  bottom: -6px;
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+}
+
+.ud-tooltip__bubble--bottom .ud-tooltip__arrow {
+  top: -6px;
+  clip-path: polygon(50% 0, 0 100%, 100% 100%);
+}

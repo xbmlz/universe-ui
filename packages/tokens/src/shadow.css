@@ -1,0 +1,132 @@
+:root {
+  --ud-shadow-down-s1:
+    0 1px 2px -2px rgb(31 35 39 / 2%),
+    0 2px 4px 0 rgb(31 35 39 / 2%),
+    0 2px 8px 2px rgb(31 35 39 / 2%);
+  --ud-shadow-down-s2:
+    0 2px 4px -4px rgb(31 35 39 / 2%),
+    0 4px 8px 0 rgb(31 35 39 / 2%),
+    0 4px 16px 4px rgb(31 35 39 / 2%);
+  --ud-shadow-down-s3:
+    0 3px 6px -6px rgb(31 35 39 / 5%),
+    0 4px 8px 0 rgb(31 35 39 / 3%),
+    0 6px 18px 6px rgb(31 35 39 / 3%);
+  --ud-shadow-down-s4:
+    0 4px 8px -8px rgb(31 35 39 / 6%),
+    0 6px 12px 0 rgb(31 35 39 / 4%),
+    0 8px 24px 8px rgb(31 35 39 / 4%);
+  --ud-shadow-down-s5:
+    0 6px 12px -10px rgb(31 35 39 / 6%),
+    0 8px 24px 0 rgb(31 35 39 / 4%),
+    0 10px 36px 10px rgb(31 35 39 / 4%);
+
+  --ud-shadow-up-s1:
+    0 -1px 2px -2px rgb(31 35 39 / 2%),
+    0 -2px 4px 0 rgb(31 35 39 / 2%),
+    0 -2px 8px 2px rgb(31 35 39 / 2%);
+  --ud-shadow-up-s2:
+    0 -2px 4px -4px rgb(31 35 39 / 2%),
+    0 -4px 8px 0 rgb(31 35 39 / 2%),
+    0 -4px 16px 4px rgb(31 35 39 / 2%);
+  --ud-shadow-up-s3:
+    0 -3px 6px -6px rgb(31 35 39 / 5%),
+    0 -4px 8px 0 rgb(31 35 39 / 3%),
+    0 -6px 18px 6px rgb(31 35 39 / 3%);
+  --ud-shadow-up-s4:
+    0 -4px 8px -8px rgb(31 35 39 / 6%),
+    0 -6px 12px 0 rgb(31 35 39 / 4%),
+    0 -8px 24px 8px rgb(31 35 39 / 4%);
+  --ud-shadow-up-s5:
+    0 -6px 12px -10px rgb(31 35 39 / 6%),
+    0 -8px 24px 0 rgb(31 35 39 / 4%),
+    0 -10px 36px 10px rgb(31 35 39 / 4%);
+
+  --ud-shadow-left-s1:
+    -1px 0 2px -2px rgb(31 35 39 / 2%),
+    -2px 0 4px 0 rgb(31 35 39 / 2%),
+    -2px 0 8px 2px rgb(31 35 39 / 2%);
+  --ud-shadow-left-s2:
+    -2px 0 4px -4px rgb(31 35 39 / 2%),
+    -4px 0 8px 0 rgb(31 35 39 / 2%),
+    -4px 0 16px 4px rgb(31 35 39 / 2%);
+  --ud-shadow-left-s3:
+    -3px 0 6px -6px rgb(31 35 39 / 5%),
+    -4px 0 8px 0 rgb(31 35 39 / 3%),
+    -6px 0 18px 6px rgb(31 35 39 / 3%);
+  --ud-shadow-left-s4:
+    -4px 0 8px -8px rgb(31 35 39 / 6%),
+    -6px 0 12px 0 rgb(31 35 39 / 4%),
+    -8px 0 24px 8px rgb(31 35 39 / 4%);
+  --ud-shadow-left-s5:
+    -6px 0 12px -10px rgb(31 35 39 / 6%),
+    -8px 0 24px 0 rgb(31 35 39 / 4%),
+    -10px 0 36px 10px rgb(31 35 39 / 4%);
+
+  --ud-shadow-right-s1:
+    1px 0 2px -2px rgb(31 35 39 / 2%),
+    2px 0 4px 0 rgb(31 35 39 / 2%),
+    2px 0 8px 2px rgb(31 35 39 / 2%);
+  --ud-shadow-right-s2:
+    2px 0 4px -4px rgb(31 35 39 / 2%),
+    4px 0 8px 0 rgb(31 35 39 / 2%),
+    4px 0 16px 4px rgb(31 35 39 / 2%);
+  --ud-shadow-right-s3:
+    3px 0 6px -6px rgb(31 35 39 / 5%),
+    4px 0 8px 0 rgb(31 35 39 / 3%),
+    6px 0 18px 6px rgb(31 35 39 / 3%);
+  --ud-shadow-right-s4:
+    4px 0 8px -8px rgb(31 35 39 / 6%),
+    6px 0 12px 0 rgb(31 35 39 / 4%),
+    8px 0 24px 8px rgb(31 35 39 / 4%);
+  --ud-shadow-right-s5:
+    6px 0 12px -10px rgb(31 35 39 / 6%),
+    8px 0 24px 0 rgb(31 35 39 / 4%),
+    10px 0 36px 10px rgb(31 35 39 / 4%);
+
+  --ud-shadow-down-pri-s1:
+    0 1px 2px -2px rgb(36 91 219 / 12%),
+    0 2px 4px 0 rgb(36 91 219 / 4%),
+    0 2px 8px 2px rgb(36 91 219 / 2%);
+  --ud-shadow-down-pri-s2:
+    0 2px 4px -4px rgb(36 91 219 / 12%),
+    0 4px 8px 0 rgb(36 91 219 / 4%),
+    0 4px 16px 4px rgb(36 91 219 / 3%);
+  --ud-shadow-down-pri-s3:
+    0 3px 6px -6px rgb(36 91 219 / 14%),
+    0 4px 8px 0 rgb(36 91 219 / 6%),
+    0 6px 18px 6px rgb(36 91 219 / 4%);
+  --ud-shadow-down-pri-s4:
+    0 4px 8px -4px rgb(36 91 219 / 16%),
+    0 6px 12px 0 rgb(36 91 219 / 8%),
+    0 8px 24px 8px rgb(36 91 219 / 6%);
+  --ud-shadow-down-pri-s5:
+    0 10px 12px -10px rgb(36 91 219 / 18%),
+    0 8px 24px 0 rgb(36 91 219 / 10%),
+    0 10px 36px 10px rgb(36 91 219 / 6%);
+
+  --ud-shadow-down-s1-mobile: 0 2px 2px rgb(31 35 39 / 6%);
+  --ud-shadow-down-s2-mobile: 0 2px 6px rgb(31 35 39 / 8%);
+  --ud-shadow-down-s3-mobile: 0 4px 8px rgb(31 35 39 / 9%);
+  --ud-shadow-down-s4-mobile: 0 6px 16px rgb(31 35 39 / 10%);
+  --ud-shadow-down-s5-mobile: 0 8px 36px rgb(31 35 39 / 16%);
+  --ud-shadow-up-s1-mobile: 0 -2px 2px rgb(31 35 39 / 6%);
+  --ud-shadow-up-s2-mobile: 0 -2px 6px rgb(31 35 39 / 8%);
+  --ud-shadow-up-s3-mobile: 0 -4px 8px rgb(31 35 39 / 9%);
+  --ud-shadow-up-s4-mobile: 0 -6px 16px rgb(31 35 39 / 10%);
+  --ud-shadow-up-s5-mobile: 0 -8px 36px rgb(31 35 39 / 16%);
+  --ud-shadow-left-s1-mobile: -2px 0 2px rgb(31 35 39 / 6%);
+  --ud-shadow-left-s2-mobile: -2px 0 6px rgb(31 35 39 / 8%);
+  --ud-shadow-left-s3-mobile: -4px 0 8px rgb(31 35 39 / 9%);
+  --ud-shadow-left-s4-mobile: -6px 0 16px rgb(31 35 39 / 10%);
+  --ud-shadow-left-s5-mobile: -8px 0 36px rgb(31 35 39 / 16%);
+  --ud-shadow-right-s1-mobile: 2px 0 2px rgb(31 35 39 / 6%);
+  --ud-shadow-right-s2-mobile: 2px 0 6px rgb(31 35 39 / 8%);
+  --ud-shadow-right-s3-mobile: 4px 0 8px rgb(31 35 39 / 9%);
+  --ud-shadow-right-s4-mobile: 6px 0 16px rgb(31 35 39 / 10%);
+  --ud-shadow-right-s5-mobile: 8px 0 36px rgb(31 35 39 / 16%);
+  --ud-shadow-down-pri-s1-mobile: 0 2px 4px rgb(36 91 219 / 12%);
+  --ud-shadow-down-pri-s2-mobile: 0 2px 6px rgb(36 91 219 / 16%);
+  --ud-shadow-down-pri-s3-mobile: 0 4px 8px rgb(36 91 219 / 18%);
+  --ud-shadow-down-pri-s4-mobile: 0 6px 16px rgb(36 91 219 / 20%);
+  --ud-shadow-down-pri-s5-mobile: 0 8px 36px rgb(36 91 219 / 24%);
+}

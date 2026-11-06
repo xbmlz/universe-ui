@@ -1,0 +1,22 @@
+/* 在 Tailwind v4 的入口里引入这一份。组件样式不依赖 Tailwind。 */
+@import "./index.css";
+
+@theme inline {
+  --color-ud-brand: var(--ud-color-brand);
+  --color-ud-brand-hover: var(--ud-color-brand-hover);
+  --color-ud-brand-pressed: var(--ud-color-brand-pressed);
+  --color-ud-text: var(--ud-color-text);
+  --color-ud-text-secondary: var(--ud-color-text-secondary);
+  --color-ud-danger: var(--ud-color-danger);
+  --color-ud-success: var(--ud-color-success);
+  --color-ud-warning: var(--ud-color-warning);
+  --color-ud-bg: var(--ud-color-bg-white);
+  --color-ud-bg-page: var(--ud-color-bg-page);
+  --color-ud-border: var(--ud-color-border);
+  --radius-ud-xs: var(--ud-radius-xs);
+  --radius-ud-s: var(--ud-radius-s);
+  --radius-ud-m: var(--ud-radius-m);
+  --radius-ud-l: var(--ud-radius-l);
+  --radius-ud-full: var(--ud-radius-full);
+  --font-ud: var(--ud-font-family);
+}

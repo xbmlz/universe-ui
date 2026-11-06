@@ -1,0 +1,932 @@
+.ud-input {
+  --ud-input-height: 32px;
+  --ud-input-min-width: 240px;
+  --ud-input-max-width: 600px;
+  --ud-input-padding-inline: 12px;
+  --ud-input-radius: var(--ud-radius-s);
+  --ud-input-bg: var(--ud-color-bg-white);
+  --ud-input-border-color: var(--ud-color-border);
+  --ud-input-border-color-hover: var(--ud-color-brand);
+  --ud-input-border-color-focus: var(--ud-color-brand);
+  --ud-input-color: var(--ud-color-text);
+  --ud-input-placeholder: var(--ud-color-text-placeholder);
+  --ud-input-label-gap: 8px;
+  /* 状态图按 2 倍量，报错字形顶部距外框 7.5~8px；22px 行高里字形本身下沉约 5.5px。 */
+  --ud-input-message-gap: 2px;
+  --ud-input-message-color: var(--ud-color-text-secondary);
+  --ud-input-required-color: var(--ud-color-danger);
+  --ud-input-affix-gap: 8px;
+  --ud-input-affix-text-gap: 8px;
+  --ud-input-icon-size: 16px;
+  --ud-input-addon-min-width: 70px;
+  --ud-input-addon-max-width: 300px;
+  --ud-input-field-min-width: 120px;
+  --ud-input-addon-bg: var(--ud-color-fill-disabled);
+  --ud-input-addon-color: var(--ud-color-text);
+  --ud-input-divider: var(--ud-color-border);
+  /* 尺寸图按 2 倍量：S 12/20、M 14/22、L 16/24，S 左右留白 8px。标签和提示文字不跟着变。 */
+  --ud-input-font-size: var(--ud-font-size-body);
+  --ud-input-line-height: var(--ud-line-body);
+  /* 状态图上清除圆钮直径 11px。CloseOne 填充态连描边占画布 44/48，12px 画布约 11px。 */
+  --ud-input-clear-size: 12px;
+  /* 数字输入框图上步进箭头约 6×4px。Up / Down 的折线占画布 28/48，10px 画布约 6px。 */
+  --ud-input-step-icon-size: 10px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  min-width: var(--ud-input-min-width);
+  max-width: var(--ud-input-max-width);
+  color: var(--ud-input-color);
+  font-family: inherit;
+  font-size: var(--ud-font-size-body);
+  font-weight: var(--ud-font-weight-regular);
+  line-height: var(--ud-line-body);
+}
+
+/*
+ * S / L 的搜索图标圆圈量出来约为 M 的 0.88 / 1.27 倍，取 14 / 20。
+ * 文档写的图标与文字间距 8px 配的是 M 的图；S / L 的图上文字分别从外框 27 / 37px 处开始，算下来是 4px。
+ * 清除圆钮只有 M 的图，S / L 按图标比例推算。
+ */
+.ud-input--sm {
+  --ud-input-height: 28px;
+  --ud-input-padding-inline: 8px;
+  --ud-input-font-size: var(--ud-font-size-caption);
+  --ud-input-line-height: var(--ud-line-caption);
+  --ud-input-icon-size: 14px;
+  --ud-input-affix-text-gap: 4px;
+  --ud-input-clear-size: 10.5px;
+}
+
+.ud-input--lg {
+  --ud-input-height: 40px;
+  --ud-input-font-size: var(--ud-font-size-h4);
+  --ud-input-line-height: var(--ud-line-h4);
+  --ud-input-icon-size: 20px;
+  --ud-input-affix-text-gap: 4px;
+  --ud-input-clear-size: 15px;
+}
+
+.ud-input--error {
+  --ud-input-border-color: var(--ud-color-danger);
+  --ud-input-border-color-hover: var(--ud-color-danger);
+  --ud-input-border-color-focus: var(--ud-color-danger);
+  --ud-input-message-color: var(--ud-color-danger);
+}
+
+.ud-input--disabled {
+  --ud-input-bg: var(--ud-color-fill-disabled);
+  --ud-input-color: var(--ud-color-text-placeholder);
+  --ud-input-border-color-hover: var(--ud-color-border);
+  --ud-input-border-color-focus: var(--ud-color-border);
+}
+
+.ud-input--readonly {
+  --ud-input-bg: var(--ud-color-fill-disabled);
+  --ud-input-border-color-hover: var(--ud-color-border);
+  --ud-input-border-color-focus: var(--ud-color-border);
+}
+
+.ud-input--borderless {
+  --ud-input-bg: transparent;
+  --ud-input-border-color: transparent;
+  --ud-input-border-color-hover: transparent;
+  --ud-input-border-color-focus: transparent;
+}
+
+.ud-input__label {
+  margin: 0 0 var(--ud-input-label-gap);
+  color: var(--ud-color-text);
+}
+
+.ud-input__required {
+  margin-right: 4px;
+  color: var(--ud-input-required-color);
+}
+
+.ud-input__control {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  height: var(--ud-input-height);
+  padding: 0 var(--ud-input-padding-inline);
+  border: 1px solid var(--ud-input-border-color);
+  border-radius: var(--ud-input-radius);
+  background: var(--ud-input-bg);
+  font-size: var(--ud-input-font-size);
+  line-height: var(--ud-input-line-height);
+}
+
+.ud-input:not(.ud-input--number) .ud-input__control {
+  padding: 0;
+}
+
+.ud-input__main {
+  display: flex;
+  align-items: center;
+  flex: 1 1 auto;
+  box-sizing: border-box;
+  min-width: 0;
+  height: 100%;
+  padding: 0 var(--ud-input-padding-inline);
+}
+
+.ud-input__control:hover {
+  border-color: var(--ud-input-border-color-hover);
+}
+
+.ud-input:focus-within .ud-input__control {
+  border-color: var(--ud-input-border-color-focus);
+}
+
+.ud-input--disabled .ud-input__control {
+  cursor: not-allowed;
+}
+
+.ud-input__field {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+
+.ud-input__field::placeholder {
+  color: var(--ud-input-placeholder);
+}
+
+.ud-input__field:disabled {
+  cursor: not-allowed;
+}
+
+.ud-input__control:has(.ud-input__addon) {
+  border-width: 0;
+  background: transparent;
+}
+
+.ud-input__control:has(.ud-input__addon) .ud-input__main {
+  min-width: max(var(--ud-input-field-min-width), var(--ud-input-field-min, 0px));
+  border: 1px solid var(--ud-input-border-color);
+  border-radius: var(--ud-input-radius);
+  background: var(--ud-input-bg);
+}
+
+.ud-input__control:has(.ud-input__addon):hover .ud-input__main {
+  border-color: var(--ud-input-border-color-hover);
+}
+
+/* 可切换属性：悬停或展开时只有属性块变蓝，输入区保持原描边。 */
+.ud-input:not(.ud-input--error) .ud-input__control:has(.ud-input-addon:hover) .ud-input__main,
+.ud-input:not(.ud-input--error) .ud-input__control:has(.ud-input-addon__trigger[aria-expanded='true']) .ud-input__main {
+  border-color: var(--ud-input-border-color);
+}
+
+.ud-input:focus-within:not(:has(.ud-input-addon:focus-within)):not(:has(.ud-input-addon__trigger[aria-expanded='true'])) .ud-input__control:has(.ud-input__addon) .ud-input__main {
+  border-color: var(--ud-input-border-color-focus);
+}
+
+.ud-input--error .ud-input__control:has(.ud-input__addon--before) .ud-input__main,
+.ud-input--error:hover .ud-input__control:has(.ud-input__addon--before) .ud-input__main,
+.ud-input--error:focus-within .ud-input__control:has(.ud-input__addon--before) .ud-input__main {
+  border-left-color: var(--ud-input-divider);
+}
+
+.ud-input--error .ud-input__control:has(.ud-input__addon--after) .ud-input__main,
+.ud-input--error:hover .ud-input__control:has(.ud-input__addon--after) .ud-input__main,
+.ud-input--error:focus-within .ud-input__control:has(.ud-input__addon--after) .ud-input__main {
+  border-right-color: var(--ud-input-divider);
+}
+
+.ud-input__addon {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  box-sizing: border-box;
+  min-width: var(--ud-input-addon-min-width);
+  max-width: var(--ud-input-addon-max-width);
+  height: 100%;
+  padding: 0 var(--ud-input-padding-inline);
+  overflow: hidden;
+  border: 1px solid var(--ud-input-border-color);
+  background: var(--ud-input-addon-bg);
+  color: var(--ud-input-addon-color);
+}
+
+.ud-input__addon--before {
+  justify-content: flex-start;
+  border-right-width: 0;
+  border-radius: var(--ud-input-radius) 0 0 var(--ud-input-radius);
+}
+
+.ud-input__addon--after {
+  justify-content: flex-end;
+  border-left-width: 0;
+  border-radius: 0 var(--ud-input-radius) var(--ud-input-radius) 0;
+}
+
+/* 文档：单字符属性居中对齐。 */
+.ud-input__addon[data-single] {
+  justify-content: center;
+}
+
+.ud-input__control:has(.ud-input__addon--before) .ud-input__main {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.ud-input__control:has(.ud-input__addon--after) .ud-input__main {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.ud-input__addon-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ud-input__addon:has(.ud-input-addon) {
+  position: relative;
+  align-items: stretch;
+  padding: 0;
+  overflow: visible;
+}
+
+.ud-input__addon-label:has(.ud-input-addon) {
+  display: flex;
+  flex: 1 1 auto;
+  height: 100%;
+  overflow: visible;
+}
+
+.ud-input:not(.ud-input--error) .ud-input__addon:has(.ud-input-addon:hover),
+.ud-input:not(.ud-input--error) .ud-input__addon:has(.ud-input-addon__trigger[aria-expanded='true']) {
+  z-index: 2;
+  border-color: var(--ud-color-brand);
+}
+
+.ud-input:not(.ud-input--error) .ud-input__control:has(.ud-input__addon--before .ud-input-addon:hover) .ud-input__main,
+.ud-input:not(.ud-input--error) .ud-input__control:has(.ud-input__addon--before .ud-input-addon__trigger[aria-expanded='true']) .ud-input__main {
+  border-left-color: var(--ud-color-brand);
+}
+
+.ud-input:not(.ud-input--error) .ud-input__control:has(.ud-input__addon--after .ud-input-addon:hover) .ud-input__main,
+.ud-input:not(.ud-input--error) .ud-input__control:has(.ud-input__addon--after .ud-input-addon__trigger[aria-expanded='true']) .ud-input__main {
+  border-right-color: var(--ud-color-brand);
+}
+
+.ud-input--disabled .ud-input-addon__trigger,
+.ud-input--readonly .ud-input-addon__trigger {
+  cursor: default;
+  pointer-events: none;
+}
+
+.ud-input-addon {
+  position: relative;
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 100%;
+}
+
+.ud-input-addon__trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  min-width: 0;
+  height: 100%;
+  margin: 0;
+  /* 文档：前缀 / 后缀左边距 12px。 */
+  padding: 0 12px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.ud-input__addon[data-single] .ud-input-addon__trigger {
+  justify-content: center;
+}
+
+.ud-input-addon__label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* 属性块里的箭头比选择框小一档，画布 12px。 */
+.ud-input-addon__arrow {
+  flex: none;
+  font-size: 12px;
+  color: var(--ud-color-icon-secondary);
+}
+
+.ud-input-addon__menu {
+  position: absolute;
+  z-index: 20;
+  /* 描边在内容盒外面，再加 1px，外缘到菜单才是 4px。 */
+  top: calc(100% + 5px);
+  left: 0;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0;
+  padding-block: 4px;
+  border: 1px solid var(--ud-color-border-card);
+  border-radius: var(--ud-radius-s);
+  background: var(--ud-color-bg-white);
+  box-shadow: var(--ud-shadow-down-s4);
+}
+
+.ud-input-addon__menu--top {
+  top: auto;
+  bottom: calc(100% + 5px);
+}
+
+.ud-input-addon__option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-sizing: border-box;
+  width: calc(100% - 8px);
+  min-height: 32px;
+  margin: 0 4px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--ud-radius-xs);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ud-input-addon__option:hover,
+.ud-input-addon__option:focus-visible {
+  background: #edeeef;
+}
+
+.ud-input-addon__option.is-selected {
+  color: var(--ud-color-brand);
+}
+
+.ud-input-addon__check {
+  flex: none;
+  margin-left: auto;
+  font-size: 16px;
+}
+
+.ud-input-addon__trigger:focus {
+  outline: none;
+}
+
+.ud-input__affix {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ud-input-affix-gap);
+  margin-right: var(--ud-input-affix-text-gap);
+  color: var(--ud-color-icon-secondary);
+}
+
+.ud-input__suffix {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ud-input-affix-gap);
+  margin-left: var(--ud-input-affix-gap);
+  color: var(--ud-color-icon-secondary);
+}
+
+.ud-input__icons {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ud-input-affix-gap);
+}
+
+/* 语言标签图按 2 倍量：高 20px，底 #EFF0F1，字 #646A73，圆角 4px，距右框约 5.5px。 */
+.ud-input__main:has(.ud-input__tag) {
+  padding-right: 6px;
+}
+
+.ud-input__main:has(.ud-input__tag) .ud-input__field {
+  width: auto;
+  flex: 1 1 auto;
+}
+
+.ud-input__tag {
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  max-width: 40%;
+  height: 20px;
+  margin-left: 8px;
+  padding-inline: 8px;
+  overflow: hidden;
+  border-radius: var(--ud-radius-xs);
+  background: var(--ud-color-fill-disabled);
+  color: var(--ud-color-text-secondary);
+  font-size: var(--ud-font-size-caption);
+  line-height: var(--ud-line-caption);
+  white-space: nowrap;
+}
+
+/* 文档：有图标时，图标和标签间距 12px。 */
+.ud-input__suffix + .ud-input__tag {
+  margin-left: 12px;
+}
+
+.ud-input--disabled .ud-input__tag,
+.ud-input--readonly .ud-input__tag {
+  background: #dadcdd;
+}
+
+.ud-input__clear {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--ud-input-clear-size);
+  height: var(--ud-input-clear-size);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ud-color-icon-secondary);
+  cursor: pointer;
+}
+
+.ud-input__control:hover .ud-input__clear,
+.ud-input:focus-within .ud-input__clear {
+  display: inline-flex;
+}
+
+.ud-input__clear:hover {
+  color: var(--ud-color-brand);
+}
+
+.ud-input__clear:focus {
+  outline: none;
+}
+
+.ud-input__affix svg,
+.ud-input__icons svg {
+  width: var(--ud-input-icon-size);
+  height: var(--ud-input-icon-size);
+}
+
+.ud-input__clear {
+  font-size: var(--ud-input-clear-size);
+}
+
+.ud-input__step {
+  font-size: var(--ud-input-step-icon-size);
+}
+
+.ud-input__affix .i-icon,
+.ud-input__icons .i-icon,
+.ud-input__clear .i-icon,
+.ud-input__step .i-icon {
+  display: inline-flex;
+  line-height: 0;
+}
+
+.ud-input__message {
+  display: -webkit-box;
+  margin: var(--ud-input-message-gap) 0 0;
+  overflow: hidden;
+  color: var(--ud-input-message-color);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.ud-input--number {
+  --ud-input-stepper-width: 32px;
+  /* 状态图里悬停半区的底色。图上的蓝是旧品牌色。 */
+  --ud-input-stepper-bg-hover: #e1eaff;
+}
+
+.ud-input--number .ud-input__control {
+  padding-right: 0;
+}
+
+.ud-input__stepper {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  flex: none;
+  box-sizing: border-box;
+  width: var(--ud-input-stepper-width);
+  height: 100%;
+  border-left: 1px solid var(--ud-input-divider);
+}
+
+.ud-input__step {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ud-color-icon-secondary);
+  cursor: pointer;
+}
+
+.ud-input__step + .ud-input__step {
+  border-top: 1px solid var(--ud-input-divider);
+}
+
+.ud-input__step:hover:not(:disabled) {
+  background: var(--ud-input-stepper-bg-hover);
+  color: var(--ud-color-brand);
+}
+
+.ud-input--number:has(.ud-input__step:hover:not(:disabled)) {
+  --ud-input-divider: var(--ud-color-brand);
+}
+
+.ud-input__step:disabled {
+  color: var(--ud-color-icon-disabled);
+  cursor: not-allowed;
+}
+
+.ud-input__step:focus {
+  outline: none;
+}
+
+.ud-input-group {
+  --ud-input-min-width: 240px;
+  --ud-input-max-width: 600px;
+  --ud-input-label-gap: 8px;
+  --ud-input-message-gap: 2px;
+  --ud-input-message-color: var(--ud-color-text-secondary);
+  --ud-input-required-color: var(--ud-color-danger);
+
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: var(--ud-input-min-width);
+  max-width: var(--ud-input-max-width);
+  color: var(--ud-color-text);
+  font-size: var(--ud-font-size-body);
+  font-weight: var(--ud-font-weight-regular);
+  line-height: var(--ud-line-body);
+}
+
+.ud-input-group--error {
+  --ud-input-message-color: var(--ud-color-danger);
+}
+
+.ud-input-group__fields {
+  display: flex;
+  align-items: stretch;
+}
+
+.ud-input-group__fields > .ud-input {
+  flex: 1 1 0;
+  width: auto;
+  min-width: 0;
+  max-width: none;
+}
+
+.ud-input-group__fields > .ud-input:not(:first-child) {
+  margin-left: -1px;
+}
+
+.ud-input-group__fields > .ud-input:hover,
+.ud-input-group__fields > .ud-input:focus-within {
+  position: relative;
+  z-index: 1;
+}
+
+.ud-input-group__fields > .ud-input .ud-input__control {
+  border-radius: 0;
+}
+
+.ud-input-group__fields > .ud-input:first-child .ud-input__control {
+  border-top-left-radius: var(--ud-input-radius);
+  border-bottom-left-radius: var(--ud-input-radius);
+}
+
+.ud-input-group__fields > .ud-input:last-child .ud-input__control {
+  border-top-right-radius: var(--ud-input-radius);
+  border-bottom-right-radius: var(--ud-input-radius);
+}
+
+.ud-input-group--error .ud-input-group__fields > .ud-input:not(:last-child) .ud-input__control {
+  border-right-color: var(--ud-input-divider);
+}
+
+.ud-input-group--error .ud-input-group__fields > .ud-input:not(:first-child) .ud-input__control {
+  border-left-color: var(--ud-input-divider);
+}
+
+.ud-input-group__fields > .ud-select {
+  flex: 1 1 0;
+  width: auto;
+  min-width: 0;
+  max-width: none;
+}
+
+.ud-input-group__fields > .ud-select:not(:first-child) {
+  margin-left: -1px;
+}
+
+.ud-input-group__fields > .ud-select:hover,
+.ud-input-group__fields > .ud-select:focus-within,
+.ud-input-group__fields > .ud-select.ud-select--open {
+  position: relative;
+  z-index: 2;
+}
+
+.ud-input-group__fields > .ud-select .ud-select__trigger {
+  border-radius: 0;
+}
+
+.ud-input-group__fields > .ud-select:first-child .ud-select__trigger {
+  border-top-left-radius: var(--ud-select-radius);
+  border-bottom-left-radius: var(--ud-select-radius);
+}
+
+.ud-input-group__fields > .ud-select:last-child .ud-select__trigger {
+  border-top-right-radius: var(--ud-select-radius);
+  border-bottom-right-radius: var(--ud-select-radius);
+}
+
+.ud-input-group--error .ud-input-group__fields > .ud-select:not(:last-child) .ud-select__trigger {
+  border-right-color: var(--ud-color-border);
+}
+
+.ud-input-group--error .ud-input-group__fields > .ud-select:not(:first-child) .ud-select__trigger {
+  border-left-color: var(--ud-color-border);
+}
+
+.ud-input-otp {
+  --ud-input-height: 32px;
+  --ud-input-radius: var(--ud-radius-s);
+  --ud-input-border-color: var(--ud-color-border);
+  --ud-input-border-color-focus: var(--ud-color-brand);
+  /* 状态图按 2 倍量到格子间距 32px。 */
+  --ud-input-otp-gap: 16px;
+  --ud-input-label-gap: 8px;
+  --ud-input-message-gap: 2px;
+  --ud-input-message-color: var(--ud-color-text-secondary);
+  --ud-input-required-color: var(--ud-color-danger);
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: fit-content;
+  max-width: 100%;
+  color: var(--ud-color-text);
+  font-size: var(--ud-font-size-body);
+  font-weight: var(--ud-font-weight-regular);
+  line-height: var(--ud-line-body);
+}
+
+.ud-input-otp--sm {
+  --ud-input-height: 28px;
+}
+
+.ud-input-otp--lg {
+  --ud-input-height: 40px;
+}
+
+.ud-input-otp--error {
+  --ud-input-message-color: var(--ud-color-danger);
+}
+
+.ud-input-otp--fill {
+  width: 100%;
+}
+
+.ud-input-otp__cells {
+  display: flex;
+  align-items: center;
+  gap: var(--ud-input-otp-gap);
+  width: 100%;
+}
+
+.ud-input-otp__cell {
+  box-sizing: border-box;
+  flex: 0 0 auto;
+  width: var(--ud-input-height);
+  height: var(--ud-input-height);
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--ud-input-border-color);
+  border-radius: var(--ud-input-radius);
+  background: var(--ud-color-bg-white);
+  color: inherit;
+  font: inherit;
+  line-height: calc(var(--ud-input-height) - 2px);
+  text-align: center;
+}
+
+.ud-input-otp__cell--active {
+  border-color: var(--ud-input-border-color-focus);
+}
+
+.ud-input-otp--error:not(:focus-within) .ud-input-otp__cell {
+  border-color: var(--ud-color-danger);
+}
+
+.ud-input-otp--disabled .ud-input-otp__cell {
+  border-color: var(--ud-input-border-color);
+  background: var(--ud-color-fill-disabled);
+  color: var(--ud-color-text-placeholder);
+  cursor: not-allowed;
+}
+
+.ud-input-otp--mask .ud-input-otp__cell {
+  -webkit-text-security: disc;
+}
+
+.ud-input-otp__cell:focus {
+  outline: none;
+  border-color: var(--ud-input-border-color-focus);
+}
+
+.ud-input-otp--complete .ud-input-otp__cell,
+.ud-input-otp--complete .ud-input-otp__cell:focus {
+  border-color: var(--ud-input-border-color);
+}
+
+.ud-input-otp__separator {
+  flex: 0 0 auto;
+  color: var(--ud-color-text);
+  line-height: 1;
+}
+
+.ud-input-otp--fill .ud-input-otp__separator {
+  flex: 1 1 auto;
+  text-align: center;
+}
+
+.ud-input-otp--fill:not(:has(.ud-input-otp__separator)) .ud-input-otp__cell {
+  flex: 1 1 auto;
+  width: auto;
+  min-width: var(--ud-input-height);
+}
+
+.ud-input-area {
+  --ud-input-height: 32px;
+  /* 文档和尺寸图都标了推荐高度 92px。同一张图按 2 倍量，外框是 100px。 */
+  --ud-textarea-height: 92px;
+  --ud-input-min-width: 240px;
+  --ud-input-max-width: 600px;
+  /* 状态图按 2 倍量：文字距外框 9px，即边框 1 加留白 8。和单行输入框的 12 不同。 */
+  --ud-input-padding-inline: 8px;
+  --ud-input-radius: var(--ud-radius-s);
+  --ud-input-bg: var(--ud-color-bg-white);
+  --ud-input-border-color: var(--ud-color-border);
+  --ud-input-border-color-focus: var(--ud-color-brand);
+  --ud-input-color: var(--ud-color-text);
+  --ud-input-placeholder: var(--ud-color-text-placeholder);
+  --ud-input-label-gap: 8px;
+  --ud-input-message-gap: 2px;
+  --ud-input-message-color: var(--ud-color-text-secondary);
+  --ud-input-required-color: var(--ud-color-danger);
+  /* 状态图按 2 倍量：计数芯片距外框右、下各 8px，高 20px，左右留白 6px。 */
+  --ud-input-area-count-inset: 8px;
+  --ud-input-area-count-bg: var(--ud-color-fill-disabled);
+  /* 首行字顶距外框 11.5px，算下来上留白 5px。 */
+  --ud-input-area-padding-block: 5px;
+  /* 尺寸图里的单行态：留白 12px 与单行输入框一致，芯片垂直居中、距外框右 6px。 */
+  --ud-input-area-single-padding: 12px;
+  --ud-input-area-single-count-inset: 6px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  min-width: var(--ud-input-min-width);
+  max-width: var(--ud-input-max-width);
+  color: var(--ud-input-color);
+  font-family: inherit;
+  font-size: var(--ud-font-size-body);
+  font-weight: var(--ud-font-weight-regular);
+  line-height: var(--ud-line-body);
+}
+
+.ud-input-area--sm {
+  --ud-input-height: 28px;
+}
+
+.ud-input-area--lg {
+  --ud-input-height: 40px;
+}
+
+.ud-input-area--error {
+  --ud-input-border-color: var(--ud-color-danger);
+  --ud-input-border-color-focus: var(--ud-color-danger);
+  --ud-input-message-color: var(--ud-color-danger);
+}
+
+/* 禁用和只读时芯片底 #DADCDD，比框体深一档，不是现有色板色。 */
+.ud-input-area--disabled {
+  --ud-input-bg: var(--ud-color-fill-disabled);
+  --ud-input-color: var(--ud-color-text-placeholder);
+  --ud-input-border-color-focus: var(--ud-color-border);
+  --ud-input-area-count-bg: #dadcdd;
+}
+
+.ud-input-area--readonly {
+  --ud-input-bg: var(--ud-color-fill-disabled);
+  --ud-input-border-color-focus: var(--ud-color-border);
+  --ud-input-area-count-bg: #dadcdd;
+}
+
+.ud-input-area__control {
+  position: relative;
+}
+
+.ud-input-area__field {
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
+  min-height: var(--ud-input-height);
+  height: var(--ud-textarea-height);
+  margin: 0;
+  padding-block: var(--ud-input-area-padding-block);
+  padding-inline: var(--ud-input-padding-inline);
+  border: 1px solid var(--ud-input-border-color);
+  border-radius: var(--ud-input-radius);
+  background: var(--ud-input-bg);
+  color: inherit;
+  font: inherit;
+  resize: vertical;
+  outline: none;
+}
+
+.ud-input-area__field::placeholder {
+  color: var(--ud-input-placeholder);
+}
+
+.ud-input-area__field:disabled {
+  cursor: not-allowed;
+  resize: none;
+}
+
+.ud-input-area--autosize .ud-input-area__field {
+  height: var(--ud-input-height);
+  overflow: hidden;
+  resize: none;
+}
+
+.ud-input-area--autosize .ud-input-area__control:not([data-lines='multi']) .ud-input-area__field {
+  padding-block: calc((var(--ud-input-height) - 2px - var(--ud-line-body)) / 2);
+  padding-inline: var(--ud-input-area-single-padding);
+}
+
+/* 单行放不下就至少给两行，芯片落在第二行，不压住第一行文字。 */
+.ud-input-area--autosize .ud-input-area__control[data-lines='multi'] .ud-input-area__field {
+  min-height: calc(var(--ud-line-body) * 2 + var(--ud-input-area-padding-block) * 2 + 2px);
+}
+
+/* 单行时文字不能钻到芯片底下：右侧让出芯片宽度，再留 8px。 */
+.ud-input-area--autosize .ud-input-area__control:not([data-lines='multi']):has(.ud-input-area__count) .ud-input-area__field {
+  padding-right: calc(var(--ud-input-area-count-width, 0px) + var(--ud-input-area-single-count-inset) - 1px + 8px);
+}
+
+.ud-input-area--autosize .ud-input-area__control:not([data-lines='multi']) .ud-input-area__count {
+  top: 50%;
+  right: var(--ud-input-area-single-count-inset);
+  bottom: auto;
+  transform: translateY(-50%);
+}
+
+.ud-input-area:focus-within .ud-input-area__field {
+  border-color: var(--ud-input-border-color-focus);
+}
+
+.ud-input-area__count {
+  position: absolute;
+  right: var(--ud-input-area-count-inset);
+  bottom: var(--ud-input-area-count-inset);
+  padding-inline: 6px;
+  border-radius: var(--ud-radius-xs);
+  background: var(--ud-input-area-count-bg);
+  color: var(--ud-color-text-secondary);
+  font-size: var(--ud-font-size-caption);
+  line-height: var(--ud-line-caption);
+  pointer-events: none;
+}
+
+/* 有内容时只有已输入字数变成正文色，“/上限”保持次级色。 */
+.ud-input-area__count--filled .ud-input-area__count-value {
+  color: var(--ud-color-text);
+}
+
+.ud-input-area--over .ud-input-area__count-value {
+  color: var(--ud-color-danger);
+}

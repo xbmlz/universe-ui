@@ -1,0 +1,152 @@
+.ud-checkbox {
+  /* 框 16、圆角 XS、字 14、间距 8、热区最低 22，都是文档写的。描边 1px 是状态图量的。 */
+  --ud-checkbox-size: 16px;
+  --ud-checkbox-radius: var(--ud-radius-xs);
+  --ud-checkbox-gap: 8px;
+  --ud-checkbox-line: var(--ud-line-body);
+  --ud-checkbox-border: var(--ud-color-icon-tertiary);
+  --ud-checkbox-bg: var(--ud-color-bg-white);
+  --ud-checkbox-mark: var(--ud-color-bg-white);
+  --ud-checkbox-color: var(--ud-color-text);
+
+  position: relative;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--ud-checkbox-gap);
+  min-height: var(--ud-checkbox-size);
+  margin: 0;
+  color: var(--ud-checkbox-color);
+  font-family: var(--ud-font-family);
+  font-size: var(--ud-font-size-body);
+  font-weight: var(--ud-font-weight-regular);
+  line-height: var(--ud-checkbox-line);
+  cursor: pointer;
+}
+
+.ud-checkbox:has(.ud-checkbox__label) {
+  min-height: var(--ud-checkbox-line);
+}
+
+.ud-checkbox__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  border: 0;
+}
+
+.ud-checkbox__box {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--ud-checkbox-size);
+  height: var(--ud-checkbox-size);
+  border: 1px solid var(--ud-checkbox-border);
+  border-radius: var(--ud-checkbox-radius);
+  background: var(--ud-checkbox-bg);
+  color: var(--ud-checkbox-mark);
+}
+
+.ud-checkbox:has(.ud-checkbox__label) .ud-checkbox__box {
+  margin-top: calc((var(--ud-checkbox-line) - var(--ud-checkbox-size)) / 2);
+}
+
+.ud-checkbox--align-center {
+  align-items: center;
+}
+
+.ud-checkbox.ud-checkbox--align-center .ud-checkbox__box {
+  margin-top: 0;
+}
+
+.ud-checkbox__mark {
+  display: block;
+  width: 16px;
+  height: 16px;
+}
+
+/* 横杠纯白区域 15×4（2 倍图），按 8×2 画。 */
+.ud-checkbox__bar {
+  width: 8px;
+  height: 2px;
+  background: currentColor;
+}
+
+.ud-checkbox__label {
+  min-width: 0;
+}
+
+/* 状态图里的蓝是旧色：常态 #3370FF，悬停/聚焦 #4E83FD，按下 #245BDB。对到品牌色三档。 */
+.ud-checkbox:hover:not(.ud-checkbox--disabled),
+.ud-checkbox:focus-within:not(.ud-checkbox--disabled) {
+  --ud-checkbox-border: var(--ud-color-brand);
+}
+
+.ud-checkbox:active:not(.ud-checkbox--disabled) {
+  --ud-checkbox-border: var(--ud-color-brand-pressed);
+}
+
+.ud-checkbox--checked,
+.ud-checkbox--indeterminate {
+  --ud-checkbox-bg: var(--ud-color-brand);
+  --ud-checkbox-border: var(--ud-color-brand);
+}
+
+.ud-checkbox--checked:hover:not(.ud-checkbox--disabled),
+.ud-checkbox--checked:focus-within:not(.ud-checkbox--disabled),
+.ud-checkbox--indeterminate:hover:not(.ud-checkbox--disabled),
+.ud-checkbox--indeterminate:focus-within:not(.ud-checkbox--disabled) {
+  --ud-checkbox-bg: var(--ud-color-brand-hover);
+  --ud-checkbox-border: var(--ud-color-brand-hover);
+}
+
+.ud-checkbox--checked:active:not(.ud-checkbox--disabled),
+.ud-checkbox--indeterminate:active:not(.ud-checkbox--disabled) {
+  --ud-checkbox-bg: var(--ud-color-brand-pressed);
+  --ud-checkbox-border: var(--ud-color-brand-pressed);
+}
+
+/* 报错图只画了未选中，文字仍是正文色，只有框是危险色。 */
+.ud-checkbox--error,
+.ud-checkbox--error:hover:not(.ud-checkbox--disabled),
+.ud-checkbox--error:focus-within:not(.ud-checkbox--disabled),
+.ud-checkbox--error:active:not(.ud-checkbox--disabled) {
+  --ud-checkbox-border: var(--ud-color-danger);
+}
+
+.ud-checkbox--disabled {
+  --ud-checkbox-bg: var(--ud-color-fill-disabled);
+  --ud-checkbox-border: var(--ud-color-text-disabled);
+  --ud-checkbox-color: var(--ud-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.ud-checkbox--disabled.ud-checkbox--checked,
+.ud-checkbox--disabled.ud-checkbox--indeterminate {
+  --ud-checkbox-bg: var(--ud-color-text-disabled);
+  --ud-checkbox-border: var(--ud-color-text-disabled);
+  --ud-checkbox-mark: var(--ud-color-fill-disabled);
+}
+
+.ud-checkbox-group {
+  /* 竖排间距 8、横排间距 24，文档写的。 */
+  --ud-checkbox-group-gap: 8px;
+  --ud-checkbox-group-gap-horizontal: 24px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--ud-checkbox-group-gap);
+}
+
+.ud-checkbox-group--horizontal {
+  flex-direction: row;
+  flex-wrap: wrap;
+  column-gap: var(--ud-checkbox-group-gap-horizontal);
+  row-gap: var(--ud-checkbox-group-gap);
+}

@@ -1,0 +1,18 @@
+{
+  "name": "@universe-ui/vue",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@icon-park/vue-next": "1.4.2"
+  },
+  "peerDependencies": {
+    "vue": "3.6.0-rc.14"
+  },
+  "devDependencies": {
+    "vue": "3.6.0-rc.14"
+  }
+}

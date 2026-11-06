@@ -1,0 +1,9 @@
+{
+  "name": "universe-ui",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@12.4.2",
+  "scripts": {
+    "dev": "pnpm --filter @universe-ui/playground dev"
+  }
+}
