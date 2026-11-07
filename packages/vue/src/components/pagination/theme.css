@@ -1,0 +1,135 @@
+.ud-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  color: var(--ud-color-text);
+  font-family: var(--ud-font-family);
+  font-size: var(--ud-font-size-body);
+  font-weight: var(--ud-font-weight-regular);
+  line-height: var(--ud-line-body);
+}
+
+.ud-pagination__pager {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ud-pagination__btn {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  margin: 0;
+  padding: 0 4px;
+  border: 1px solid var(--ud-color-border);
+  border-radius: var(--ud-radius-s);
+  background: var(--ud-color-bg-white);
+  color: var(--ud-color-text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.ud-pagination__btn .ud-park {
+  font-size: 16px;
+}
+
+.ud-pagination__btn.is-current {
+  border-color: var(--ud-color-brand);
+  color: var(--ud-color-brand);
+}
+
+.ud-pagination__btn:hover:not(:disabled):not(.is-current) {
+  /* Hover fill sampled #E1EAFF, one step off --ud-blue-10 #E0E9FF. Border and text are the old brand blue. */
+  border-color: var(--ud-color-brand);
+  background: var(--ud-blue-10);
+  color: var(--ud-color-brand);
+}
+
+.ud-pagination__btn:focus {
+  outline: none;
+}
+
+.ud-pagination__btn:focus-visible {
+  outline: 2px solid var(--ud-color-focus-ring);
+  outline-offset: 1px;
+}
+
+.ud-pagination__btn:disabled {
+  color: var(--ud-color-icon-disabled);
+  cursor: not-allowed;
+}
+
+.ud-pagination__sizes.ud-select {
+  /* The select's own minimum is 240px. Here the trigger hugs "10 条/页". */
+  --ud-select-min-width: 0;
+  --ud-select-max-width: none;
+  --ud-select-arrow-size: 16px;
+  --ud-select-font-size: var(--ud-font-size-body);
+  --ud-select-line-height: var(--ud-line-body);
+
+  flex: none;
+  width: auto;
+}
+
+.ud-pagination__jumper {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ud-pagination__jump {
+  box-sizing: border-box;
+  width: 48px;
+  min-width: 48px;
+  height: 28px;
+  margin: 0;
+  padding: 0 8px;
+  border: 1px solid var(--ud-color-border);
+  border-radius: var(--ud-radius-s);
+  background: var(--ud-color-bg-white);
+  color: inherit;
+  font: inherit;
+  text-align: center;
+}
+
+.ud-pagination__jump:hover:not(:disabled),
+.ud-pagination__jump:focus {
+  border-color: var(--ud-color-brand);
+  outline: none;
+}
+
+.ud-pagination__jump:disabled {
+  border-color: var(--ud-color-border);
+  background: var(--ud-color-fill-disabled);
+  color: var(--ud-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.ud-pagination--sm .ud-pagination__pager {
+  gap: 4px;
+}
+
+.ud-pagination--sm .ud-pagination__btn {
+  min-width: 24px;
+  height: 24px;
+  padding: 0 2px;
+  border-color: transparent;
+  background: transparent;
+}
+
+.ud-pagination--sm .ud-pagination__btn.is-current {
+  border-color: transparent;
+  background: transparent;
+  color: var(--ud-color-brand);
+}
+
+.ud-pagination--sm .ud-pagination__btn:hover:not(:disabled):not(.is-current) {
+  /* Hover pill sampled #E2E4E5. No palette step matches it. */
+  border-color: transparent;
+  background: #e2e4e5;
+  color: var(--ud-color-text);
+}

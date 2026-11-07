@@ -1,0 +1,237 @@
+.ud-steps {
+  display: flex;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--ud-color-text);
+  font-family: var(--ud-font-family);
+  font-size: var(--ud-font-size-body);
+  font-weight: var(--ud-font-weight-regular);
+  line-height: var(--ud-line-body);
+}
+
+.ud-steps__item {
+  min-width: 0;
+}
+
+.ud-steps__item:focus {
+  outline: none;
+}
+
+.ud-steps.is-clickable .ud-steps__item {
+  cursor: pointer;
+}
+
+.ud-steps.is-clickable .ud-steps__item:focus-visible {
+  outline: 2px solid var(--ud-color-focus-ring);
+  outline-offset: 2px;
+  border-radius: var(--ud-radius-xs);
+}
+
+.ud-steps__node {
+  box-sizing: border-box;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--ud-color-text-placeholder);
+  border-radius: var(--ud-radius-full);
+  background: var(--ud-color-bg-white);
+  color: var(--ud-color-text-placeholder);
+  font-size: var(--ud-font-size-body);
+  line-height: var(--ud-line-body);
+}
+
+.ud-steps__node .ud-park {
+  font-size: 16px;
+}
+
+.ud-steps__item.is-process .ud-steps__node {
+  border-color: var(--ud-color-brand);
+  background: var(--ud-color-brand);
+  color: var(--ud-color-bg-white);
+}
+
+.ud-steps__item.is-finish .ud-steps__node {
+  border-color: var(--ud-color-brand);
+  background: var(--ud-color-bg-white);
+  color: var(--ud-color-brand);
+}
+
+.ud-steps__item.is-error .ud-steps__node {
+  border-color: var(--ud-color-danger);
+  background: var(--ud-color-danger);
+  color: var(--ud-color-bg-white);
+}
+
+.ud-steps__line {
+  /* Unfinished connector sampled #B7B9BB, nearest token is the disabled text colour. */
+  background: var(--ud-color-text-disabled);
+}
+
+.ud-steps__line.is-brand {
+  background: var(--ud-color-brand);
+}
+
+.ud-steps__line.is-danger {
+  background: var(--ud-color-danger);
+}
+
+.ud-steps__title,
+.ud-steps__description {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.ud-steps__title {
+  font-weight: var(--ud-font-weight-regular);
+}
+
+.ud-steps__item.is-process .ud-steps__title {
+  font-weight: var(--ud-font-weight-medium);
+}
+
+.ud-steps__item.is-wait .ud-steps__title {
+  color: var(--ud-color-text-placeholder);
+}
+
+.ud-steps__description {
+  margin-top: 4px;
+  color: var(--ud-color-text-secondary);
+  font-size: var(--ud-font-size-caption);
+  line-height: var(--ud-line-caption);
+}
+
+.ud-steps__item.is-error .ud-steps__title,
+.ud-steps__item.is-error .ud-steps__description {
+  color: var(--ud-color-danger);
+}
+
+.ud-steps--horizontal .ud-steps__item {
+  display: flex;
+  flex: 1 1 0;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ud-steps--horizontal .ud-steps__rail {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 28px;
+}
+
+.ud-steps--horizontal .ud-steps__line {
+  position: absolute;
+  top: 13.5px;
+  left: calc(50% + 22px);
+  width: calc(100% - 44px);
+  height: 1px;
+}
+
+.ud-steps--horizontal .ud-steps__main {
+  /* 12px each side is the recommended 24px between steps. */
+  padding: 8px 12px 0;
+  text-align: center;
+}
+
+.ud-steps--horizontal.ud-steps--simple {
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.ud-steps--horizontal.ud-steps--simple .ud-steps__item {
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.ud-steps--horizontal.ud-steps--simple .ud-steps__main {
+  padding: 0;
+  text-align: left;
+}
+
+.ud-steps--horizontal.ud-steps--simple .ud-steps__item.is-process .ud-steps__title,
+.ud-steps--horizontal.ud-steps--simple .ud-steps__item.is-process .ud-steps__description {
+  color: var(--ud-color-brand);
+}
+
+.ud-steps__sep {
+  display: inline-flex;
+  flex: none;
+  margin-top: 3px;
+  color: var(--ud-color-icon-tertiary);
+  font-size: 16px;
+}
+
+.ud-steps--vertical {
+  flex-direction: column;
+}
+
+.ud-steps--vertical .ud-steps__item {
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  column-gap: 8px;
+  padding-bottom: 8px;
+}
+
+.ud-steps--vertical .ud-steps__item:last-child {
+  padding-bottom: 0;
+}
+
+.ud-steps--vertical .ud-steps__rail {
+  display: flex;
+  grid-row: 1 / span 2;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ud-steps--vertical .ud-steps__title {
+  display: flex;
+  align-items: center;
+  min-height: 28px;
+}
+
+.ud-steps--vertical .ud-steps__line {
+  width: 1px;
+  flex: 1;
+  min-height: 8px;
+  margin-top: 8px;
+}
+
+.ud-steps--vertical.ud-steps--simple .ud-steps__item {
+  grid-template-columns: 8px minmax(0, 1fr);
+}
+
+.ud-steps--vertical.ud-steps--simple .ud-steps__node {
+  width: 8px;
+  height: 8px;
+  /* An 8px dot centred on the 22px title line sits 7px down. The size figure marks 7px here. */
+  margin-top: 7px;
+  font-size: 0;
+}
+
+.ud-steps--vertical.ud-steps--simple .ud-steps__item.is-process .ud-steps__node,
+.ud-steps--vertical.ud-steps--simple .ud-steps__item.is-error .ud-steps__node {
+  border-color: transparent;
+}
+
+.ud-steps--vertical.ud-steps--simple .ud-steps__item.is-finish .ud-steps__node {
+  background: transparent;
+}
+
+.ud-steps--vertical.ud-steps--simple .ud-steps__title {
+  align-items: flex-start;
+  min-height: 22px;
+}
+
+.ud-steps--vertical.ud-steps--simple .ud-steps__line {
+  /* Dot track sampled #D7D9DB, nearest token is the border colour. */
+  margin-top: 4px;
+  background: var(--ud-color-border);
+}

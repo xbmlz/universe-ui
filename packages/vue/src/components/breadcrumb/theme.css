@@ -1,0 +1,112 @@
+.ud-breadcrumb {
+  min-width: 0;
+  max-width: 100%;
+  color: var(--ud-color-text);
+  font-family: var(--ud-font-family);
+  font-size: var(--ud-font-size-body);
+  font-weight: var(--ud-font-weight-regular);
+  line-height: var(--ud-line-body);
+}
+
+.ud-breadcrumb__list {
+  display: flex;
+  align-items: center;
+  width: max-content;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ud-breadcrumb__item {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  min-width: 0;
+}
+
+.ud-breadcrumb__link,
+.ud-breadcrumb__current,
+.ud-breadcrumb__more {
+  display: inline-flex;
+  align-items: center;
+  max-width: 162px;
+  min-width: 0;
+  /* Measured hover pill is 22px tall with about 5px of side padding. 4px keeps the written text-to-icon gap. */
+  padding: 0 4px;
+  border: 0;
+  border-radius: var(--ud-radius-xs);
+  background: transparent;
+  color: var(--ud-color-text-secondary);
+  font: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.ud-breadcrumb__current {
+  color: var(--ud-color-text);
+  cursor: default;
+}
+
+.ud-breadcrumb__link:hover,
+.ud-breadcrumb__more:hover {
+  /* Hover fill measured #E4EBFB. The text is the old brand blue, mapped to the brand token. */
+  background: #e4ebfb;
+  color: var(--ud-color-brand);
+}
+
+.ud-breadcrumb__link:active,
+.ud-breadcrumb__more:active {
+  /* Pressed fill measured #D1DEFB. */
+  background: #d1defb;
+  color: var(--ud-color-brand);
+}
+
+.ud-breadcrumb__link .ud-tooltip,
+.ud-breadcrumb__current .ud-tooltip {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.ud-breadcrumb__label {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ud-breadcrumb__sep {
+  display: inline-flex;
+  flex: none;
+  color: var(--ud-color-icon-secondary);
+  font-size: 16px;
+}
+
+.ud-breadcrumb__tray {
+  position: fixed;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  box-sizing: border-box;
+  max-width: calc(100vw - 32px);
+  /* Measured outer height is 34px. With the 1px border, 5px of vertical padding leaves the 22px line. Side padding is specified 12px. */
+  padding: 5px 12px;
+  border: 1px solid var(--ud-color-border-card);
+  border-radius: var(--ud-radius-s);
+  background: var(--ud-color-bg-white);
+  color: var(--ud-color-text);
+  font-family: var(--ud-font-family);
+  font-size: var(--ud-font-size-body);
+  font-weight: var(--ud-font-weight-regular);
+  line-height: var(--ud-line-body);
+  box-shadow: var(--ud-shadow-down-s2);
+}
+
+.ud-breadcrumb-enter-active,
+.ud-breadcrumb-leave-active {
+  transition: opacity 0.15s ease-out;
+}
+
+.ud-breadcrumb-enter-from,
+.ud-breadcrumb-leave-to {
+  opacity: 0;
+}

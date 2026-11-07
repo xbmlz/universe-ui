@@ -1,0 +1,133 @@
+.ud-dropdown-ref {
+  display: inline-flex;
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+.ud-dropdown-ref.is-open > .ud-button:not(:disabled) {
+  background: var(--ud-button-bg-active);
+}
+
+.ud-dropdown__menu {
+  position: fixed;
+  box-sizing: border-box;
+  /* Specified: min 55, max 420, max height 480, radius S, shadow M down. */
+  width: max-content;
+  min-width: 55px;
+  max-width: min(420px, calc(100vw - 32px));
+  max-height: 480px;
+  padding: 8px 0;
+  overflow: hidden;
+  border: 1px solid var(--ud-color-border-card);
+  border-radius: var(--ud-radius-s);
+  background: var(--ud-color-bg-white);
+  color: var(--ud-color-text);
+  font-family: var(--ud-font-family);
+  font-size: var(--ud-font-size-body);
+  font-weight: var(--ud-font-weight-regular);
+  line-height: var(--ud-line-body);
+  box-shadow: var(--ud-shadow-down-s2);
+}
+
+.ud-dropdown__menu:hover {
+  overflow-y: auto;
+}
+
+.ud-dropdown__menu.is-fixed {
+  width: var(--ud-dropdown-width);
+  max-width: none;
+}
+
+.ud-dropdown__loading {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ud-color-bg-white);
+}
+
+.ud-dropdown__item {
+  display: flex;
+  align-items: center;
+  /* Gap between an icon and the label is unspecified (inferred, 4× grid). */
+  gap: 8px;
+  box-sizing: border-box;
+  width: calc(100% - 12px);
+  /* Row pitch on the size figure is about 33px; the highlight box is 30px. */
+  min-height: 32px;
+  margin: 0 6px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: var(--ud-radius-xs);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ud-dropdown__item:hover:not(.is-disabled),
+.ud-dropdown__item.is-active:not(.is-disabled) {
+  /* Highlight fill measured #EDEEEE from the size figure. */
+  background: #edeeef;
+}
+
+.ud-dropdown__item.is-disabled {
+  color: var(--ud-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.ud-dropdown__item.is-danger:not(.is-disabled) {
+  color: var(--ud-color-danger);
+}
+
+.ud-dropdown__item.is-selected:not(.is-disabled) {
+  color: var(--ud-color-brand);
+}
+
+.ud-dropdown__icon,
+.ud-dropdown__caret {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  font-size: 16px;
+}
+
+.ud-dropdown__caret {
+  color: var(--ud-color-icon-secondary);
+  font-size: 12px;
+}
+
+.ud-dropdown__label {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ud-dropdown__hint {
+  flex: none;
+  color: var(--ud-color-text-secondary);
+  font-size: var(--ud-font-size-caption);
+  line-height: var(--ud-line-caption);
+}
+
+.ud-dropdown__divider {
+  height: 1px;
+  margin: 4px 0;
+  background: var(--ud-color-divider);
+}
+
+/* Timing is unspecified (inferred, same as the other menus). */
+.ud-dropdown-enter-active,
+.ud-dropdown-leave-active {
+  transition: opacity 0.15s ease-out;
+}
+
+.ud-dropdown-enter-from,
+.ud-dropdown-leave-to {
+  opacity: 0;
+}
