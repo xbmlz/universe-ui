@@ -1,0 +1,249 @@
+/*
+ * Specified: slides in from the right, full window height, widths 350 / 480 / 680, #000000 55% mask for overlay
+ * drawers. Content padding 24 on web and 20 in the PC client; override --ud-drawer-padding for PC.
+ */
+.ud-drawer-root {
+  box-sizing: border-box;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+}
+
+.ud-drawer-root--overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  outline: none;
+}
+
+.ud-drawer-mask {
+  position: absolute;
+  inset: 0;
+  background: var(--ud-color-mask);
+}
+
+/* Push drawers share the layer with the page; the host lays them out beside the content. */
+.ud-drawer-root--push {
+  position: static;
+  display: flex;
+  flex: none;
+  height: 100%;
+}
+
+.ud-drawer {
+  --ud-drawer-width: 350px;
+  --ud-drawer-padding: 24px;
+
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: var(--ud-drawer-width);
+  max-width: 100%;
+  height: 100%;
+  background: var(--ud-color-bg-white);
+  color: var(--ud-color-text);
+  font-family: var(--ud-font-family);
+  font-size: var(--ud-font-size-body);
+  line-height: var(--ud-line-body);
+}
+
+.ud-drawer--md {
+  --ud-drawer-width: 480px;
+}
+
+.ud-drawer--lg {
+  --ud-drawer-width: 680px;
+}
+
+/* The shadow level and the timing are unspecified (inferred). */
+.ud-drawer--overlay {
+  position: relative;
+  z-index: 1;
+  box-shadow: var(--ud-shadow-left-s4);
+}
+
+.ud-drawer-enter-active .ud-drawer--overlay,
+.ud-drawer-leave-active .ud-drawer--overlay {
+  transition: transform 0.25s ease-out;
+}
+
+.ud-drawer-enter-from .ud-drawer--overlay,
+.ud-drawer-leave-to .ud-drawer--overlay {
+  transform: translateX(100%);
+}
+
+.ud-drawer-enter-active .ud-drawer-mask,
+.ud-drawer-leave-active .ud-drawer-mask {
+  transition: opacity 0.25s ease-out;
+}
+
+.ud-drawer-enter-from .ud-drawer-mask,
+.ud-drawer-leave-to .ud-drawer-mask {
+  opacity: 0;
+}
+
+/* Specified: push drawers usually have no shadow. The divider is inferred. */
+.ud-drawer--push {
+  border-left: 1px solid var(--ud-color-border-card);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ud-drawer-enter-active .ud-drawer--overlay,
+  .ud-drawer-leave-active .ud-drawer--overlay,
+  .ud-drawer-enter-active .ud-drawer-mask,
+  .ud-drawer-leave-active .ud-drawer-mask {
+    transition: none;
+  }
+}
+
+/*
+ * Specified: 16 above and below the title, 4 to a tag, at least 40 between the title and the actions, 20 between
+ * actions, 20 icon buttons in N600, 40 avatar 8 from the title, 16 from the title to md tabs.
+ * Measured at 2x: 24 inline padding, 4 from title to description, 1px #DEE0E3 divider under the header.
+ */
+.ud-drawer__header {
+  flex: none;
+  padding: 16px var(--ud-drawer-padding);
+  border-bottom: 1px solid var(--ud-color-border-card);
+}
+
+.ud-drawer--tabs .ud-drawer__header {
+  padding-bottom: 0;
+}
+
+.ud-drawer__main {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.ud-drawer__prefix {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  height: 40px;
+}
+
+.ud-drawer__heading {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.ud-drawer__title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+}
+
+.ud-drawer__title {
+  margin: 0;
+  font-size: var(--ud-font-size-h4);
+  font-weight: var(--ud-font-weight-medium);
+  line-height: var(--ud-line-h4);
+  overflow-wrap: anywhere;
+}
+
+.ud-drawer__description {
+  margin-top: 4px;
+  color: var(--ud-color-text-secondary);
+  overflow-wrap: anywhere;
+}
+
+/* Specified: actions align with the first title line, or with the avatar when there is one. */
+.ud-drawer__actions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 20px;
+  height: var(--ud-line-h4);
+  /* With the 8 flex gap this keeps the specified 40 minimum after the title. */
+  margin-left: 32px;
+  color: var(--ud-color-icon-secondary);
+  font-size: 20px;
+}
+
+.ud-drawer--avatar .ud-drawer__actions {
+  height: 40px;
+}
+
+.ud-drawer__close {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ud-radius-xs);
+  background: none;
+  color: var(--ud-color-icon-secondary);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.ud-drawer__close:hover {
+  color: var(--ud-color-icon);
+}
+
+.ud-drawer__close:focus-visible {
+  outline: 2px solid var(--ud-color-focus-ring);
+}
+
+.ud-drawer__tabs {
+  margin-top: 16px;
+}
+
+/* Specified: the body scrolls under a sticky header and above a sticky footer, and touches the footer. */
+.ud-drawer__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: var(--ud-drawer-padding);
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.ud-drawer__body:not(:last-child) {
+  padding-bottom: 0;
+}
+
+/* Specified: 24 around the footer content. Measured: 12 between buttons. */
+.ud-drawer__footer {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 12px;
+  padding: 24px var(--ud-drawer-padding);
+}
+
+.ud-drawer__footer--right {
+  flex-direction: row-reverse;
+}
+
+.ud-drawer__buttons,
+.ud-drawer__extra {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ud-drawer__extra {
+  margin-right: auto;
+}
+
+.ud-drawer__footer--left .ud-drawer__extra {
+  margin-right: 0;
+}
+
+.ud-drawer__footer > * > .ud-button {
+  white-space: nowrap;
+}

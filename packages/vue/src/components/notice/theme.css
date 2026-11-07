@@ -1,0 +1,188 @@
+.ud-notice {
+  /*
+   * The spec text gives no lengths. Measured at 2x: 40 tall on one line, 14/22 text, 16 icon centred 24 from the left,
+   * 8 from icon to text, close button centred 24 from the right, 4 between title, text and the action row.
+   * Two older figures draw the single line with actions 44 tall; the other figures agree on 40.
+   */
+  --ud-notice-bg: var(--ud-blue-11);
+  --ud-notice-icon: var(--ud-color-brand);
+  --ud-notice-content-max-width: none;
+
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 9px 16px;
+  border-radius: var(--ud-radius-s);
+  background: var(--ud-notice-bg);
+  color: var(--ud-color-text);
+  font-family: var(--ud-font-family);
+  font-size: var(--ud-font-size-body);
+  line-height: var(--ud-line-body);
+}
+
+/* Measured from the type figure; the icon colours map onto the functional tokens. */
+.ud-notice--success {
+  --ud-notice-bg: var(--ud-green-50);
+  --ud-notice-icon: var(--ud-color-success);
+}
+
+.ud-notice--error {
+  --ud-notice-bg: var(--ud-red-50);
+  --ud-notice-icon: var(--ud-color-danger);
+}
+
+.ud-notice--warning {
+  --ud-notice-bg: var(--ud-orange-50);
+  --ud-notice-icon: var(--ud-color-warning);
+}
+
+/* Site-level notices span the page edge to edge, so the corners are square (inferred from the site-level figure). */
+.ud-notice--banner {
+  border-radius: 0;
+}
+
+.ud-notice__main {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+}
+
+.ud-notice__icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  height: var(--ud-line-body);
+  color: var(--ud-notice-icon);
+  font-size: 16px;
+}
+
+.ud-notice__body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  /* The minimum gap between text and right-aligned actions is unspecified; 40 matches Toast (inferred). */
+  gap: 4px 40px;
+  min-width: 0;
+}
+
+/* Title weight is inferred from the title type role. */
+.ud-notice__title {
+  flex: 1 0 100%;
+  font-weight: var(--ud-font-weight-medium);
+  overflow-wrap: anywhere;
+}
+
+.ud-notice__content {
+  flex: 0 1 auto;
+  min-width: 0;
+  max-width: var(--ud-notice-content-max-width);
+  overflow-wrap: anywhere;
+}
+
+.ud-notice__content--clamp {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+}
+
+.ud-notice__content a {
+  color: var(--ud-color-brand);
+  text-decoration: none;
+}
+
+.ud-notice__content a:hover {
+  color: var(--ud-color-brand-hover);
+}
+
+.ud-notice__actions {
+  display: flex;
+  flex: none;
+  gap: 16px;
+}
+
+/* Specified: with a title, the actions take their own line, left-aligned with the text. */
+.ud-notice--titled .ud-notice__actions {
+  flex-basis: 100%;
+}
+
+/* Measured: actions that follow the text sit 16 after it. */
+.ud-notice--follow .ud-notice__body {
+  justify-content: flex-start;
+  column-gap: 16px;
+}
+
+.ud-notice__action {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ud-color-brand);
+  font: inherit;
+  cursor: pointer;
+}
+
+.ud-notice__action:hover {
+  color: var(--ud-color-brand-hover);
+}
+
+.ud-notice__action:active {
+  color: var(--ud-color-brand-pressed);
+}
+
+/* Specified: the close button stays on the first text line, always rightmost. Measured: 12 after the actions. */
+.ud-notice__close {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  height: var(--ud-line-body);
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ud-color-icon-secondary);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.ud-notice__close:hover {
+  color: var(--ud-color-icon);
+}
+
+.ud-notice__action:focus-visible,
+.ud-notice__close:focus-visible {
+  border-radius: var(--ud-radius-xs);
+  outline: 2px solid var(--ud-color-focus-ring);
+}
+
+/*
+ * Specified: centred notices have no title and do not wrap; actions follow the text and the close button stays right.
+ * Measured: the icon, text and actions are centred on the whole notice, not on the space left of the close button.
+ */
+.ud-notice--center .ud-notice__main {
+  justify-content: center;
+}
+
+.ud-notice--center .ud-notice__body {
+  flex: 0 1 auto;
+  flex-wrap: nowrap;
+}
+
+.ud-notice--center .ud-notice__content {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ud-notice--center.ud-notice--closable {
+  padding-inline: 44px;
+}
+
+.ud-notice--center .ud-notice__close {
+  position: absolute;
+  top: 9px;
+  right: 16px;
+}

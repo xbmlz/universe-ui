@@ -1,0 +1,192 @@
+.ud-notification {
+  /*
+   * Specified: width 420, 24 icon, 24 padding, 16 from icon to title, 8 from title to text and from text to the
+   * buttons, 12 between buttons, 16 close button. Title 16/24 medium, text 14/22 regular.
+   * Measured at 2x: 4 coloured stripe inside the 24 left padding, 1px #DEE0E3 border, radius 4,
+   * close button 24 from the right and centred on the title line, 32 buttons.
+   */
+  --ud-notification-stripe: var(--ud-color-brand);
+
+  position: relative;
+  box-sizing: border-box;
+  width: 420px;
+  max-width: 100%;
+  padding: 23px 23px 23px 27px;
+  border: 1px solid var(--ud-color-border-card);
+  border-radius: var(--ud-radius-xs);
+  background: var(--ud-color-bg-white);
+  /* The shadow level is unspecified; s4 matches the measured falloff (inferred). */
+  box-shadow: var(--ud-shadow-down-s4);
+  color: var(--ud-color-text);
+  font-family: var(--ud-font-family);
+  font-size: var(--ud-font-size-body);
+  line-height: var(--ud-line-body);
+  pointer-events: auto;
+}
+
+.ud-notification::before {
+  position: absolute;
+  top: -1px;
+  bottom: -1px;
+  left: -1px;
+  width: 4px;
+  border-radius: var(--ud-radius-xs) 0 0 var(--ud-radius-xs);
+  background: var(--ud-notification-stripe);
+  content: '';
+}
+
+/* Specified: without an icon the stripe uses B500, G500, O500 or R500; these map onto the functional tokens. */
+.ud-notification--green {
+  --ud-notification-stripe: var(--ud-color-success);
+}
+
+.ud-notification--orange {
+  --ud-notification-stripe: var(--ud-color-warning);
+}
+
+.ud-notification--red {
+  --ud-notification-stripe: var(--ud-color-danger);
+}
+
+.ud-notification__main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 8px;
+}
+
+.ud-notification__main--icon {
+  grid-template-columns: 24px minmax(0, 1fr);
+  column-gap: 16px;
+}
+
+.ud-notification__icon {
+  display: inline-flex;
+  grid-row: 1;
+  grid-column: 1;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  color: var(--ud-color-brand);
+  font-size: 24px;
+}
+
+.ud-notification__icon--success {
+  color: var(--ud-color-success);
+}
+
+.ud-notification__icon--warning {
+  color: var(--ud-color-warning);
+}
+
+.ud-notification__icon--error {
+  color: var(--ud-color-danger);
+}
+
+.ud-notification__title {
+  grid-column: -2;
+  font-size: var(--ud-font-size-h4);
+  font-weight: var(--ud-font-weight-medium);
+  line-height: var(--ud-line-h4);
+  overflow-wrap: anywhere;
+}
+
+.ud-notification__content {
+  grid-column: -2;
+  overflow-wrap: anywhere;
+}
+
+/* Without a title the text sits on the icon line; the 1px offset centres 22 text on the 24 icon (inferred). */
+.ud-notification__main:not(.ud-notification__main--titled) .ud-notification__content {
+  grid-row: 1;
+  padding-top: 1px;
+}
+
+/* Measured: the title ends 16 before the close button, which keeps 24 from the right. */
+.ud-notification--closable .ud-notification__title,
+.ud-notification--closable .ud-notification__main:not(.ud-notification__main--titled) .ud-notification__content {
+  margin-right: 32px;
+}
+
+.ud-notification__actions {
+  display: flex;
+  grid-column: 1 / -1;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.ud-notification__close {
+  /* Offsets are from the padding box, so they exclude the 1px border. */
+  position: absolute;
+  top: 27px;
+  right: 23px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ud-color-icon-secondary);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.ud-notification__close:hover {
+  color: var(--ud-color-icon);
+}
+
+.ud-notification__close:focus-visible {
+  border-radius: var(--ud-radius-xs);
+  outline: 2px solid var(--ud-color-focus-ring);
+}
+
+/* Specified: the custom area keeps 24 on every side. Measured: its close button sits 24 from the top and right. */
+.ud-notification--custom .ud-notification__close {
+  top: 23px;
+}
+
+/* Specified: top right, 16 from the top and right edge, sliding in from the right. Stack gap and order are inferred. */
+.ud-notification-host {
+  position: fixed;
+  z-index: 1100;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 16px;
+  max-width: calc(100vw - 32px);
+  pointer-events: none;
+}
+
+.ud-notification-host__item {
+  display: flex;
+  max-width: 100%;
+}
+
+/* Timing is unspecified (inferred). */
+.ud-notification-move,
+.ud-notification-enter-active,
+.ud-notification-leave-active {
+  transition:
+    transform 0.3s ease-out,
+    opacity 0.3s ease-out;
+}
+
+.ud-notification-enter-from,
+.ud-notification-leave-to {
+  opacity: 0;
+  transform: translateX(calc(100% + 16px));
+}
+
+.ud-notification-leave-active {
+  position: absolute;
+  right: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ud-notification-move,
+  .ud-notification-enter-active,
+  .ud-notification-leave-active {
+    transition: none;
+  }
+}

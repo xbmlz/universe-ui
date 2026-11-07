@@ -1,0 +1,239 @@
+/*
+ * Specified: centred, 32 safe margin on every side, fixed widths 420 / 600 / 840 / 1080, a mask under every dialog,
+ * 1px dividers on the header and footer when the body scrolls.
+ */
+.ud-dialog-root {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  padding: 32px;
+  border: 0;
+  background: transparent;
+  overflow: hidden;
+  outline: none;
+}
+
+.ud-dialog-mask {
+  position: absolute;
+  inset: 0;
+  background: var(--ud-color-mask);
+}
+
+.ud-dialog-root--top {
+  align-items: flex-start;
+  padding-top: var(--ud-dialog-top);
+}
+
+/* Timing is unspecified (inferred), matching the Element Plus dialog fade. */
+.ud-dialog-enter-active,
+.ud-dialog-leave-active {
+  transition: opacity 0.2s ease-out;
+}
+
+.ud-dialog-enter-from,
+.ud-dialog-leave-to {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ud-dialog-enter-active,
+  .ud-dialog-leave-active {
+    transition: none;
+  }
+}
+
+.ud-dialog {
+  /*
+   * Measured at 2x: 24 padding and 24 between header, body and footer, 4 from title to description,
+   * radius 8, 24 icon with 16 to the title, 20 close icon 24 from the right, buttons at least 80 wide with 12 between.
+   */
+  --ud-dialog-width: 420px;
+
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: var(--ud-dialog-width);
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: var(--ud-radius-m);
+  background: var(--ud-color-bg-white);
+  /* The shadow level is unspecified (inferred). */
+  box-shadow: var(--ud-shadow-down-s5);
+  color: var(--ud-color-text);
+  font-family: var(--ud-font-family);
+  font-size: var(--ud-font-size-body);
+  line-height: var(--ud-line-body);
+}
+
+.ud-dialog--md {
+  --ud-dialog-width: 600px;
+}
+
+.ud-dialog--lg {
+  --ud-dialog-width: 840px;
+}
+
+.ud-dialog--xl {
+  --ud-dialog-width: 1080px;
+}
+
+.ud-dialog__header {
+  display: flex;
+  flex: none;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px 24px 0;
+}
+
+.ud-dialog__icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  height: var(--ud-line-h4);
+  color: var(--ud-color-brand);
+  font-size: 24px;
+}
+
+.ud-dialog__icon--success {
+  color: var(--ud-color-success);
+}
+
+.ud-dialog__icon--warning {
+  color: var(--ud-color-warning);
+}
+
+.ud-dialog__icon--error {
+  color: var(--ud-color-danger);
+}
+
+.ud-dialog__heading {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+/* Measured: 16/24 medium, #1F2329. */
+.ud-dialog__title {
+  margin: 0;
+  font-size: var(--ud-font-size-h4);
+  font-weight: var(--ud-font-weight-medium);
+  line-height: var(--ud-line-h4);
+  overflow-wrap: anywhere;
+}
+
+/* Measured: 14/22, #646A73. */
+.ud-dialog__description {
+  margin-top: 4px;
+  color: var(--ud-color-text-secondary);
+  overflow-wrap: anywhere;
+}
+
+.ud-dialog__close {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: var(--ud-line-h4);
+  padding: 0;
+  border: 0;
+  border-radius: var(--ud-radius-xs);
+  background: none;
+  color: var(--ud-color-icon-secondary);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.ud-dialog__close:hover {
+  color: var(--ud-color-icon);
+}
+
+.ud-dialog__close:focus-visible {
+  outline: 2px solid var(--ud-color-focus-ring);
+}
+
+/* Specified: long content scrolls inside the dialog while the header and footer stay put. */
+.ud-dialog__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 24px 24px 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+/* The body follows the text column when there is an icon (inferred from the 420 figure). */
+.ud-dialog--icon .ud-dialog__body {
+  padding-left: 64px;
+}
+
+.ud-dialog__body:last-child {
+  padding-bottom: 24px;
+}
+
+.ud-dialog__header:last-child {
+  padding-bottom: 24px;
+}
+
+/* Measured: the header keeps 24 below the title above its divider, the footer 24 above the buttons. */
+.ud-dialog--overflow .ud-dialog__header {
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--ud-color-border-card);
+}
+
+.ud-dialog--overflow .ud-dialog__body {
+  padding-top: 0;
+}
+
+.ud-dialog--overflow .ud-dialog__body:last-child {
+  padding-bottom: 0;
+}
+
+.ud-dialog--overflow .ud-dialog__footer {
+  border-top: 1px solid var(--ud-color-border-card);
+}
+
+.ud-dialog__footer {
+  display: flex;
+  flex: none;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 24px;
+}
+
+/* Measured: a dialog with only a title keeps 32 above the buttons. */
+.ud-dialog--title-only .ud-dialog__footer {
+  padding-top: 32px;
+}
+
+.ud-dialog__actions {
+  display: flex;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.ud-dialog__extra {
+  display: flex;
+  gap: 12px;
+}
+
+/* Specified: button text never wraps; long buttons stack instead. Measured: 12 between stacked buttons. */
+.ud-dialog__actions > .ud-button,
+.ud-dialog__extra > .ud-button {
+  min-width: 80px;
+  white-space: nowrap;
+}
+
+.ud-dialog__footer--vertical .ud-dialog__actions {
+  flex-direction: column;
+  align-items: flex-end;
+}

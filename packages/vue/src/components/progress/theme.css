@@ -1,0 +1,161 @@
+.ud-progress {
+  /*
+   * Specified: line height 4, radius 2, 12px between bar and value; circle 16 with an 8px gap and 12px value.
+   * Measured at 2x: the line value is also 12px; the circle stroke is 2px.
+   */
+  --ud-progress-height: 4px;
+  --ud-progress-color: var(--ud-color-brand);
+  --ud-progress-track: var(--ud-color-border-card);
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--ud-font-family);
+}
+
+/* Measured: bar #3F73F6, success #65C344, error #E3574D, track #DEE0E3, value #8F959E. */
+.ud-progress--success {
+  --ud-progress-color: var(--ud-color-success);
+}
+
+.ud-progress--error {
+  --ud-progress-color: var(--ud-color-danger);
+}
+
+.ud-progress__info {
+  flex: none;
+  color: var(--ud-color-text-placeholder);
+  font-size: var(--ud-font-size-caption);
+  line-height: var(--ud-line-caption);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/*
+ * Measured: stacked line bars share one length and the error bar, which shows no value, keeps the same slot.
+ * The slot fits "100%" (inferred width).
+ */
+.ud-progress--line .ud-progress__info {
+  min-width: 2.6em;
+}
+
+.ud-progress--line.ud-progress--error .ud-progress__info {
+  visibility: hidden;
+}
+
+.ud-progress__track {
+  position: relative;
+  flex: 1;
+  height: var(--ud-progress-height);
+  overflow: hidden;
+  border-radius: calc(var(--ud-progress-height) / 2);
+  background: var(--ud-progress-track);
+}
+
+.ud-progress__bar {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--ud-progress-value) * 1%);
+  border-radius: inherit;
+  background: var(--ud-progress-color);
+  /* Transition timing is unspecified (inferred). */
+  transition: width 0.3s ease;
+}
+
+/* Specified: indeterminate bars move along the track while growing and shrinking. Timing is inferred. */
+.ud-progress--indeterminate .ud-progress__bar {
+  width: 40%;
+  transition: none;
+  animation: ud-progress-slide 1.6s ease-in-out infinite;
+}
+
+@keyframes ud-progress-slide {
+  0% {
+    transform: translateX(-100%) scaleX(0.4);
+  }
+
+  50% {
+    transform: translateX(80%) scaleX(1);
+  }
+
+  100% {
+    transform: translateX(250%) scaleX(0.4);
+  }
+}
+
+.ud-progress--circle {
+  display: inline-flex;
+  gap: 8px;
+  vertical-align: middle;
+}
+
+.ud-progress__ring,
+.ud-progress__icon {
+  display: block;
+  flex: none;
+  width: 16px;
+  height: 16px;
+}
+
+.ud-progress__ring {
+  transform: rotate(-90deg);
+}
+
+.ud-progress__ring circle {
+  fill: none;
+  stroke-width: 2;
+}
+
+.ud-progress__ring-track {
+  stroke: var(--ud-progress-track);
+}
+
+.ud-progress__ring-bar {
+  stroke: var(--ud-progress-color);
+  stroke-dasharray: var(--ud-progress-value) 100;
+  transition: stroke-dasharray 0.3s ease;
+}
+
+.ud-progress--indeterminate .ud-progress__ring {
+  animation: ud-progress-spin 0.8s linear infinite;
+}
+
+.ud-progress--indeterminate .ud-progress__ring-bar {
+  stroke-dasharray: 25 75;
+  transition: none;
+}
+
+@keyframes ud-progress-spin {
+  from {
+    transform: rotate(-90deg);
+  }
+
+  to {
+    transform: rotate(270deg);
+  }
+}
+
+/* Measured: success and error replace the ring with a filled 16px circle. The glyph strokes are inferred. */
+.ud-progress__icon circle {
+  fill: var(--ud-progress-color);
+}
+
+.ud-progress__icon path {
+  fill: none;
+  stroke: var(--ud-color-bg-white);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ud-progress__bar,
+  .ud-progress__ring-bar {
+    transition: none;
+  }
+
+  .ud-progress--indeterminate .ud-progress__bar,
+  .ud-progress--indeterminate .ud-progress__ring {
+    animation-duration: 4s;
+  }
+}

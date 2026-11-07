@@ -1,0 +1,187 @@
+.ud-toast {
+  /*
+   * Specified: max width 600, Radius-S. Size callouts: padding 16 / 20, 4 above the button row, 16 between buttons.
+   * Measured at 2x: 14/22 text, 16 icons, 12 from icon to text, about 40 from text to buttons and 20 to the close button.
+   */
+  --ud-toast-border: var(--ud-color-brand);
+  --ud-toast-bg: var(--ud-blue-11);
+  --ud-toast-icon: var(--ud-color-brand);
+
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 12px;
+  box-sizing: border-box;
+  max-width: 600px;
+  padding: 15px 19px;
+  border: 1px solid var(--ud-toast-border);
+  border-radius: var(--ud-radius-s);
+  background: var(--ud-toast-bg);
+  /* The shadow level is unspecified; s4 matches the measured falloff (inferred). */
+  box-shadow: var(--ud-shadow-down-s4);
+  color: var(--ud-color-text);
+  font-family: var(--ud-font-family);
+  font-size: var(--ud-font-size-body);
+  line-height: var(--ud-line-body);
+  pointer-events: auto;
+}
+
+/*
+ * Only the info toast has a figure: border #3370FF, fill #F0F4FF.
+ * Other fills come from the Notice type figure; their borders follow the icon colour (inferred).
+ */
+.ud-toast--success {
+  --ud-toast-border: var(--ud-color-success);
+  --ud-toast-bg: var(--ud-green-50);
+  --ud-toast-icon: var(--ud-color-success);
+}
+
+.ud-toast--error {
+  --ud-toast-border: var(--ud-color-danger);
+  --ud-toast-bg: var(--ud-red-50);
+  --ud-toast-icon: var(--ud-color-danger);
+}
+
+.ud-toast--warning {
+  --ud-toast-border: var(--ud-color-warning);
+  --ud-toast-bg: var(--ud-orange-50);
+  --ud-toast-icon: var(--ud-color-warning);
+}
+
+.ud-toast__icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  height: var(--ud-line-body);
+  color: var(--ud-toast-icon);
+  font-size: 16px;
+}
+
+.ud-toast__icon:empty {
+  display: none;
+}
+
+.ud-toast__body {
+  display: flex;
+  flex: 1 1 auto;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 40px;
+  min-width: 0;
+}
+
+/* Specified: at most two lines, then an ellipsis. */
+.ud-toast__content {
+  display: -webkit-box;
+  flex: 0 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow-wrap: anywhere;
+}
+
+.ud-toast__content a {
+  color: var(--ud-color-brand);
+  text-decoration: none;
+}
+
+/* Specified: buttons sit right-aligned on the text line, or on their own line when they do not fit. */
+.ud-toast__actions {
+  display: flex;
+  flex: none;
+  gap: 16px;
+}
+
+.ud-toast__action {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ud-color-brand);
+  font: inherit;
+  cursor: pointer;
+}
+
+.ud-toast__action:hover {
+  color: var(--ud-color-brand-hover);
+}
+
+.ud-toast__action:active {
+  color: var(--ud-color-brand-pressed);
+}
+
+/* Specified: the close button stays on the first text line. */
+.ud-toast__close {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  height: var(--ud-line-body);
+  margin-left: 8px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ud-color-icon-secondary);
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.ud-toast__close:hover {
+  color: var(--ud-color-icon);
+}
+
+.ud-toast__action:focus-visible,
+.ud-toast__close:focus-visible {
+  border-radius: var(--ud-radius-xs);
+  outline: 2px solid var(--ud-color-focus-ring);
+}
+
+/* Specified: 32px from the top on web, centred, newest at the bottom. The stack gap and side margin are inferred. */
+.ud-toast-host {
+  position: fixed;
+  z-index: 1100;
+  left: 16px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.ud-toast-host__item {
+  display: flex;
+  max-width: 100%;
+}
+
+.ud-toast-host__item > .ud-toast {
+  max-width: min(600px, 100%);
+}
+
+/* Timing is unspecified (inferred). */
+.ud-toast-move,
+.ud-toast-enter-active,
+.ud-toast-leave-active {
+  transition:
+    transform 0.2s ease-out,
+    opacity 0.2s ease-out;
+}
+
+.ud-toast-enter-from,
+.ud-toast-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+.ud-toast-leave-active {
+  position: absolute;
+  left: 0;
+  right: 0;
+  justify-content: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ud-toast-move,
+  .ud-toast-enter-active,
+  .ud-toast-leave-active {
+    transition: none;
+  }
+}

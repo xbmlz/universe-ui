@@ -1,0 +1,130 @@
+.ud-spin {
+  /*
+   * Specified sizes 14 / 24 / 40 and a 14px Regular N600 description.
+   * Measured at 2x: ring outer diameter 80% of the box, stroke 10%, a gap of about 107°.
+   * Description gaps from the callouts: 0 / 4 / 12 below, 8 beside.
+   */
+  --ud-spin-size: 24px;
+  --ud-spin-color: var(--ud-color-brand);
+  --ud-spin-gap: 4px;
+
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ud-spin-gap);
+  color: var(--ud-color-text-secondary);
+  font-family: var(--ud-font-family);
+  font-size: var(--ud-font-size-body);
+  line-height: var(--ud-line-body);
+  vertical-align: middle;
+}
+
+.ud-spin--sm {
+  --ud-spin-size: 14px;
+  --ud-spin-gap: 0px;
+}
+
+.ud-spin--lg {
+  --ud-spin-size: 40px;
+  --ud-spin-gap: 12px;
+}
+
+.ud-spin--horizontal {
+  --ud-spin-gap: 8px;
+
+  flex-direction: row;
+}
+
+/* Specified: B500 by default, N00 on dark backgrounds, N400 on grey placeholders. */
+.ud-spin--white {
+  --ud-spin-color: var(--ud-color-bg-white);
+}
+
+.ud-spin--grey {
+  --ud-spin-color: var(--ud-color-text-disabled);
+}
+
+.ud-spin__ring {
+  display: block;
+  flex: none;
+  width: var(--ud-spin-size);
+  height: var(--ud-spin-size);
+  /* Spin duration borrowed from Button (inferred). */
+  animation: ud-spin-rotate 0.7s linear infinite;
+}
+
+.ud-spin__ring circle {
+  fill: none;
+  stroke: var(--ud-spin-color);
+  stroke-width: 4;
+  stroke-linecap: round;
+  /* 66 plus the two round caps leaves the measured gap. */
+  stroke-dasharray: 66 34;
+}
+
+.ud-spin__tip {
+  white-space: nowrap;
+}
+
+@keyframes ud-spin-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ud-spin__ring {
+    animation-duration: 2.8s;
+  }
+}
+
+.ud-spin-container {
+  position: relative;
+}
+
+/* Specified: white mask at N00 60% over the covered module. */
+.ud-spin-container__mask {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: inherit;
+  background: var(--ud-color-white-a60);
+}
+
+.ud-skeleton {
+  /* Specified: a gradient from N900 5% to N900 8%. Measured: left to right. */
+  display: block;
+  background: linear-gradient(90deg, var(--ud-color-text-a5), var(--ud-color-text-a8));
+}
+
+/*
+ * Specified: text bars as tall as the font size.
+ * loading.md says "Radius-XS (2px)" while style.md puts Radius-XS at 4px; the figure measures 2px.
+ */
+.ud-skeleton--text {
+  width: 100%;
+  height: 1em;
+  border-radius: 2px;
+}
+
+.ud-skeleton--circle {
+  border-radius: 50%;
+}
+
+.ud-skeleton--rect {
+  border-radius: var(--ud-radius-xs);
+}
+
+/* Measured at 2x: 8px between text bars. The shorter last bar is inferred. */
+.ud-skeleton-paragraph {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ud-skeleton-paragraph > .ud-skeleton:last-child:not(:first-child) {
+  width: 60%;
+}
