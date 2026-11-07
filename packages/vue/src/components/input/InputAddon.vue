@@ -1,34 +1,58 @@
-<script setup lang="ts" vapor>
-import { computed, onBeforeUnmount, onMounted, shallowRef, useTemplateRef } from 'vue'
-import { Check, Down, Up } from '@icon-park/vue-next'
-import ParkIcon from '../../internal/park-icon.vue'
+<script setup lang="ts">
 import type { InputAddonOption } from './types'
-
-const model = defineModel<string>({ required: true })
+import { Check, Down, Up } from '@icon-park/vue-next'
+import { computed, nextTick, onBeforeUnmount, onMounted, shallowRef, useTemplateRef, watch } from 'vue'
+import ParkIcon from '../../internal/park-icon.vue'
+import { nextLayerZ } from '../dialog/scroll-lock'
 
 const { options } = defineProps<{
   options: InputAddonOption[]
 }>()
 
+const model = defineModel<string>({ required: true })
+
 const rootRef = useTemplateRef<HTMLElement>('root')
+const menuRef = useTemplateRef<HTMLElement>('menu')
 const open = shallowRef(false)
 const placement = shallowRef<'bottom' | 'top'>('bottom')
+const menuStyle = shallowRef<Record<string, string>>({})
+let layer = 0
 
-const current = computed(() => options.find((option) => option.value === model.value) ?? options[0])
+const current = computed(() => options.find(option => option.value === model.value) ?? options[0])
 
 function place() {
   const root = rootRef.value
-  if (!root) return
+  const menu = menuRef.value
+  if (!root || !menu)
+    return
   const rect = root.getBoundingClientRect()
-  const menu = root.querySelector('.ud-input-addon__menu')
-  const height = menu instanceof HTMLElement ? menu.offsetHeight : 0
+  const font = getComputedStyle(root.querySelector('.ud-input-addon__trigger') ?? root)
+  // 5px keeps the same 4px outer gap the absolute menu used: the border is 1px.
+  const gap = 5
+  const height = menu.offsetHeight
   const spaceBelow = window.innerHeight - rect.bottom
-  placement.value = spaceBelow < height + 4 && rect.top > spaceBelow ? 'top' : 'bottom'
+  const above = spaceBelow < height + gap && rect.top > spaceBelow
+  placement.value = above ? 'top' : 'bottom'
+  menuStyle.value = {
+    top: `${Math.round(above
+      ? rect.top - gap - height
+      : rect.bottom + gap)}px`,
+    left: `${Math.round(rect.left)}px`,
+    width: `${Math.round(rect.width)}px`,
+    zIndex: String(layer),
+    color: font.color,
+    fontFamily: font.fontFamily,
+    fontSize: font.fontSize,
+    lineHeight: font.lineHeight,
+  }
 }
 
 function toggle() {
+  if (!open.value)
+    layer = nextLayerZ()
   open.value = !open.value
-  if (open.value) requestAnimationFrame(place)
+  if (open.value)
+    nextTick(place)
 }
 
 function choose(option: InputAddonOption) {
@@ -50,10 +74,23 @@ function onKeydown(event: KeyboardEvent) {
 
 function onDocPointerDown(event: PointerEvent) {
   const root = rootRef.value
-  if (!open.value || !root) return
-  if (event.target instanceof Node && root.contains(event.target)) return
+  if (!open.value || !root)
+    return
+  const target = event.target
+  if (target instanceof Node && (root.contains(target) || menuRef.value?.contains(target)))
+    return
   open.value = false
 }
+
+watch(open, (value) => {
+  if (value) {
+    window.addEventListener('scroll', place, true)
+    window.addEventListener('resize', place)
+    return
+  }
+  window.removeEventListener('scroll', place, true)
+  window.removeEventListener('resize', place)
+})
 
 onMounted(() => {
   document.addEventListener('pointerdown', onDocPointerDown)
@@ -61,11 +98,16 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   document.removeEventListener('pointerdown', onDocPointerDown)
+  window.removeEventListener('scroll', place, true)
+  window.removeEventListener('resize', place)
 })
 </script>
 
 <template>
-  <span ref="root" class="ud-input-addon">
+  <span
+    ref="root"
+    class="ud-input-addon"
+  >
     <button
       type="button"
       class="ud-input-addon__trigger"
@@ -75,22 +117,38 @@ onBeforeUnmount(() => {
       @keydown="onKeydown"
     >
       <span class="ud-input-addon__label">{{ current?.label }}</span>
-      <ParkIcon class="ud-input-addon__arrow" :icon="open ? Up : Down" />
+      <ParkIcon
+        class="ud-input-addon__arrow"
+        :icon="open ? Up : Down"
+      />
     </button>
-    <div v-if="open" class="ud-input-addon__menu" :class="{ 'ud-input-addon__menu--top': placement === 'top' }" role="listbox">
-      <button
-        v-for="option in options"
-        :key="option.value"
-        type="button"
-        class="ud-input-addon__option"
-        :class="{ 'is-selected': option.value === model }"
-        role="option"
-        :aria-selected="option.value === model"
-        @click="choose(option)"
+    <Teleport to="body">
+      <div
+        v-if="open"
+        ref="menu"
+        class="ud-input-addon__menu"
+        :class="{ 'ud-input-addon__menu--top': placement === 'top' }"
+        :style="menuStyle"
+        role="listbox"
       >
-        <span>{{ option.label }}</span>
-        <ParkIcon v-if="option.value === model" class="ud-input-addon__check" :icon="Check" />
-      </button>
-    </div>
+        <button
+          v-for="option in options"
+          :key="option.value"
+          type="button"
+          class="ud-input-addon__option"
+          :class="{ 'is-selected': option.value === model }"
+          role="option"
+          :aria-selected="option.value === model"
+          @click="choose(option)"
+        >
+          <span>{{ option.label }}</span>
+          <ParkIcon
+            v-if="option.value === model"
+            class="ud-input-addon__check"
+            :icon="Check"
+          />
+        </button>
+      </div>
+    </Teleport>
   </span>
 </template>

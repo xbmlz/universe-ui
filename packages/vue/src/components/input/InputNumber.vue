@@ -1,10 +1,8 @@
-<script setup lang="ts" vapor>
-import { computed, inject, shallowRef, useId, useTemplateRef, watch } from 'vue'
+<script setup lang="ts">
 import { Down, Up } from '@icon-park/vue-next'
+import { computed, inject, shallowRef, useId, useTemplateRef, watch } from 'vue'
 import ParkIcon from '../../internal/park-icon.vue'
 import { INPUT_GROUP } from './context'
-
-const model = defineModel<number | null>({ default: null })
 
 const {
   size = 'md',
@@ -32,6 +30,8 @@ const {
   message?: string
 }>()
 
+const model = defineModel<number | null>({ default: null })
+
 const group = inject(INPUT_GROUP, undefined)
 const resolvedSize = computed(() => group?.size.value ?? size)
 const resolvedDisabled = computed(() => disabled || (group?.disabled.value ?? false))
@@ -42,17 +42,19 @@ const inputId = useId()
 const fieldRef = useTemplateRef<HTMLInputElement>('field')
 const text = shallowRef('')
 
-const completeNumber = /^-?\d+(\.\d+)?$/
+const completeNumber = /^-?\d+(?:\.\d+)?$/
 const partialNumber = /^-?\d*\.?$/
 
 watch(
   () => model.value,
   (value) => {
     if (value == null) {
-      if (text.value === '' || completeNumber.test(text.value)) text.value = ''
+      if (text.value === '' || completeNumber.test(text.value))
+        text.value = ''
       return
     }
-    if (Number(text.value) !== value) text.value = String(value)
+    if (Number(text.value) !== value)
+      text.value = String(value)
   },
   { immediate: true },
 )
@@ -75,13 +77,17 @@ function focus() {
 function decimalPlaces(value: number) {
   const source = String(value)
   const index = source.indexOf('.')
-  return index === -1 ? 0 : source.length - index - 1
+  return index === -1
+    ? 0
+    : source.length - index - 1
 }
 
 function clamp(value: number) {
   let next = value
-  if (min != null && next < min) next = min
-  if (max != null && next > max) next = max
+  if (min != null && next < min)
+    next = min
+  if (max != null && next > max)
+    next = max
   return Number(next.toFixed(decimalPlaces(step)))
 }
 
@@ -92,9 +98,12 @@ function commit(value: number) {
 }
 
 function stepBy(direction: 1 | -1) {
-  if (resolvedDisabled.value || resolvedReadonly.value) return
-  if (direction === 1 && upDisabled.value) return
-  if (direction === -1 && downDisabled.value) return
+  if (resolvedDisabled.value || resolvedReadonly.value)
+    return
+  if (direction === 1 && upDisabled.value)
+    return
+  if (direction === -1 && downDisabled.value)
+    return
   commit((model.value ?? 0) + direction * step)
 }
 
@@ -105,8 +114,10 @@ function onInput(event: Event) {
     model.value = null
     return
   }
-  if (completeNumber.test(value)) model.value = Number(value)
-  else if (!partialNumber.test(value)) model.value = null
+  if (completeNumber.test(value))
+    model.value = Number(value)
+  else if (!partialNumber.test(value))
+    model.value = null
 }
 
 function onBlur() {
@@ -116,8 +127,14 @@ function onBlur() {
   }
   if (text.value === '' || text.value === '-' || text.value === '.' || text.value.endsWith('.')) {
     const parsed = Number(text.value)
-    if (text.value.endsWith('.') && Number.isFinite(parsed)) commit(parsed)
-    else text.value = model.value == null ? '' : String(model.value)
+    if (text.value.endsWith('.') && Number.isFinite(parsed)) {
+      commit(parsed)
+    }
+    else {
+      text.value = model.value == null
+        ? ''
+        : String(model.value)
+    }
   }
 }
 
@@ -147,8 +164,16 @@ defineExpose({ focus })
       },
     ]"
   >
-    <label v-if="label" class="ud-input__label" :for="inputId">
-      <span v-if="required" class="ud-input__required" aria-hidden="true">*</span>
+    <label
+      v-if="label"
+      class="ud-input__label"
+      :for="inputId"
+    >
+      <span
+        v-if="required"
+        class="ud-input__required"
+        aria-hidden="true"
+      >*</span>
       {{ label }}
     </label>
     <div class="ud-input__control">
@@ -171,7 +196,7 @@ defineExpose({ focus })
         @input="onInput"
         @keydown="onKeydown"
         @blur="onBlur"
-      />
+      >
       <span class="ud-input__stepper">
         <button
           type="button"
@@ -195,6 +220,12 @@ defineExpose({ focus })
         </button>
       </span>
     </div>
-    <p v-if="shownMessage" :id="`${inputId}-message`" class="ud-input__message">{{ shownMessage }}</p>
+    <p
+      v-if="shownMessage"
+      :id="`${inputId}-message`"
+      class="ud-input__message"
+    >
+      {{ shownMessage }}
+    </p>
   </div>
 </template>

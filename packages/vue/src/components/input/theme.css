@@ -11,7 +11,7 @@
   --ud-input-color: var(--ud-color-text);
   --ud-input-placeholder: var(--ud-color-text-placeholder);
   --ud-input-label-gap: 8px;
-  /* 状态图按 2 倍量，报错字形顶部距外框 7.5~8px；22px 行高里字形本身下沉约 5.5px。 */
+  /* Measured at 2x from the state figure: error glyph top is 7.5–8px below the box; within a 22px line the glyph sits about 5.5px down. */
   --ud-input-message-gap: 2px;
   --ud-input-message-color: var(--ud-color-text-secondary);
   --ud-input-required-color: var(--ud-color-danger);
@@ -24,12 +24,12 @@
   --ud-input-addon-bg: var(--ud-color-fill-disabled);
   --ud-input-addon-color: var(--ud-color-text);
   --ud-input-divider: var(--ud-color-border);
-  /* 尺寸图按 2 倍量：S 12/20、M 14/22、L 16/24，S 左右留白 8px。标签和提示文字不跟着变。 */
+  /* Measured at 2x from the size figure: S 12/20, M 14/22, L 16/24, S inline padding 8px. Label and helper text do not scale. */
   --ud-input-font-size: var(--ud-font-size-body);
   --ud-input-line-height: var(--ud-line-body);
-  /* 状态图上清除圆钮直径 11px。CloseOne 填充态连描边占画布 44/48，12px 画布约 11px。 */
+  /* Measured clear button diameter 11px. Filled CloseOne spans 44/48 of its canvas, so a 12px canvas gives about 11px. */
   --ud-input-clear-size: 12px;
-  /* 数字输入框图上步进箭头约 6×4px。Up / Down 的折线占画布 28/48，10px 画布约 6px。 */
+  /* Measured step arrows about 6×4px. Up / Down span 28/48 of the canvas, so a 10px canvas gives about 6px. */
   --ud-input-step-icon-size: 10px;
 
   display: flex;
@@ -46,9 +46,9 @@
 }
 
 /*
- * S / L 的搜索图标圆圈量出来约为 M 的 0.88 / 1.27 倍，取 14 / 20。
- * 文档写的图标与文字间距 8px 配的是 M 的图；S / L 的图上文字分别从外框 27 / 37px 处开始，算下来是 4px。
- * 清除圆钮只有 M 的图，S / L 按图标比例推算。
+ * Measured S / L search icon circles at about 0.88 / 1.27 of M, so 14 / 20.
+ * The specified 8px icon-to-text gap goes with the M figure; on S / L text starts 27 / 37px from the edge, which works out to 4px.
+ * Only M has a clear button figure; S / L scale with the icon (inferred).
  */
 .ud-input--sm {
   --ud-input-height: 28px;
@@ -181,13 +181,15 @@
   border-color: var(--ud-input-border-color-hover);
 }
 
-/* 可切换属性：悬停或展开时只有属性块变蓝，输入区保持原描边。 */
+/* Switchable addon: on hover or open only the addon turns blue; the input keeps its border. */
 .ud-input:not(.ud-input--error) .ud-input__control:has(.ud-input-addon:hover) .ud-input__main,
 .ud-input:not(.ud-input--error) .ud-input__control:has(.ud-input-addon__trigger[aria-expanded='true']) .ud-input__main {
   border-color: var(--ud-input-border-color);
 }
 
-.ud-input:focus-within:not(:has(.ud-input-addon:focus-within)):not(:has(.ud-input-addon__trigger[aria-expanded='true'])) .ud-input__control:has(.ud-input__addon) .ud-input__main {
+.ud-input:focus-within:not(:has(.ud-input-addon:focus-within)):not(:has(.ud-input-addon__trigger[aria-expanded='true']))
+  .ud-input__control:has(.ud-input__addon)
+  .ud-input__main {
   border-color: var(--ud-input-border-color-focus);
 }
 
@@ -230,7 +232,7 @@
   border-radius: 0 var(--ud-input-radius) var(--ud-input-radius) 0;
 }
 
-/* 文档：单字符属性居中对齐。 */
+/* Specified: single-character addons are centred. */
 .ud-input__addon[data-single] {
   justify-content: center;
 }
@@ -273,12 +275,16 @@
 }
 
 .ud-input:not(.ud-input--error) .ud-input__control:has(.ud-input__addon--before .ud-input-addon:hover) .ud-input__main,
-.ud-input:not(.ud-input--error) .ud-input__control:has(.ud-input__addon--before .ud-input-addon__trigger[aria-expanded='true']) .ud-input__main {
+.ud-input:not(.ud-input--error)
+  .ud-input__control:has(.ud-input__addon--before .ud-input-addon__trigger[aria-expanded='true'])
+  .ud-input__main {
   border-left-color: var(--ud-color-brand);
 }
 
 .ud-input:not(.ud-input--error) .ud-input__control:has(.ud-input__addon--after .ud-input-addon:hover) .ud-input__main,
-.ud-input:not(.ud-input--error) .ud-input__control:has(.ud-input__addon--after .ud-input-addon__trigger[aria-expanded='true']) .ud-input__main {
+.ud-input:not(.ud-input--error)
+  .ud-input__control:has(.ud-input__addon--after .ud-input-addon__trigger[aria-expanded='true'])
+  .ud-input__main {
   border-right-color: var(--ud-color-brand);
 }
 
@@ -305,7 +311,7 @@
   min-width: 0;
   height: 100%;
   margin: 0;
-  /* 文档：前缀 / 后缀左边距 12px。 */
+  /* Specified: prefix / suffix left margin 12px. */
   padding: 0 12px;
   border: 0;
   background: transparent;
@@ -325,7 +331,7 @@
   white-space: nowrap;
 }
 
-/* 属性块里的箭头比选择框小一档，画布 12px。 */
+/* The addon arrow is one step smaller than Select's, on a 12px canvas. */
 .ud-input-addon__arrow {
   flex: none;
   font-size: 12px;
@@ -333,13 +339,8 @@
 }
 
 .ud-input-addon__menu {
-  position: absolute;
-  z-index: 20;
-  /* 描边在内容盒外面，再加 1px，外缘到菜单才是 4px。 */
-  top: calc(100% + 5px);
-  left: 0;
+  position: fixed;
   box-sizing: border-box;
-  width: 100%;
   margin: 0;
   padding-block: 4px;
   border: 1px solid var(--ud-color-border-card);
@@ -349,8 +350,7 @@
 }
 
 .ud-input-addon__menu--top {
-  top: auto;
-  bottom: calc(100% + 5px);
+  box-shadow: var(--ud-shadow-up-s4);
 }
 
 .ud-input-addon__option {
@@ -412,7 +412,7 @@
   gap: var(--ud-input-affix-gap);
 }
 
-/* 语言标签图按 2 倍量：高 20px，底 #EFF0F1，字 #646A73，圆角 4px，距右框约 5.5px。 */
+/* Measured at 2x from the language tag figure: 20px tall, fill #EFF0F1, text #646A73, radius 4px, about 5.5px from the right edge. */
 .ud-input__main:has(.ud-input__tag) {
   padding-right: 6px;
 }
@@ -439,7 +439,7 @@
   white-space: nowrap;
 }
 
-/* 文档：有图标时，图标和标签间距 12px。 */
+/* Specified: with an icon, the icon-to-tag gap is 12px. */
 .ud-input__suffix + .ud-input__tag {
   margin-left: 12px;
 }
@@ -509,12 +509,13 @@
 
 .ud-input--number {
   --ud-input-stepper-width: 32px;
-  /* 状态图里悬停半区的底色。图上的蓝是旧品牌色。 */
+  /* Fill of the hovered half in the state figure. The blue is the old brand colour. */
   --ud-input-stepper-bg-hover: #e1eaff;
 }
 
 .ud-input--number .ud-input__control {
   padding-right: 0;
+  overflow: hidden;
 }
 
 .ud-input__stepper {
@@ -675,7 +676,7 @@
   --ud-input-radius: var(--ud-radius-s);
   --ud-input-border-color: var(--ud-color-border);
   --ud-input-border-color-focus: var(--ud-color-brand);
-  /* 状态图按 2 倍量到格子间距 32px。 */
+  /* Measured at 2x from the state figure: cell spacing 32px. */
   --ud-input-otp-gap: 16px;
   --ud-input-label-gap: 8px;
   --ud-input-message-gap: 2px;
@@ -780,11 +781,11 @@
 
 .ud-input-area {
   --ud-input-height: 32px;
-  /* 文档和尺寸图都标了推荐高度 92px。同一张图按 2 倍量，外框是 100px。 */
+  /* Both the text and the size figure give a recommended height of 92px; the same figure measures 100px at 2x. */
   --ud-textarea-height: 92px;
   --ud-input-min-width: 240px;
   --ud-input-max-width: 600px;
-  /* 状态图按 2 倍量：文字距外框 9px，即边框 1 加留白 8。和单行输入框的 12 不同。 */
+  /* Measured at 2x from the state figure: text is 9px from the edge (1 border + 8 padding), unlike the 12 of single-line Input. */
   --ud-input-padding-inline: 8px;
   --ud-input-radius: var(--ud-radius-s);
   --ud-input-bg: var(--ud-color-bg-white);
@@ -796,12 +797,12 @@
   --ud-input-message-gap: 2px;
   --ud-input-message-color: var(--ud-color-text-secondary);
   --ud-input-required-color: var(--ud-color-danger);
-  /* 状态图按 2 倍量：计数芯片距外框右、下各 8px，高 20px，左右留白 6px。 */
+  /* Measured at 2x from the state figure: counter chip 8px from the right and bottom edges, 20px tall, 6px inline padding. */
   --ud-input-area-count-inset: 8px;
   --ud-input-area-count-bg: var(--ud-color-fill-disabled);
-  /* 首行字顶距外框 11.5px，算下来上留白 5px。 */
+  /* First-line glyph top is 11.5px from the edge, which works out to 5px top padding. */
   --ud-input-area-padding-block: 5px;
-  /* 尺寸图里的单行态：留白 12px 与单行输入框一致，芯片垂直居中、距外框右 6px。 */
+  /* Single-line state in the size figure: 12px padding like Input, chip vertically centred and 6px from the right edge. */
   --ud-input-area-single-padding: 12px;
   --ud-input-area-single-count-inset: 6px;
 
@@ -832,7 +833,7 @@
   --ud-input-message-color: var(--ud-color-danger);
 }
 
-/* 禁用和只读时芯片底 #DADCDD，比框体深一档，不是现有色板色。 */
+/* Disabled and read-only chip fill #DADCDD is one step darker than the box and not in the palette. */
 .ud-input-area--disabled {
   --ud-input-bg: var(--ud-color-fill-disabled);
   --ud-input-color: var(--ud-color-text-placeholder);
@@ -888,13 +889,15 @@
   padding-inline: var(--ud-input-area-single-padding);
 }
 
-/* 单行放不下就至少给两行，芯片落在第二行，不压住第一行文字。 */
+/* When one line does not fit, use at least two so the chip sits on the second line clear of the first. */
 .ud-input-area--autosize .ud-input-area__control[data-lines='multi'] .ud-input-area__field {
   min-height: calc(var(--ud-line-body) * 2 + var(--ud-input-area-padding-block) * 2 + 2px);
 }
 
-/* 单行时文字不能钻到芯片底下：右侧让出芯片宽度，再留 8px。 */
-.ud-input-area--autosize .ud-input-area__control:not([data-lines='multi']):has(.ud-input-area__count) .ud-input-area__field {
+/* On a single line text must not run under the chip: reserve its width plus 8px on the right. */
+.ud-input-area--autosize
+  .ud-input-area__control:not([data-lines='multi']):has(.ud-input-area__count)
+  .ud-input-area__field {
   padding-right: calc(var(--ud-input-area-count-width, 0px) + var(--ud-input-area-single-count-inset) - 1px + 8px);
 }
 
@@ -922,7 +925,7 @@
   pointer-events: none;
 }
 
-/* 有内容时只有已输入字数变成正文色，“/上限”保持次级色。 */
+/* With content, only the typed count turns body colour; "/limit" stays secondary. */
 .ud-input-area__count--filled .ud-input-area__count-value {
   color: var(--ud-color-text);
 }

@@ -1,9 +1,7 @@
-<script setup lang="ts" vapor>
+<script setup lang="ts">
+import type { CheckboxAlign } from './types'
 import { computed, inject, onMounted, useTemplateRef, watch } from 'vue'
 import { CHECKBOX_GROUP } from './context'
-import type { CheckboxAlign } from './types'
-
-const model = defineModel<boolean>({ default: false })
 
 const {
   value,
@@ -19,12 +17,15 @@ const {
   align?: CheckboxAlign
 }>()
 
+const model = defineModel<boolean>({ default: false })
+
 const group = inject(CHECKBOX_GROUP, null)
 const inputRef = useTemplateRef<HTMLInputElement>('input')
 
 const resolvedDisabled = computed(() => disabled || (group?.disabled.value ?? false))
 const checked = computed(() => {
-  if (group && value !== undefined) return group.model.value.includes(value)
+  if (group && value !== undefined)
+    return group.model.value.includes(value)
   return model.value
 })
 const mixed = computed(() => indeterminate && !checked.value)
@@ -38,7 +39,8 @@ const classes = computed(() => ({
 }))
 
 function syncMixed() {
-  if (inputRef.value) inputRef.value.indeterminate = mixed.value
+  if (inputRef.value)
+    inputRef.value.indeterminate = mixed.value
 }
 
 onMounted(syncMixed)
@@ -57,7 +59,7 @@ function onChange(event: Event) {
       ? current.includes(value)
         ? current
         : [...current, value]
-      : current.filter((item) => item !== value)
+      : current.filter(item => item !== value)
     input.checked = next
     return
   }
@@ -67,7 +69,10 @@ function onChange(event: Event) {
 </script>
 
 <template>
-  <label class="ud-checkbox" :class="classes">
+  <label
+    class="ud-checkbox"
+    :class="classes"
+  >
     <input
       ref="input"
       class="ud-checkbox__input"
@@ -77,9 +82,14 @@ function onChange(event: Event) {
       :aria-invalid="error || undefined"
       :aria-checked="mixed ? 'mixed' : undefined"
       @change="onChange"
-    />
+    >
     <span class="ud-checkbox__box">
-      <svg v-if="checked" class="ud-checkbox__mark" viewBox="0 0 16 16" aria-hidden="true">
+      <svg
+        v-if="checked"
+        class="ud-checkbox__mark"
+        viewBox="0 0 16 16"
+        aria-hidden="true"
+      >
         <path
           d="M4.8 8.2 7 10.4 11.4 5.6"
           fill="none"
@@ -89,8 +99,14 @@ function onChange(event: Event) {
           stroke-linejoin="round"
         />
       </svg>
-      <span v-else-if="mixed" class="ud-checkbox__bar" />
+      <span
+        v-else-if="mixed"
+        class="ud-checkbox__bar"
+      />
     </span>
-    <span v-if="$slots.default" class="ud-checkbox__label"><slot /></span>
+    <span
+      v-if="$slots.default"
+      class="ud-checkbox__label"
+    ><slot /></span>
   </label>
 </template>

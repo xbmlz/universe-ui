@@ -1,10 +1,8 @@
-<script setup lang="ts" vapor>
+<script setup lang="ts">
+import type { RadioAlign } from './types'
 import { computed, inject, onMounted, shallowRef, useTemplateRef } from 'vue'
 import { Tooltip } from '../tooltip'
 import { RADIO_GROUP } from './context'
-import type { RadioAlign } from './types'
-
-const model = defineModel<string | number | null>({ default: null })
 
 const {
   value,
@@ -17,6 +15,8 @@ const {
   error?: boolean
   align?: RadioAlign
 }>()
+
+const model = defineModel<string | number | null>({ default: null })
 
 const group = inject(RADIO_GROUP, null)
 const labelRef = useTemplateRef<HTMLElement>('label')
@@ -47,14 +47,18 @@ function onChange(event: Event) {
     input.checked = checked.value
     return
   }
-  if (group) group.model.value = value
+  if (group)
+    group.model.value = value
   else model.value = value
   input.checked = true
 }
 </script>
 
 <template>
-  <label class="ud-radio" :class="classes">
+  <label
+    class="ud-radio"
+    :class="classes"
+  >
     <input
       class="ud-radio__input"
       type="radio"
@@ -63,13 +67,30 @@ function onChange(event: Event) {
       :disabled="resolvedDisabled"
       :aria-invalid="error || undefined"
       @change="onChange"
-    />
-    <span v-if="!button" class="ud-radio__box">
-      <span v-if="checked" class="ud-radio__dot" />
+    >
+    <span
+      v-if="!button"
+      class="ud-radio__box"
+    >
+      <span
+        v-if="checked"
+        class="ud-radio__dot"
+      />
     </span>
-    <Tooltip v-if="button && $slots.default" only-overflow :content="labelText">
-      <span ref="label" class="ud-radio__label"><slot /></span>
+    <Tooltip
+      v-if="button && $slots.default"
+      only-overflow
+      :content="labelText"
+    >
+      <span
+        ref="label"
+        class="ud-radio__label"
+      ><slot /></span>
     </Tooltip>
-    <span v-else-if="$slots.default" ref="label" class="ud-radio__label"><slot /></span>
+    <span
+      v-else-if="$slots.default"
+      ref="label"
+      class="ud-radio__label"
+    ><slot /></span>
   </label>
 </template>

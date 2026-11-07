@@ -1,7 +1,7 @@
-<script setup lang="ts" vapor>
+<script setup lang="ts">
+import type { ButtonSize, ButtonType } from './types'
 import { computed, inject, useTemplateRef } from 'vue'
 import { BUTTON_GROUP_SIZE } from './context'
-import type { ButtonSize, ButtonType } from './types'
 
 const {
   type = 'secondary',
@@ -36,7 +36,8 @@ const classes = computed(() => [
 ])
 
 function onClick(event: MouseEvent) {
-  if (!loading) return
+  if (!loading)
+    return
   event.preventDefault()
   event.stopPropagation()
 }
@@ -57,7 +58,11 @@ defineExpose({ focus })
     :aria-busy="loading || undefined"
     @click="onClick"
   >
-    <span v-if="loading" class="ud-button__spinner" aria-hidden="true" />
+    <span
+      v-if="loading"
+      class="ud-button__spinner"
+      aria-hidden="true"
+    />
     <slot />
   </button>
 </template>

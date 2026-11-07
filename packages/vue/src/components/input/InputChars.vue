@@ -1,8 +1,6 @@
-<script setup lang="ts" vapor>
-import { computed, nextTick, shallowRef, useTemplateRef } from 'vue'
+<script setup lang="ts">
 import type { InputSize } from './types'
-
-const model = defineModel<string>({ default: '' })
+import { computed, nextTick, shallowRef, useTemplateRef } from 'vue'
 
 const {
   length = 6,
@@ -26,19 +24,26 @@ const {
   message?: string
 }>()
 
+const model = defineModel<string>({ default: '' })
+
 const rootRef = useTemplateRef<HTMLElement>('root')
 const focused = shallowRef(false)
 const indexes = computed(() => Array.from({ length }, (_, index) => index))
 const complete = computed(() => model.value.length >= length)
 
 function cellsIn(node?: EventTarget | null) {
-  const source = node instanceof Element ? node : rootRef.value
+  const source = node instanceof Element
+    ? node
+    : rootRef.value
   const root = source?.closest('.ud-input-otp') ?? rootRef.value
-  return [...(root?.querySelectorAll<HTMLInputElement>('.ud-input-otp__cell') ?? [])]
+  return [
+    ...(root?.querySelectorAll<HTMLInputElement>('.ud-input-otp__cell') ?? []),
+  ]
 }
 
 function cursorIndex() {
-  if (complete.value) return length - 1
+  if (complete.value)
+    return length - 1
   return model.value.length
 }
 
@@ -50,8 +55,10 @@ function focusAt(index: number, from?: EventTarget | null) {
 
 const activeFlags = computed(() =>
   indexes.value.map((index) => {
-    if (disabled || complete.value) return false
-    if (index < model.value.length) return true
+    if (disabled || complete.value)
+      return false
+    if (index < model.value.length)
+      return true
     return focused.value && index === model.value.length
   }),
 )
@@ -63,24 +70,28 @@ function onFocusIn() {
 function onFocusOut(event: FocusEvent) {
   const root = event.currentTarget
   const next = event.relatedTarget
-  if (root instanceof Node && next instanceof Node && root.contains(next)) return
+  if (root instanceof Node && next instanceof Node && root.contains(next))
+    return
   queueMicrotask(() => {
     const active = document.activeElement
-    if (root instanceof Node && active instanceof Node && root.contains(active)) return
+    if (root instanceof Node && active instanceof Node && root.contains(active))
+      return
     focused.value = false
   })
 }
 
 function focusFrom(event: Event, index: number) {
   const current = event.currentTarget
-  if (!(current instanceof HTMLElement)) return
+  if (!(current instanceof HTMLElement))
+    return
   const cells = current.closest('.ud-input-otp')?.querySelectorAll<HTMLInputElement>('input.ud-input-otp__cell')
   cells?.[index]?.focus()
 }
 
 function onCellMouseDown(event: MouseEvent, index: number) {
   const cursor = cursorIndex()
-  if (index === cursor) return
+  if (index === cursor)
+    return
   event.preventDefault()
   focusFrom(event, cursor)
 }
@@ -88,11 +99,13 @@ function onCellMouseDown(event: MouseEvent, index: number) {
 function onCellFocus(event: FocusEvent, index: number) {
   focused.value = true
   const cursor = cursorIndex()
-  if (index !== cursor) focusFrom(event, cursor)
+  if (index !== cursor)
+    focusFrom(event, cursor)
 }
 
 function onKeydown(event: KeyboardEvent) {
-  if (disabled) return
+  if (disabled)
+    return
   if (event.key === 'Backspace' || event.key === 'Delete') {
     event.preventDefault()
     const nextValue = model.value.slice(0, -1)
@@ -106,7 +119,8 @@ function onKeydown(event: KeyboardEvent) {
   }
   if (/^\d$/.test(event.key)) {
     event.preventDefault()
-    if (model.value.length >= length) return
+    if (model.value.length >= length)
+      return
     const nextValue = (model.value + event.key).slice(0, length)
     model.value = nextValue
     focusFrom(event, Math.min(nextValue.length, length - 1))
@@ -114,10 +128,12 @@ function onKeydown(event: KeyboardEvent) {
 }
 
 function onPaste(event: ClipboardEvent) {
-  if (disabled) return
+  if (disabled)
+    return
   event.preventDefault()
   const digits = (event.clipboardData?.getData('text') ?? '').replace(/\D/g, '').slice(0, length)
-  if (!digits) return
+  if (!digits)
+    return
   model.value = digits
   focusFrom(event, Math.min(digits.length, length - 1))
 }
@@ -151,10 +167,27 @@ defineExpose({ focus, clear })
     @focusin="onFocusIn"
     @focusout="onFocusOut"
   >
-    <div v-if="label" class="ud-input__label">{{ label }}</div>
-    <div class="ud-input-otp__cells" role="group" :aria-label="label" :aria-invalid="error || undefined">
-      <template v-for="index in indexes" :key="index">
-        <span v-if="separatorAfter?.includes(index)" class="ud-input-otp__separator" aria-hidden="true">-</span>
+    <div
+      v-if="label"
+      class="ud-input__label"
+    >
+      {{ label }}
+    </div>
+    <div
+      class="ud-input-otp__cells"
+      role="group"
+      :aria-label="label"
+      :aria-invalid="error || undefined"
+    >
+      <template
+        v-for="index in indexes"
+        :key="index"
+      >
+        <span
+          v-if="separatorAfter?.includes(index)"
+          class="ud-input-otp__separator"
+          aria-hidden="true"
+        >-</span>
         <input
           class="ud-input-otp__cell"
           :class="{ 'ud-input-otp__cell--active': activeFlags[index] }"
@@ -168,9 +201,14 @@ defineExpose({ focus, clear })
           @keydown="onKeydown"
           @paste="onPaste"
           @focus="onCellFocus($event, index)"
-        />
+        >
       </template>
     </div>
-    <p v-if="message" class="ud-input__message">{{ message }}</p>
+    <p
+      v-if="message"
+      class="ud-input__message"
+    >
+      {{ message }}
+    </p>
   </div>
 </template>

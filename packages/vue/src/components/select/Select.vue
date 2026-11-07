@@ -1,13 +1,12 @@
-<script setup lang="ts" vapor>
-import { computed, inject, nextTick, onBeforeUnmount, onMounted, shallowRef, useId, useTemplateRef } from 'vue'
-import { Check, Close, CloseOne, Down, Up } from '@icon-park/vue-next'
-import ParkIcon from '../../internal/park-icon.vue'
-import { INPUT_GROUP } from '../input/context'
-import { Tooltip } from '../tooltip'
+<script setup lang="ts">
 import type { InputSize } from '../input/types'
 import type { SelectOption } from './types'
-
-const model = defineModel<string | string[] | null>({ default: null })
+import { Check, Close, CloseOne, Down, Up } from '@icon-park/vue-next'
+import { computed, inject, nextTick, onBeforeUnmount, onMounted, shallowRef, useId, useTemplateRef, watch } from 'vue'
+import ParkIcon from '../../internal/park-icon.vue'
+import { nextLayerZ } from '../dialog/scroll-lock'
+import { INPUT_GROUP } from '../input/context'
+import { Tooltip } from '../tooltip'
 
 const {
   options,
@@ -47,6 +46,8 @@ const {
   optionLines?: 1 | 2
 }>()
 
+const model = defineModel<string | string[] | null>({ default: null })
+
 const group = inject(INPUT_GROUP, undefined)
 const resolvedSize = computed(() => group?.size.value ?? size)
 const resolvedDisabled = computed(() => disabled || (group?.disabled.value ?? false))
@@ -61,20 +62,27 @@ const open = shallowRef(false)
 const query = shallowRef('')
 const activeIndex = shallowRef(0)
 const placement = shallowRef<'bottom' | 'top'>('bottom')
-const align = shallowRef<'start' | 'end'>('start')
+const menuStyle = shallowRef<Record<string, string>>({})
+let layer = 0
 
 const selectedValues = computed(() => {
-  if (multiple) return Array.isArray(model.value) ? model.value : []
-  if (model.value == null || Array.isArray(model.value) || model.value === '') return []
+  if (multiple) {
+    return Array.isArray(model.value)
+      ? model.value
+      : []
+  }
+  if (model.value == null || Array.isArray(model.value) || model.value === '')
+    return []
   return [model.value]
 })
 
 const selectedOptions = computed(() =>
-  selectedValues.value.map((value) => options.find((option) => option.value === value) ?? { value, label: value }),
+  selectedValues.value.map(value => options.find(option => option.value === value) ?? { value, label: value }),
 )
 
 const visibleTags = computed(() => {
-  if (maxTagCount == null) return selectedOptions.value
+  if (maxTagCount == null)
+    return selectedOptions.value
   return selectedOptions.value.slice(0, maxTagCount)
 })
 
@@ -83,15 +91,18 @@ const hiddenTags = computed(() => selectedOptions.value.slice(visibleTags.value.
 const hiddenCount = computed(() => hiddenTags.value.length)
 const hasValue = computed(() => selectedValues.value.length > 0)
 const singleLabel = computed(() => selectedOptions.value[0]?.label ?? '')
-const showClear = computed(() => (clearable && hasValue.value || query.value.length > 0) && !resolvedDisabled.value && !resolvedReadonly.value)
+const showClear = computed(() => ((clearable && hasValue.value) || query.value.length > 0) && !resolvedDisabled.value && !resolvedReadonly.value)
 const filteredOptions = computed(() => {
   const text = query.value.trim().toLowerCase()
-  if (!filterable || !text) return options
-  return options.filter((option) => option.label.toLowerCase().includes(text))
+  if (!filterable || !text)
+    return options
+  return options.filter(option => option.label.toLowerCase().includes(text))
 })
 const searchPlaceholder = computed(() => {
-  if (multiple && hasValue.value) return ''
-  if (!multiple && hasValue.value && !query.value) return singleLabel.value
+  if (multiple && hasValue.value)
+    return ''
+  if (!multiple && hasValue.value && !query.value)
+    return singleLabel.value
   return placeholder
 })
 
@@ -100,42 +111,82 @@ function isSelected(value: string) {
 }
 
 function firstEnabled() {
-  const index = filteredOptions.value.findIndex((option) => !option.disabled)
-  return index < 0 ? 0 : index
+  const index = filteredOptions.value.findIndex(option => !option.disabled)
+  return index < 0
+    ? 0
+    : index
 }
 
 function matchParts(labelText: string) {
   const text = query.value.trim()
-  const index = text ? labelText.toLowerCase().indexOf(text.toLowerCase()) : -1
-  if (!text || index < 0) return [{ text: labelText, match: false }]
+  const index = text
+    ? labelText.toLowerCase().indexOf(text.toLowerCase())
+    : -1
+  if (!text || index < 0) {
+    return [
+      { text: labelText, match: false },
+    ]
+  }
   return [
-    { text: labelText.slice(0, index), match: false },
-    { text: labelText.slice(index, index + text.length), match: true },
-    { text: labelText.slice(index + text.length), match: false },
-  ].filter((part) => part.text)
+    {
+      text: labelText.slice(0, index),
+      match: false,
+    },
+    {
+      text: labelText.slice(index, index + text.length),
+      match: true,
+    },
+    {
+      text: labelText.slice(index + text.length),
+      match: false,
+    },
+  ].filter(part => part.text)
 }
 
 function place() {
   const root = rootRef.value
   const menu = menuRef.value
-  if (!root || !menu) return
+  if (!root || !menu)
+    return
   const field = root.querySelector('.ud-select__field')
   const rect = (field ?? root).getBoundingClientRect()
-  const menuHeight = menu.offsetHeight
-  const menuWidth = menu.offsetWidth
+  // The menu is outside the select, so it no longer inherits the trigger's font.
+  const font = getComputedStyle(root.querySelector('.ud-select__trigger') ?? root)
+  // Same 4px gap as --ud-select-menu-gap. The menu is at least 120px, matching --ud-select-menu-min-width.
+  const gap = 4
+  const width = Math.max(rect.width, 120)
+  const height = menu.offsetHeight
   const spaceBelow = window.innerHeight - rect.bottom
   const spaceAbove = rect.top
-  placement.value = spaceBelow < menuHeight + 4 && spaceAbove > spaceBelow ? 'top' : 'bottom'
-  align.value = window.innerWidth - rect.left < menuWidth && rect.right >= menuWidth ? 'end' : 'start'
+  const above = spaceBelow < height + gap && spaceAbove > spaceBelow
+  placement.value = above ? 'top' : 'bottom'
+  let left = rect.left
+  if (left + width > window.innerWidth - 8 && rect.right - width >= 8)
+    left = rect.right - width
+  menuStyle.value = {
+    top: `${Math.round(above
+      ? rect.top - gap - height
+      : rect.bottom + gap)}px`,
+    left: `${Math.round(left)}px`,
+    width: `${Math.round(width)}px`,
+    zIndex: String(layer),
+    color: font.color,
+    fontFamily: font.fontFamily,
+    fontSize: font.fontSize,
+    lineHeight: font.lineHeight,
+  }
 }
 
 function openMenu() {
-  if (resolvedDisabled.value || resolvedReadonly.value) return
+  if (resolvedDisabled.value || resolvedReadonly.value)
+    return
+  layer = nextLayerZ()
   open.value = true
   activeIndex.value = firstEnabled()
   nextTick(() => {
     place()
-    if (filterable) searchRef.value?.focus()
+    if (filterable)
+      searchRef.value?.focus()
   })
 }
 
@@ -145,23 +196,29 @@ function closeMenu() {
 }
 
 function toggle() {
-  if (open.value) closeMenu()
+  if (open.value)
+    closeMenu()
   else openMenu()
 }
 
 function onTriggerClick(event: MouseEvent) {
-  if (resolvedDisabled.value || resolvedReadonly.value) return
+  if (resolvedDisabled.value || resolvedReadonly.value)
+    return
   const target = event.target
-  if (target instanceof Element && target.closest('.ud-select__clear, .ud-select__tag-remove')) return
+  if (target instanceof Element && target.closest('.ud-select__clear, .ud-select__tag-remove'))
+    return
   toggle()
 }
 
 function choose(option: SelectOption) {
-  if (option.disabled || resolvedDisabled.value || resolvedReadonly.value) return
+  if (option.disabled || resolvedDisabled.value || resolvedReadonly.value)
+    return
   if (multiple) {
-    const current = Array.isArray(model.value) ? model.value : []
+    const current = Array.isArray(model.value)
+      ? model.value
+      : []
     model.value = current.includes(option.value)
-      ? current.filter((value) => value !== option.value)
+      ? current.filter(value => value !== option.value)
       : [...current, option.value]
     return
   }
@@ -171,34 +228,43 @@ function choose(option: SelectOption) {
 
 function remove(value: string, event: MouseEvent) {
   event.stopPropagation()
-  if (!multiple || resolvedDisabled.value || resolvedReadonly.value) return
-  const current = Array.isArray(model.value) ? model.value : []
-  model.value = current.filter((item) => item !== value)
+  if (!multiple || resolvedDisabled.value || resolvedReadonly.value)
+    return
+  const current = Array.isArray(model.value)
+    ? model.value
+    : []
+  model.value = current.filter(item => item !== value)
 }
 
 function clear(event: MouseEvent) {
   event.stopPropagation()
   query.value = ''
-  model.value = multiple ? [] : null
+  model.value = multiple
+    ? []
+    : null
   activeIndex.value = firstEnabled()
 }
 
 function onSearch(event: Event) {
   const field = event.target
-  if (!(field instanceof HTMLInputElement)) return
+  if (!(field instanceof HTMLInputElement))
+    return
   query.value = field.value
-  if (!open.value) openMenu()
+  if (!open.value)
+    openMenu()
   activeIndex.value = firstEnabled()
   nextTick(place)
 }
 
 function move(step: number) {
   const list = filteredOptions.value
-  if (!list.length) return
+  if (!list.length)
+    return
   let index = activeIndex.value
   for (let count = 0; count < list.length; count += 1) {
     index = (index + step + list.length) % list.length
-    if (!list[index]?.disabled) break
+    if (!list[index]?.disabled)
+      break
   }
   activeIndex.value = index
   nextTick(() => {
@@ -207,16 +273,19 @@ function move(step: number) {
 }
 
 function onKeydown(event: KeyboardEvent) {
-  if (resolvedDisabled.value || resolvedReadonly.value) return
+  if (resolvedDisabled.value || resolvedReadonly.value)
+    return
   if (event.key === 'ArrowDown') {
     event.preventDefault()
-    if (!open.value) openMenu()
+    if (!open.value)
+      openMenu()
     else move(1)
     return
   }
   if (event.key === 'ArrowUp') {
     event.preventDefault()
-    if (!open.value) openMenu()
+    if (!open.value)
+      openMenu()
     else move(-1)
     return
   }
@@ -227,7 +296,8 @@ function onKeydown(event: KeyboardEvent) {
       return
     }
     const option = filteredOptions.value[activeIndex.value]
-    if (!option) return
+    if (!option)
+      return
     event.preventDefault()
     choose(option)
     return
@@ -240,10 +310,23 @@ function onKeydown(event: KeyboardEvent) {
 
 function onDocPointerDown(event: PointerEvent) {
   const root = rootRef.value
-  if (!open.value || !root) return
-  if (event.target instanceof Node && root.contains(event.target)) return
+  if (!open.value || !root)
+    return
+  const target = event.target
+  if (target instanceof Node && (root.contains(target) || menuRef.value?.contains(target)))
+    return
   closeMenu()
 }
+
+watch(open, (value) => {
+  if (value) {
+    window.addEventListener('scroll', place, true)
+    window.addEventListener('resize', place)
+    return
+  }
+  window.removeEventListener('scroll', place, true)
+  window.removeEventListener('resize', place)
+})
 
 function focus() {
   triggerRef.value?.focus()
@@ -255,6 +338,8 @@ onMounted(() => {
 
 onBeforeUnmount(() => {
   document.removeEventListener('pointerdown', onDocPointerDown)
+  window.removeEventListener('scroll', place, true)
+  window.removeEventListener('resize', place)
 })
 
 defineExpose({ focus })
@@ -275,109 +360,185 @@ defineExpose({ focus })
         'ud-select--disabled': resolvedDisabled,
         'ud-select--readonly': resolvedReadonly,
         'ud-select--error': resolvedError,
-        'ud-select--top': placement === 'top',
-        'ud-select--end': align === 'end',
       },
     ]"
   >
-    <div v-if="label" class="ud-input__label">
-      <span v-if="required" class="ud-input__required" aria-hidden="true">*</span><span :id="labelId">{{ label }}</span>
-    </div>
-    <div class="ud-select__field">
     <div
-      ref="trigger"
-      class="ud-select__trigger"
-      role="combobox"
-      :tabindex="resolvedDisabled ? -1 : 0"
-      :aria-expanded="open"
-      :aria-labelledby="label ? labelId : undefined"
-      :aria-required="required || undefined"
-      :aria-disabled="resolvedDisabled || undefined"
-      :aria-invalid="resolvedError || undefined"
-      @click="onTriggerClick"
-      @keydown="onKeydown"
+      v-if="label"
+      class="ud-input__label"
     >
       <span
-        class="ud-select__value"
-        :class="{
-          'is-placeholder': !hasValue,
-          'is-dim': open && !multiple && hasValue && !filterable,
-        }"
+        v-if="required"
+        class="ud-input__required"
+        aria-hidden="true"
+      >*</span><span :id="labelId">{{ label }}</span>
+    </div>
+    <div class="ud-select__field">
+      <div
+        ref="trigger"
+        class="ud-select__trigger"
+        role="combobox"
+        :tabindex="resolvedDisabled ? -1 : 0"
+        :aria-expanded="open"
+        :aria-labelledby="label ? labelId : undefined"
+        :aria-required="required || undefined"
+        :aria-disabled="resolvedDisabled || undefined"
+        :aria-invalid="resolvedError || undefined"
+        @click="onTriggerClick"
+        @keydown="onKeydown"
       >
-        <template v-if="multiple && hasValue">
-          <span v-for="option in visibleTags" :key="option.value" class="ud-select__tag">
-            <span class="ud-select__tag-label">{{ option.label }}</span>
-            <button
-              v-if="!resolvedDisabled && !resolvedReadonly"
-              type="button"
-              class="ud-select__tag-remove"
-              :aria-label="`移除${option.label}`"
-              @click="remove(option.value, $event)"
-            >
-              <ParkIcon :icon="Close" />
-            </button>
-          </span>
-          <span v-if="hiddenCount > 0" class="ud-select__tag ud-select__more">
-            +{{ hiddenCount }}
-            <span class="ud-select__more-pop" role="tooltip">
-              <span v-for="option in hiddenTags" :key="option.value" class="ud-select__tag">{{ option.label }}</span>
-            </span>
-          </span>
-        </template>
-        <input
-          v-if="filterable && open"
-          ref="search"
-          class="ud-select__search"
-          :value="query"
-          :placeholder="searchPlaceholder"
-          @click.stop
-          @input="onSearch"
-          @keydown.stop="onKeydown"
-        />
-        <span v-else-if="!(multiple && hasValue)" class="ud-select__single">{{ hasValue ? singleLabel : placeholder }}</span>
-      </span>
-      <span class="ud-select__suffix">
-        <button v-if="showClear" type="button" class="ud-select__clear" aria-label="清除" @click="clear">
-          <ParkIcon :icon="CloseOne" theme="filled" />
-        </button>
-        <ParkIcon class="ud-select__arrow" :icon="open ? Up : Down" />
-      </span>
-    </div>
-    <div v-if="open" ref="menu" class="ud-select__menu" role="listbox" :aria-label="label">
-      <div v-if="loading" class="ud-select__loading">
-        <span class="ud-select__spinner" aria-hidden="true" />
-      </div>
-      <div v-else-if="!filteredOptions.length" class="ud-select__empty">{{ query ? noResultText : emptyText }}</div>
-      <template v-else>
-        <button
-          v-for="(option, index) in filteredOptions"
-          :key="option.value"
-          type="button"
-          class="ud-select__option"
+        <span
+          class="ud-select__value"
           :class="{
-            'is-active': index === activeIndex,
-            'is-selected': isSelected(option.value),
-            'is-disabled': option.disabled,
+            'is-placeholder': !hasValue,
+            'is-dim': open && !multiple && hasValue && !filterable,
           }"
-          role="option"
-          :aria-selected="isSelected(option.value)"
-          :disabled="option.disabled"
-          @mouseenter="activeIndex = index"
-          @click="choose(option)"
         >
-          <Tooltip only-overflow :content="option.label">
-            <span class="ud-select__option-label">
-              <template v-for="(part, partIndex) in matchParts(option.label)" :key="partIndex">
-                <span v-if="part.match" class="ud-select__match">{{ part.text }}</span>
-                <template v-else>{{ part.text }}</template>
-              </template>
+          <template v-if="multiple && hasValue">
+            <span
+              v-for="option in visibleTags"
+              :key="option.value"
+              class="ud-select__tag"
+            >
+              <span class="ud-select__tag-label">{{ option.label }}</span>
+              <button
+                v-if="!resolvedDisabled && !resolvedReadonly"
+                type="button"
+                class="ud-select__tag-remove"
+                :aria-label="`移除${option.label}`"
+                @click="remove(option.value, $event)"
+              >
+                <ParkIcon :icon="Close" />
+              </button>
             </span>
-          </Tooltip>
-          <ParkIcon v-if="isSelected(option.value)" class="ud-select__check" :icon="Check" size="16" />
-        </button>
-      </template>
+            <span
+              v-if="hiddenCount > 0"
+              class="ud-select__tag ud-select__more"
+            >
+              +{{ hiddenCount }}
+              <span
+                class="ud-select__more-pop"
+                role="tooltip"
+              >
+                <span
+                  v-for="option in hiddenTags"
+                  :key="option.value"
+                  class="ud-select__tag"
+                >{{ option.label }}</span>
+              </span>
+            </span>
+          </template>
+          <input
+            v-if="filterable && open"
+            ref="search"
+            class="ud-select__search"
+            :value="query"
+            :placeholder="searchPlaceholder"
+            @click.stop
+            @input="onSearch"
+            @keydown.stop="onKeydown"
+          >
+          <span
+            v-else-if="!(multiple && hasValue)"
+            class="ud-select__single"
+          >{{ hasValue ? singleLabel : placeholder }}</span>
+        </span>
+        <span class="ud-select__suffix">
+          <button
+            v-if="showClear"
+            type="button"
+            class="ud-select__clear"
+            aria-label="清除"
+            @click="clear"
+          >
+            <ParkIcon
+              :icon="CloseOne"
+              theme="filled"
+            />
+          </button>
+          <ParkIcon
+            class="ud-select__arrow"
+            :icon="open ? Up : Down"
+          />
+        </span>
+      </div>
+      <Teleport to="body">
+        <Transition name="ud-select-menu">
+          <div
+            v-if="open"
+            ref="menu"
+            class="ud-select__menu"
+            :class="{ 'is-top': placement === 'top' }"
+            :style="{ ...menuStyle, '--ud-select-option-lines': String(optionLines) }"
+            role="listbox"
+            :aria-label="label"
+          >
+            <div
+              v-if="loading"
+              class="ud-select__loading"
+            >
+              <span
+                class="ud-select__spinner"
+                aria-hidden="true"
+              />
+            </div>
+            <div
+              v-else-if="!filteredOptions.length"
+              class="ud-select__empty"
+            >
+              {{ query ? noResultText : emptyText }}
+            </div>
+            <template v-else>
+              <button
+                v-for="(option, index) in filteredOptions"
+                :key="option.value"
+                type="button"
+                class="ud-select__option"
+                :class="{
+                  'is-active': index === activeIndex,
+                  'is-selected': isSelected(option.value),
+                  'is-disabled': option.disabled,
+                }"
+                role="option"
+                :aria-selected="isSelected(option.value)"
+                :disabled="option.disabled"
+                @mouseenter="activeIndex = index"
+                @click="choose(option)"
+              >
+                <Tooltip
+                  only-overflow
+                  :content="option.label"
+                >
+                  <span class="ud-select__option-label">
+                    <template
+                      v-for="(part, partIndex) in matchParts(option.label)"
+                      :key="partIndex"
+                    >
+                      <span
+                        v-if="part.match"
+                        class="ud-select__match"
+                      >{{ part.text }}</span>
+                      <template v-else>{{ part.text }}</template>
+                    </template>
+                  </span>
+                </Tooltip>
+                <ParkIcon
+                  v-if="isSelected(option.value)"
+                  class="ud-select__check"
+                  :icon="Check"
+                  size="16"
+                />
+              </button>
+            </template>
+          </div>
+        </Transition>
+      </Teleport>
     </div>
-    </div>
-    <p v-if="message" class="ud-select__message">{{ message }}</p>
+    <p
+      v-if="message"
+      class="ud-select__message"
+    >
+      {{ message }}
+    </p>
   </div>
 </template>

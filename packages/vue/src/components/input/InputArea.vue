@@ -1,8 +1,6 @@
-<script setup lang="ts" vapor>
-import { computed, nextTick, onBeforeUnmount, onMounted, useId, useTemplateRef, watch } from 'vue'
+<script setup lang="ts">
 import type { InputSize } from './types'
-
-const model = defineModel<string>({ default: '' })
+import { computed, nextTick, onBeforeUnmount, onMounted, useId, useTemplateRef, watch } from 'vue'
 
 const {
   size = 'md',
@@ -22,15 +20,17 @@ const {
   readonly?: boolean
   error?: boolean
   required?: boolean
-  /** 多行：从单行高度随内容增高。否则为可拖拽的文本域。 */
+  /** Multiline: grows from single-line height with content. Otherwise a resizable textarea. */
   autosize?: boolean
-  /** 超出 maxlength 时截断。否则保留超出字符并进入错误态。 */
+  /** Truncate past maxlength. Otherwise keep the extra characters and show the error state. */
   truncate?: boolean
   maxlength?: number
   label?: string
   placeholder?: string
   message?: string
 }>()
+
+const model = defineModel<string>({ default: '' })
 
 const fieldId = useId()
 const fieldRef = useTemplateRef<HTMLTextAreaElement>('field')
@@ -40,11 +40,12 @@ const count = computed(() => model.value.length)
 const over = computed(() => maxlength != null && count.value > maxlength)
 const invalid = computed(() => error || over.value)
 
-// 单行和多行的留白不同。每次都先按单行量，行数只由内容决定，不会在两种宽度之间来回跳。
+// Single and multi-line padding differ. Always measure as single-line first so the line count depends only on content and does not flip between the two widths.
 function fit() {
   const field = fieldRef.value
   const control = controlRef.value
-  if (!field || !control || !autosize) return
+  if (!field || !control || !autosize)
+    return
   control.dataset.lines = 'single'
   field.style.setProperty('--ud-input-area-count-width', `${countRef.value?.offsetWidth ?? 0}px`)
   field.style.height = '0px'
@@ -54,14 +55,17 @@ function fit() {
   const style = getComputedStyle(field)
   const border = parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth)
   const min = parseFloat(style.minHeight)
-  // scrollHeight 是取整后的值，缩放屏下会比最小高度多出零点几像素。
+  // scrollHeight is rounded, so on scaled displays it can exceed the minimum height by a fraction of a pixel.
   const height = field.scrollHeight + border
-  field.style.height = `${height - min < 1 ? min : height}px`
+  field.style.height = `${height - min < 1
+    ? min
+    : height}px`
 }
 
 function onInput(event: Event) {
   const field = event.currentTarget
-  if (!(field instanceof HTMLTextAreaElement)) return
+  if (!(field instanceof HTMLTextAreaElement))
+    return
   let next = field.value
   if (truncate && maxlength != null && next.length > maxlength) {
     next = next.slice(0, maxlength)
@@ -80,9 +84,11 @@ let lastWidth = 0
 
 onMounted(() => {
   fit()
-  if (!autosize || !controlRef.value) return
+  if (!autosize || !controlRef.value)
+    return
   resizeObserver = new ResizeObserver(([entry]) => {
-    if (entry.contentRect.width === lastWidth) return
+    if (entry.contentRect.width === lastWidth)
+      return
     lastWidth = entry.contentRect.width
     fit()
   })
@@ -119,10 +125,21 @@ defineExpose({ focus })
       },
     ]"
   >
-    <label v-if="label" class="ud-input__label" :for="fieldId">
-      <span v-if="required" class="ud-input__required" aria-hidden="true">*</span>{{ label }}
+    <label
+      v-if="label"
+      class="ud-input__label"
+      :for="fieldId"
+    >
+      <span
+        v-if="required"
+        class="ud-input__required"
+        aria-hidden="true"
+      >*</span>{{ label }}
     </label>
-    <div ref="control" class="ud-input-area__control">
+    <div
+      ref="control"
+      class="ud-input-area__control"
+    >
       <textarea
         :id="fieldId"
         ref="field"
@@ -137,10 +154,21 @@ defineExpose({ focus })
         :aria-describedby="message ? `${fieldId}-message` : undefined"
         @input="onInput"
       />
-      <span v-if="maxlength != null" ref="count" class="ud-input-area__count" :class="{ 'ud-input-area__count--filled': count > 0 }">
+      <span
+        v-if="maxlength != null"
+        ref="count"
+        class="ud-input-area__count"
+        :class="{ 'ud-input-area__count--filled': count > 0 }"
+      >
         <span class="ud-input-area__count-value">{{ count }}</span>/{{ maxlength }}
       </span>
     </div>
-    <p v-if="message" :id="`${fieldId}-message`" class="ud-input__message">{{ message }}</p>
+    <p
+      v-if="message"
+      :id="`${fieldId}-message`"
+      class="ud-input__message"
+    >
+      {{ message }}
+    </p>
   </div>
 </template>

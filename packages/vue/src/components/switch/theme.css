@@ -1,0 +1,116 @@
+.ud-switch {
+  /* Measured at 2x: medium track 40×22, knob 18, inset 2; small track 28×16, knob 12. */
+  --ud-switch-width: 40px;
+  --ud-switch-height: 22px;
+  --ud-switch-knob: 18px;
+  --ud-switch-inset: 2px;
+  /* Measured from the medium figure: spinner diameter 11, stroke 1.5. */
+  --ud-switch-spinner: 11px;
+  --ud-switch-spinner-line: 1.5px;
+  /* Figure colours: on #3370FF, off #D0D3D6, disabled on #BACEFD, disabled off #DEE0E3. */
+  --ud-switch-track: var(--ud-color-border);
+  --ud-switch-knob-bg: var(--ud-color-bg-white);
+  --ud-switch-knob-shadow: var(--ud-shadow-down-s1);
+  --ud-switch-spinner-color: var(--ud-color-text-disabled);
+  --ud-switch-focus-ring: var(--ud-color-focus-ring);
+
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  box-sizing: border-box;
+  width: var(--ud-switch-width);
+  height: var(--ud-switch-height);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ud-radius-full);
+  background: var(--ud-switch-track);
+  vertical-align: middle;
+  cursor: pointer;
+}
+
+.ud-switch--sm {
+  --ud-switch-width: 28px;
+  --ud-switch-height: 16px;
+  --ud-switch-knob: 12px;
+  /* No small loading figure; scaled from the medium spinner-to-knob ratio (inferred). */
+  --ud-switch-spinner: 7px;
+  --ud-switch-spinner-line: 1px;
+}
+
+.ud-switch:focus {
+  outline: none;
+}
+
+/* Focus style is unspecified; borrowed from the button focus colour (inferred). */
+.ud-switch:focus-visible {
+  outline: 2px solid var(--ud-switch-focus-ring);
+  outline-offset: 2px;
+}
+
+.ud-switch__knob {
+  position: absolute;
+  top: var(--ud-switch-inset);
+  left: var(--ud-switch-inset);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--ud-switch-knob);
+  height: var(--ud-switch-knob);
+  border-radius: var(--ud-radius-full);
+  background: var(--ud-switch-knob-bg);
+  box-shadow: var(--ud-switch-knob-shadow);
+  /* Motion duration is unspecified (inferred). */
+  transition: left 0.2s ease;
+}
+
+.ud-switch--checked {
+  --ud-switch-track: var(--ud-color-brand);
+  --ud-switch-spinner-color: var(--ud-blue-9);
+}
+
+.ud-switch--checked .ud-switch__knob {
+  left: calc(var(--ud-switch-width) - var(--ud-switch-knob) - var(--ud-switch-inset));
+}
+
+.ud-switch--disabled,
+.ud-switch--loading {
+  --ud-switch-track: var(--ud-color-border-card);
+  cursor: not-allowed;
+}
+
+.ud-switch--loading {
+  cursor: default;
+}
+
+/* Old palette #BACEFD maps to blue-9. */
+.ud-switch--checked.ud-switch--disabled,
+.ud-switch--checked.ud-switch--loading {
+  --ud-switch-track: var(--ud-blue-9);
+}
+
+.ud-switch__spinner {
+  box-sizing: border-box;
+  width: var(--ud-switch-spinner);
+  height: var(--ud-switch-spinner);
+  border: var(--ud-switch-spinner-line) solid var(--ud-switch-spinner-color);
+  border-top-color: transparent;
+  border-radius: var(--ud-radius-full);
+  animation: ud-switch-spin 0.7s linear infinite;
+}
+
+@keyframes ud-switch-spin {
+  from {
+    transform: rotate(45deg);
+  }
+
+  to {
+    transform: rotate(405deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ud-switch__knob {
+    transition: none;
+  }
+}

@@ -1,7 +1,7 @@
-<script setup lang="ts" vapor>
+<script setup lang="ts">
+import type { InputSize } from './types'
 import { computed, provide, useId } from 'vue'
 import { INPUT_GROUP } from './context'
-import type { InputSize } from './types'
 
 const {
   size = 'md',
@@ -43,13 +43,29 @@ provide(INPUT_GROUP, {
       },
     ]"
   >
-    <div v-if="label" class="ud-input__label">
-      <span v-if="required" class="ud-input__required" aria-hidden="true">*</span>
+    <div
+      v-if="label"
+      class="ud-input__label"
+    >
+      <span
+        v-if="required"
+        class="ud-input__required"
+        aria-hidden="true"
+      >*</span>
       <span :id="labelId">{{ label }}</span>
     </div>
-    <div class="ud-input-group__fields" role="group" :aria-labelledby="label ? labelId : undefined">
+    <div
+      class="ud-input-group__fields"
+      role="group"
+      :aria-labelledby="label ? labelId : undefined"
+    >
       <slot />
     </div>
-    <p v-if="message" class="ud-input__message">{{ message }}</p>
+    <p
+      v-if="message"
+      class="ud-input__message"
+    >
+      {{ message }}
+    </p>
   </div>
 </template>

@@ -1,5 +1,5 @@
 .ud-radio {
-  /* 框 16、字 14、间距 8、热区最低 22，文档写的。圆是状态图的形状，描边 1px 是量的。 */
+  /* Specified: box 16, text 14, gap 8, minimum hit height 22. The circle comes from the state figure; the 1px border is measured. */
   --ud-radio-size: 16px;
   --ud-radio-gap: 8px;
   --ud-radio-line: var(--ud-line-body);
@@ -62,7 +62,7 @@
   margin-top: 0;
 }
 
-/* 选中圆点白芯 11×12（2 倍图），按 6px 画。 */
+/* The checked white dot measures 11×12 at 2x; drawn as 6px. */
 .ud-radio__dot {
   width: 6px;
   height: 6px;
@@ -74,7 +74,7 @@
   min-width: 0;
 }
 
-/* 状态图旧蓝：常态 #3370FF，悬停/聚焦 #4E83FD，按下 #245BDB。对到品牌色三档。 */
+/* Old blues in the state figure: rest #3370FF, hover/focus #4E83FD, pressed #245BDB. Mapped to the three brand tokens. */
 .ud-radio:hover:not(.ud-radio--disabled):not(.ud-radio--button),
 .ud-radio:focus-within:not(.ud-radio--disabled):not(.ud-radio--button) {
   --ud-radio-border: var(--ud-color-brand);
@@ -100,7 +100,7 @@
   --ud-radio-border: var(--ud-color-brand-pressed);
 }
 
-/* 报错图只画了未选中，文字仍是正文色。 */
+/* The error figure only shows the unchecked state; text keeps the body colour. */
 .ud-radio--error,
 .ud-radio--error:hover:not(.ud-radio--disabled),
 .ud-radio--error:focus-within:not(.ud-radio--disabled),
@@ -122,7 +122,7 @@
 }
 
 .ud-radio-group {
-  /* 竖排 8、横排 24，文档写的。 */
+  /* Specified: vertical gap 8, horizontal gap 24. */
   --ud-radio-group-gap: 8px;
   --ud-radio-group-gap-horizontal: 24px;
 
@@ -139,7 +139,7 @@
   row-gap: var(--ud-radio-group-gap);
 }
 
-/* 按钮型。尺寸图：small、medium 选中块都是 24px 高，large 是 32px。small 字墨高更矮，用 12px。 */
+/* Button style. Size figure: the selected block is 24px tall for small and medium, 32px for large. Small has shorter ink, so 12px text. */
 .ud-radio-group--button {
   --ud-radio-button-height: 24px;
   --ud-radio-button-font: var(--ud-font-size-body);
@@ -170,7 +170,7 @@
   height: var(--ud-radio-button-height);
   min-height: var(--ud-radio-button-height);
   max-width: 100%;
-  /* 尺寸图字墨到块边约 5px（2 倍图 9–11px）。文档没写这个内边距。 */
+  /* Measured: text ink about 5px from the block edge (9–11px at 2x). The spec does not state this padding. */
   padding: 0 5px;
   border: 1px solid transparent;
   border-radius: var(--ud-radius-xs);
@@ -193,7 +193,7 @@
   white-space: nowrap;
 }
 
-/* 未选悬停底 #E9E9EA，对到背景 1。按下 #D2D3D4，对到描边色。 */
+/* Unselected hover fill #E9E9EA maps to Background 1; pressed #D2D3D4 maps to the border colour. */
 .ud-radio--button:hover:not(.ud-radio--disabled):not(.ud-radio--checked),
 .ud-radio--button:focus-within:not(.ud-radio--disabled):not(.ud-radio--checked) {
   background: var(--ud-color-bg-1);
@@ -203,7 +203,7 @@
   background: var(--ud-color-border);
 }
 
-/* 选中底 #EBF1FF，对到 blue-11。按下 #D6E2FF，对到 blue-10。字和描边是旧品牌蓝。 */
+/* Selected fill #EBF1FF maps to blue-11; pressed #D6E2FF to blue-10. Text and border are the old brand blue. */
 .ud-radio--button.ud-radio--checked {
   border-color: var(--ud-color-brand);
   background: var(--ud-blue-11);

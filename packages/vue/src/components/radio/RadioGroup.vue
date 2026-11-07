@@ -1,9 +1,7 @@
-<script setup lang="ts" vapor>
+<script setup lang="ts">
+import type { RadioDirection, RadioSize } from './types'
 import { computed, provide, useId } from 'vue'
 import { RADIO_GROUP } from './context'
-import type { RadioDirection, RadioSize } from './types'
-
-const model = defineModel<string | number | null>({ default: null })
 
 const {
   disabled = false,
@@ -16,6 +14,8 @@ const {
   variant?: 'default' | 'button'
   size?: RadioSize
 }>()
+
+const model = defineModel<string | number | null>({ default: null })
 
 const button = computed(() => variant === 'button')
 

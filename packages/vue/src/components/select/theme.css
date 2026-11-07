@@ -11,33 +11,33 @@
   --ud-select-color: var(--ud-color-text);
   --ud-select-placeholder: var(--ud-color-text-placeholder);
   --ud-select-label-gap: 8px;
-  /* 状态图按 2 倍量，报错字形顶部距外框 7.5px，和输入框一致。 */
+  /* Measured at 2x from the state figure: error text glyph top is 7.5px below the box, same as Input. */
   --ud-select-message-gap: 2px;
   --ud-select-message-color: var(--ud-color-text-secondary);
   --ud-select-required-color: var(--ud-color-danger);
-  /* 标题行共用 .ud-input__label，它读的是输入框的变量。 */
+  /* The label row reuses .ud-input__label, which reads the Input variables. */
   --ud-input-label-gap: var(--ud-select-label-gap);
   --ud-input-required-color: var(--ud-select-required-color);
-  /* 尺寸图按 2 倍量：标签间距 8px，标签距框内约 6px。 */
+  /* Measured at 2x from the size figure: tag gap 8px, tags about 6px inside the box. */
   --ud-select-tag-gap: 4px;
   --ud-select-tag-pad: 3px;
-  /* 状态图按 2 倍量，菜单与选择框间距约 8px。 */
+  /* Measured at 2x from the state figure: menu sits about 8px from the trigger. */
   --ud-select-menu-gap: 4px;
-  /* 优先与选择框等宽。120 / 420 是菜单自己的推荐范围，不拿来把更宽的选择框裁窄。 */
+  /* Prefer the trigger width. 120 / 420 is the menu's own recommended range and must not clip a wider trigger. */
   --ud-select-menu-min-width: 120px;
   --ud-select-menu-max-height: 246px;
   --ud-select-tag-max-height: 188px;
-  /* 尺寸图标签底 #E9E9EA，状态图激活项底 #EDEEEF。都不是现有色板色。 */
+  /* Size figure tag fill #E9E9EA, state figure active option fill #EDEEEF. Neither is in the palette. */
   --ud-select-tag-bg: #e9e9ea;
   --ud-select-tag-bg-hover: #dddedf;
   --ud-select-option-bg-active: #edeeef;
-  /* 尺寸图按 2 倍量：选择框内文字 S 12/20、M 14/22、L 16/24，标签文字同档。 */
+  /* Measured at 2x from the size figure: trigger text S 12/20, M 14/22, L 16/24; tag text matches. */
   --ud-select-font-size: var(--ud-font-size-body);
   --ud-select-line-height: var(--ud-line-body);
-  /* 箭头字形宽约 8 / 9.5 / 13px。Down 的折线占画布 28/48，对应 13 / 16 / 22。 */
+  /* Arrow glyphs measure about 8 / 9.5 / 13px wide. Down spans 28/48 of its canvas, giving 13 / 16 / 22. */
   --ud-select-arrow-size: 16px;
   --ud-select-clear-size: 12px;
-  /* 标签：文字距标签边约 6 / 6 / 8px，关闭叉字形约 7 / 8 / 10px，Close 占画布 36/48。 */
+  /* Tags: text about 6 / 6 / 8px from the tag edge, close glyph about 7 / 8 / 10px; Close spans 36/48 of its canvas. */
   --ud-select-tag-padding-inline: 6px;
   --ud-select-tag-close-size: 10px;
 
@@ -54,7 +54,7 @@
   line-height: var(--ud-line-body);
 }
 
-/* 清除圆钮只有 M 的图，S / L 按箭头比例推算。 */
+/* Only M has a figure for the clear button; S / L scale with the arrow (inferred). */
 .ud-select--sm {
   --ud-select-height: 28px;
   --ud-select-tag-height: 20px;
@@ -87,7 +87,7 @@
 .ud-select--readonly {
   --ud-select-bg: var(--ud-color-fill-disabled);
   --ud-select-border-color-hover: var(--ud-color-border);
-  /* 状态图按 2 倍量：灰底上的标签加深一档，和长文本禁用态的计数芯片同色。 */
+  /* Measured at 2x from the state figure: tags on a grey box go one step darker, matching the disabled textarea counter chip. */
   --ud-select-tag-bg: #dadcdd;
 }
 
@@ -119,7 +119,7 @@
   cursor: pointer;
 }
 
-/* 尺寸图按 2 倍量：S/M/L 标签距外框都是 4px（边框 1 + 3），占位文字仍是 12px。 */
+/* Measured at 2x from the size figure: S/M/L tags are all 4px from the outer edge (1 border + 3); placeholder stays 12px. */
 .ud-select--tags .ud-select__trigger {
   padding-left: var(--ud-select-tag-pad);
 }
@@ -131,7 +131,7 @@
   overflow: auto;
 }
 
-/* 状态图按 2 倍量：标签换行后箭头仍停在第一行中线，不随框高居中。 */
+/* Measured at 2x from the state figure: once tags wrap, the arrow stays on the first line's centre instead of centring in the box. */
 .ud-select--tags:not(.ud-select--collapsed) .ud-select__suffix {
   position: sticky;
   top: 0;
@@ -143,7 +143,7 @@
   border-color: var(--ud-select-border-color-hover);
 }
 
-/* 文档：多选超出推荐高度后，鼠标悬停时才显示滚动条。 */
+/* Specified: past the recommended height, multi-select shows its scrollbar only on hover. */
 .ud-select__trigger::-webkit-scrollbar {
   width: 11px;
 }
@@ -216,7 +216,7 @@
 .ud-select__tag {
   display: inline-flex;
   align-items: center;
-  /* 文字到关闭叉的字形间距三档量出来约 7 / 8.5 / 8px。 */
+  /* Measured text-to-close glyph gap: about 7 / 8.5 / 8px. */
   gap: 6px;
   box-sizing: border-box;
   max-width: 100%;
@@ -228,8 +228,8 @@
 }
 
 /*
- * 状态图按 2 倍量：悬停 +N 时底色变为 #DDDEDF，下方 6px 弹出其余标签。
- * 浮层以 +N 为中心，留白上下 12px、左右 16px，圆角 8px，标签间距 4px，标签不带关闭叉。
+ * Measured at 2x from the state figure: hovering +N turns its fill #DDDEDF and opens the rest 6px below.
+ * The popover centres on +N, padding 12px block and 16px inline, radius 8px, tag gap 4px, tags without close buttons.
  */
 .ud-select__more {
   position: relative;
@@ -259,7 +259,7 @@
   position: absolute;
   inset: auto 0 100%;
   height: calc((var(--ud-select-height) - var(--ud-select-tag-height)) / 2 + 7px);
-  content: "";
+  content: '';
 }
 
 .ud-select__more:hover {
@@ -305,12 +305,12 @@
   font-size: var(--ud-select-arrow-size);
 }
 
-/* 图上箭头字形右缘贴着留白边。Down / Up 的折线左右各空出画布的 10/48。 */
+/* The arrow glyph's right edge touches the padding edge. Down / Up leave 10/48 of the canvas on each side. */
 .ud-select__arrow:last-child {
   margin-right: calc(var(--ud-select-arrow-size) * -10 / 48);
 }
 
-/* 清除图上圆钮到箭头字形 9.5px：圆钮留白约 0.5，间距 8，剩下 1px 加上抵掉箭头左侧留白。 */
+/* Measured 9.5px from the clear button to the arrow glyph: about 0.5 button padding, gap 8, and 1px added to cancel the arrow's left canvas padding. */
 .ud-select__clear + .ud-select__arrow {
   margin-left: calc(1px - var(--ud-select-arrow-size) * 10 / 48);
 }
@@ -335,12 +335,15 @@
 }
 
 .ud-select__menu {
-  position: absolute;
-  z-index: 20;
-  left: 0;
-  top: calc(100% + var(--ud-select-menu-gap));
+  /* The menu is teleported, so it cannot inherit variables from .ud-select. */
+  --ud-select-menu-min-width: 120px;
+  --ud-select-menu-max-height: 246px;
+  --ud-select-radius: var(--ud-radius-s);
+  /* Measured from the state figure: the active row fill is #EDEEEF, not in the palette. */
+  --ud-select-option-bg-active: #edeeef;
+
+  position: fixed;
   box-sizing: border-box;
-  width: 100%;
   min-width: var(--ud-select-menu-min-width);
   max-height: var(--ud-select-menu-max-height);
   margin: 0;
@@ -349,11 +352,11 @@
   border: 1px solid var(--ud-color-border-card);
   border-radius: var(--ud-select-radius);
   background: var(--ud-color-bg-white);
-  /* s2 只有 2% 透明度，图上的浮层阴影能看出来，用 s4。 */
+  /* s2 is only 2% alpha but the figure's menu shadow is visible, so s4. */
   box-shadow: var(--ud-shadow-down-s4);
 }
 
-/* 菜单图按 2 倍量：滑块宽 7px、离边框 2px、两端圆头，色值 #BCBDBF 不在色板里。 */
+/* Measured at 2x from the menu figure: thumb 7px wide, 2px from the edge, round ends; #BCBDBF is not in the palette. */
 .ud-select__menu::-webkit-scrollbar {
   width: 11px;
 }
@@ -375,15 +378,19 @@
   }
 }
 
-.ud-select--top .ud-select__menu {
-  top: auto;
-  bottom: calc(100% + var(--ud-select-menu-gap));
+.ud-select__menu.is-top {
   box-shadow: var(--ud-shadow-up-s4);
 }
 
-.ud-select--end .ud-select__menu {
-  left: auto;
-  right: 0;
+/* Timing is unspecified (inferred). */
+.ud-select-menu-enter-active,
+.ud-select-menu-leave-active {
+  transition: opacity 0.15s ease-out;
+}
+
+.ud-select-menu-enter-from,
+.ud-select-menu-leave-to {
+  opacity: 0;
 }
 
 .ud-select__option,
@@ -408,7 +415,8 @@
   cursor: pointer;
 }
 
-.ud-select__option.is-active {
+.ud-select__option.is-active,
+.ud-select__option:hover:not(:disabled) {
   background: var(--ud-select-option-bg-active);
 }
 
@@ -434,7 +442,7 @@
   color: var(--ud-color-brand);
 }
 
-/* 搜索图和状态图按 2 倍量：加载、无结果、无选项的菜单外框都是 38px，扣掉菜单上下 4px 留白和描边剩 28px。 */
+/* Measured at 2x from the search and state figures: loading, no-result and empty menus are 38px tall, leaving 28px after the 4px padding and border. */
 .ud-select__empty,
 .ud-select__loading {
   min-height: 28px;
@@ -446,7 +454,7 @@
   justify-content: center;
 }
 
-/* 搜索图量到转圈外径约 19.5px。 */
+/* Measured from the search figure: spinner outer diameter about 19.5px. */
 .ud-select__spinner {
   box-sizing: border-box;
   width: 20px;
@@ -454,7 +462,7 @@
   border: 2px solid var(--ud-color-brand);
   border-right-color: transparent;
   border-radius: var(--ud-radius-full);
-  /* 转动时长沿用按钮，规范没有给选择器单独的时间。 */
+  /* Spin duration borrowed from Button; the spec gives none for Select. */
   animation: ud-button-spin 0.7s linear infinite;
 }
 
