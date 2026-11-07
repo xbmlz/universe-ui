@@ -1,0 +1,107 @@
+<script setup lang="ts">
+import type { AvatarColor, AvatarKind, AvatarShape } from './types'
+import { ApplicationOne, BuildingOne, Peoples, User } from '@icon-park/vue-next'
+import { computed, inject, shallowRef, watch } from 'vue'
+import ParkIcon from '../../internal/park-icon.vue'
+import { AVATAR_GROUP } from './context'
+import { fontRatio, groupLines, initials } from './text'
+
+const {
+  src,
+  name = '',
+  text,
+  kind = 'person',
+  shape,
+  size,
+  color = 'blue',
+} = defineProps<{
+  src?: string
+  name?: string
+  text?: string
+  kind?: AvatarKind
+  shape?: AvatarShape
+  size?: number
+  color?: AvatarColor
+}>()
+
+const group = inject(AVATAR_GROUP, null)
+
+const DEFAULT_ICONS = {
+  person: User,
+  group: Peoples,
+  app: ApplicationOne,
+  enterprise: BuildingOne,
+}
+
+const status = shallowRef<'idle' | 'loading' | 'loaded' | 'error'>('idle')
+watch(() => src, (value) => {
+  status.value = value ? 'loading' : 'idle'
+}, { immediate: true })
+
+const resolvedSize = computed(() => size ?? group?.size() ?? 32)
+const resolvedShape = computed(() => shape ?? (kind === 'app' || kind === 'enterprise'
+  ? 'square'
+  : 'circle'))
+const showImage = computed(() => !!src && status.value !== 'error')
+const label = computed(() => text ?? initials(name, kind))
+const lines = computed(() => (kind === 'group'
+  ? groupLines(label.value)
+  : [label.value]))
+
+const classes = computed(() => [
+  'ud-avatar',
+  `ud-avatar--${kind}`,
+  `ud-avatar--${resolvedShape.value}`,
+  `ud-avatar--${color}`,
+  {
+    'ud-avatar--image': showImage.value,
+    'ud-avatar--loading': status.value === 'loading',
+    'ud-avatar--multiline': lines.value.length > 1,
+  },
+])
+
+const style = computed(() => ({
+  '--ud-avatar-size': `${resolvedSize.value}px`,
+  '--ud-avatar-font-ratio': String(fontRatio(label.value, kind)),
+}))
+</script>
+
+<template>
+  <span
+    :class="classes"
+    :style="style"
+    :role="showImage ? undefined : 'img'"
+    :aria-label="showImage ? undefined : name || label || undefined"
+  >
+    <img
+      v-if="showImage"
+      class="ud-avatar__image"
+      :src="src"
+      :alt="name"
+      @load="status = 'loaded'"
+      @error="status = 'error'"
+    >
+    <span
+      v-else-if="$slots.icon"
+      class="ud-avatar__icon"
+    ><slot name="icon" /></span>
+    <span
+      v-else-if="label"
+      class="ud-avatar__text"
+      aria-hidden="true"
+    >
+      <span
+        v-for="(line, index) in lines"
+        :key="index"
+        class="ud-avatar__line"
+      >{{ line }}</span>
+    </span>
+    <span
+      v-else
+      class="ud-avatar__icon"
+    ><ParkIcon
+      :icon="DEFAULT_ICONS[kind]"
+      theme="filled"
+    /></span>
+  </span>
+</template>

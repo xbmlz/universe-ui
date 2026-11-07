@@ -1,0 +1,115 @@
+.ud-badge {
+  display: inline-flex;
+  vertical-align: middle;
+}
+
+.ud-badge--wrap {
+  position: relative;
+}
+
+.ud-badge__mark {
+  /* Specified: dots 6 / 8 / 10, count height 14, inline padding 4, 10px Medium. */
+  --ud-badge-size: 14px;
+  --ud-badge-bg: var(--ud-color-danger);
+  --ud-badge-color: var(--ud-color-bg-white);
+
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: var(--ud-badge-size);
+  height: var(--ud-badge-size);
+  border-radius: calc(var(--ud-badge-size) / 2);
+  background: var(--ud-badge-bg);
+  color: var(--ud-badge-color);
+  font-family: var(--ud-font-family);
+  white-space: nowrap;
+}
+
+.ud-badge__mark--count {
+  padding: 0 4px;
+  font-size: var(--ud-font-size-label);
+  font-weight: var(--ud-font-weight-medium);
+  line-height: var(--ud-badge-size);
+}
+
+.ud-badge__mark--dot {
+  padding: 0;
+}
+
+.ud-badge__mark--sm {
+  --ud-badge-size: 6px;
+}
+
+.ud-badge__mark--md {
+  --ud-badge-size: 8px;
+}
+
+.ud-badge__mark--lg {
+  --ud-badge-size: 10px;
+}
+
+/* Measured: red #F54A45, grey #BBBFC4 (N400), green #04B49C (T600), blue #82A7FC (B300), mapped to blue-7. */
+.ud-badge__mark--grey {
+  --ud-badge-bg: var(--ud-color-text-disabled);
+}
+
+.ud-badge__mark--green {
+  --ud-badge-bg: var(--ud-turquoise-600);
+}
+
+.ud-badge__mark--blue {
+  --ud-badge-bg: var(--ud-blue-7);
+}
+
+.ud-badge__mark--outline {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--ud-color-text-secondary);
+}
+
+.ud-badge__mark--plain {
+  --ud-badge-color: var(--ud-color-text-secondary);
+
+  min-width: 0;
+  height: auto;
+  padding: 0;
+  border-radius: 0;
+  background: none;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+}
+
+/* The size of the "···" icon is unspecified; 12 is inferred. */
+.ud-badge__more {
+  font-size: 12px;
+}
+
+/* The cap centre sits on the top-right corner; extra width grows to the left. */
+.ud-badge--wrap > .ud-badge__mark {
+  position: absolute;
+  z-index: 1;
+  right: calc(var(--ud-badge-size) / -2);
+}
+
+.ud-badge--top-right > .ud-badge__mark {
+  top: calc(var(--ud-badge-size) / -2);
+}
+
+.ud-badge--bottom-right > .ud-badge__mark {
+  bottom: calc(var(--ud-badge-size) / -2);
+}
+
+/* Round hosts use the 45° point on the edge: (1 - 1/√2) / 2 ≈ 14.645% in from the bounding-box corner. */
+.ud-badge--round > .ud-badge__mark {
+  right: calc(14.645% - var(--ud-badge-size) / 2);
+}
+
+.ud-badge--round.ud-badge--top-right > .ud-badge__mark {
+  top: calc(14.645% - var(--ud-badge-size) / 2);
+}
+
+.ud-badge--round.ud-badge--bottom-right > .ud-badge__mark {
+  bottom: calc(14.645% - var(--ud-badge-size) / 2);
+}

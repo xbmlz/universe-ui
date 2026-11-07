@@ -1,0 +1,174 @@
+.ud-popover-ref {
+  display: inline-flex;
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+.ud-popover {
+  --ud-popover-pad-block: 12px;
+  --ud-popover-pad-inline: 16px;
+
+  position: fixed;
+  box-sizing: border-box;
+  /* Specified width 280, max 420. */
+  width: 280px;
+  max-width: min(420px, calc(100vw - 32px));
+  color: var(--ud-color-text);
+  font-family: var(--ud-font-family);
+  font-size: var(--ud-font-size-body);
+  font-weight: var(--ud-font-weight-regular);
+  line-height: var(--ud-line-body);
+}
+
+.ud-popover__panel {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  /* Specified max height 480. Overflow is hidden so the body can shrink and scroll. */
+  max-height: 480px;
+  padding: var(--ud-popover-pad-block) var(--ud-popover-pad-inline);
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  border: 1px solid var(--ud-color-border-card);
+  /* Corner inset on the title figure is about 6.5px at 2×, so the small radius. */
+  border-radius: var(--ud-radius-s);
+  /* The colour figure names the fill token/bg/float. The sampled fill is white. */
+  background: var(--ud-color-bg-white);
+  box-shadow: var(--ud-shadow-down-s4);
+}
+
+.ud-popover--lg {
+  --ud-popover-pad-block: 20px;
+  --ud-popover-pad-inline: 24px;
+}
+
+.ud-popover__main {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: stretch;
+  /* Title figure: glyph-to-title ink is 13px. IconPark paints inside a 48 box with 4px of padding, so a 16px icon needs a 12px gap. */
+  gap: 12px;
+  min-height: 0;
+  min-width: 0;
+}
+
+.ud-popover__icon {
+  display: inline-flex;
+  flex: none;
+  align-self: flex-start;
+  align-items: center;
+  height: var(--ud-line-title);
+  color: var(--ud-color-brand);
+  font-size: 16px;
+}
+
+.ud-popover__icon--success {
+  color: var(--ud-color-success);
+}
+
+.ud-popover__icon--warning {
+  color: var(--ud-color-warning);
+}
+
+.ud-popover__icon--error {
+  color: var(--ud-color-danger);
+}
+
+.ud-popover__text {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.ud-popover__title {
+  margin: 0 0 4px;
+  font-size: var(--ud-font-size-title);
+  font-weight: var(--ud-font-weight-medium);
+  line-height: var(--ud-line-title);
+}
+
+.ud-popover__title--strong {
+  font-size: var(--ud-font-size-h4);
+  line-height: var(--ud-line-h4);
+}
+
+.ud-popover__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+  overflow-wrap: anywhere;
+}
+
+.ud-popover__loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+}
+
+.ud-popover__footer {
+  display: flex;
+  flex: none;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  /* Button gap is unspecified (inferred). 16px above the buttons is the small-size callout. */
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.ud-popover--divided .ud-popover__footer {
+  margin: 12px calc(var(--ud-popover-pad-inline) * -1) calc(var(--ud-popover-pad-block) * -1);
+  padding: 12px var(--ud-popover-pad-inline) var(--ud-popover-pad-block);
+  border-top: 1px solid var(--ud-color-border-card);
+}
+
+.ud-popover__arrow {
+  position: absolute;
+  box-sizing: border-box;
+  /* 12×6 triangle: a square of 12/√2, rotated, with its centre on the card edge. */
+  width: 8.485px;
+  height: 8.485px;
+  background: var(--ud-color-bg-white);
+  border: 1px solid var(--ud-color-border-card);
+  transform: rotate(45deg);
+  z-index: 0;
+}
+
+.ud-popover--top .ud-popover__arrow {
+  bottom: -4.24px;
+  left: var(--ud-popover-arrow-x);
+  margin-left: -4.24px;
+}
+
+.ud-popover--bottom .ud-popover__arrow {
+  top: -4.24px;
+  left: var(--ud-popover-arrow-x);
+  margin-left: -4.24px;
+}
+
+.ud-popover--left .ud-popover__arrow {
+  top: var(--ud-popover-arrow-y);
+  right: -4.24px;
+  margin-top: -4.24px;
+}
+
+.ud-popover--right .ud-popover__arrow {
+  top: var(--ud-popover-arrow-y);
+  left: -4.24px;
+  margin-top: -4.24px;
+}
+
+/* Timing is unspecified (inferred, same as Tooltip). */
+.ud-popover-enter-active,
+.ud-popover-leave-active {
+  transition: opacity 0.15s ease-out;
+}
+
+.ud-popover-enter-from,
+.ud-popover-leave-to {
+  opacity: 0;
+}

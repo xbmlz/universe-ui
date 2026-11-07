@@ -1,0 +1,206 @@
+.ud-avatar {
+  --ud-avatar-size: 32px;
+  --ud-avatar-tone: var(--ud-color-brand);
+  --ud-avatar-fill: var(--ud-avatar-tone);
+  --ud-avatar-color: var(--ud-color-bg-white);
+  --ud-avatar-inner: 0 0 0 0 transparent;
+  --ud-avatar-ring: 0 0 0 0 transparent;
+
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--ud-avatar-size);
+  height: var(--ud-avatar-size);
+  overflow: hidden;
+  border-radius: 50%;
+  background: var(--ud-avatar-fill);
+  box-shadow: var(--ud-avatar-ring), var(--ud-avatar-inner);
+  color: var(--ud-avatar-color);
+  font-family: var(--ud-font-family);
+  font-size: calc(var(--ud-avatar-size) * var(--ud-avatar-font-ratio, 0.5));
+  font-weight: var(--ud-font-weight-medium);
+  line-height: 1;
+  vertical-align: middle;
+  user-select: none;
+}
+
+.ud-avatar[hidden] {
+  display: none;
+}
+
+/* Measured: the squircle corner is about a quarter of the size at 40px and 24px. */
+.ud-avatar--square {
+  border-radius: 25%;
+}
+
+.ud-avatar__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ud-avatar--loading > .ud-avatar__image {
+  opacity: 0;
+}
+
+/* Specified: N300 while loading. */
+.ud-avatar.ud-avatar.ud-avatar--loading {
+  --ud-avatar-fill: var(--ud-color-border-card);
+}
+
+.ud-avatar.ud-avatar--image:not(.ud-avatar--loading) {
+  --ud-avatar-fill: transparent;
+}
+
+/* Specified: default icons sit in a safe area half the avatar size. */
+.ud-avatar__icon {
+  display: inline-flex;
+  font-size: calc(var(--ud-avatar-size) / 2);
+}
+
+.ud-avatar__text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  white-space: nowrap;
+}
+
+/* Specified: 5-8 character group text is 60 on 68 line height at 208. */
+.ud-avatar--multiline .ud-avatar__text {
+  line-height: calc(68 / 60);
+}
+
+.ud-avatar--blue {
+  --ud-avatar-tone: var(--ud-color-brand);
+}
+
+.ud-avatar--purple {
+  --ud-avatar-tone: var(--ud-purple-500);
+}
+
+.ud-avatar--turquoise {
+  --ud-avatar-tone: var(--ud-turquoise-600);
+}
+
+.ud-avatar--green {
+  --ud-avatar-tone: var(--ud-green-600);
+}
+
+.ud-avatar--lime {
+  --ud-avatar-tone: var(--ud-lime-600);
+}
+
+.ud-avatar--yellow {
+  --ud-avatar-tone: var(--ud-yellow-600);
+}
+
+.ud-avatar--orange {
+  --ud-avatar-tone: var(--ud-orange-600);
+}
+
+.ud-avatar--carmine {
+  --ud-avatar-tone: var(--ud-carmine-500);
+}
+
+/* Personal avatars use vertical gradients for their four colours; other colours fall back to flat fills. */
+.ud-avatar--person.ud-avatar--blue {
+  --ud-avatar-fill: var(--ud-gradient-blue);
+}
+
+.ud-avatar--person.ud-avatar--purple {
+  --ud-avatar-fill: var(--ud-gradient-purple);
+}
+
+.ud-avatar--person.ud-avatar--turquoise {
+  --ud-avatar-fill: var(--ud-gradient-turquoise);
+}
+
+.ud-avatar--person.ud-avatar--orange {
+  --ud-avatar-fill: var(--ud-gradient-orange);
+}
+
+/* Specified: group avatars are outlined, stroke 6.5 at 208. Measured: white fill, tone stroke and text. */
+.ud-avatar--group {
+  --ud-avatar-fill: var(--ud-color-bg-white);
+  --ud-avatar-color: var(--ud-avatar-tone);
+  --ud-avatar-inner: inset 0 0 0 calc(var(--ud-avatar-size) * 6.5 / 208) var(--ud-avatar-tone);
+}
+
+/* Specified: app avatars carry a 1px N900 10% inner stroke. */
+.ud-avatar--app {
+  --ud-avatar-inner: inset 0 0 0 1px var(--ud-color-text-a10);
+}
+
+.ud-avatar-group {
+  /* Measured overlap: 8 / 5 / 4 at 32 / 24 / 20. Other sizes use a quarter of the size (inferred). */
+  --ud-avatar-group-overlap: calc(var(--ud-avatar-size) / 4);
+  /* Specified: a 2px outer stroke in the background colour. */
+  --ud-avatar-group-stroke: var(--ud-color-bg-white);
+
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+}
+
+.ud-avatar-group--24 {
+  --ud-avatar-group-overlap: 5px;
+}
+
+.ud-avatar-group--20 {
+  --ud-avatar-group-overlap: 4px;
+}
+
+.ud-avatar-group > .ud-avatar,
+.ud-avatar-group__more {
+  --ud-avatar-ring: 0 0 0 2px var(--ud-avatar-group-stroke);
+}
+
+.ud-avatar-group > * + .ud-avatar,
+.ud-avatar-group > * + .ud-avatar-group__more {
+  margin-left: calc(var(--ud-avatar-group-overlap) * -1);
+}
+
+/*
+ * Specified: N200 fill and N600 text on white, N300 on hover and press.
+ * Measured: +N text is 12px at 32 and 10px at 24 and 20.
+ */
+.ud-avatar-group__more {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--ud-avatar-size);
+  height: var(--ud-avatar-size);
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ud-color-bg-1);
+  box-shadow: var(--ud-avatar-ring);
+  color: var(--ud-color-text-secondary);
+  font-family: var(--ud-font-family);
+  font-size: var(--ud-font-size-caption);
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.ud-avatar-group--24 .ud-avatar-group__more,
+.ud-avatar-group--20 .ud-avatar-group__more {
+  font-size: var(--ud-font-size-label);
+}
+
+.ud-avatar-group__more:hover,
+.ud-avatar-group__more:active {
+  background: var(--ud-color-border-card);
+}
+
+/* Focus style is unspecified; borrowed from the button focus colour (inferred). */
+.ud-avatar-group__more:focus-visible {
+  outline: 2px solid var(--ud-color-focus-ring);
+  outline-offset: 2px;
+}

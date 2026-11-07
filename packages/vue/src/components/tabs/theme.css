@@ -1,0 +1,149 @@
+.ud-tabs {
+  /* Specified font sizes 16 / 14 / 12. Line tabs: gap 28 and line-box bottom to indicator bottom 12 / 12 / 8 come from the size callouts. */
+  --ud-tabs-font-size: var(--ud-font-size-body);
+  --ud-tabs-line-height: var(--ud-line-body);
+  --ud-tabs-gap: 28px;
+  --ud-tabs-bottom: 12px;
+  /* Measured at 2x: indicator 3px tall with about 1.5px top radius. */
+  --ud-tabs-indicator-height: 3px;
+  --ud-tabs-indicator-radius: 1.5px;
+  --ud-tabs-color: var(--ud-color-text);
+  --ud-tabs-color-active: var(--ud-color-brand);
+  --ud-tabs-color-disabled: var(--ud-color-text-disabled);
+  --ud-tabs-divider: var(--ud-color-divider);
+  --ud-tabs-focus-ring: var(--ud-color-focus-ring);
+
+  display: flex;
+  align-items: flex-end;
+  gap: var(--ud-tabs-gap);
+  font-family: var(--ud-font-family);
+  font-size: var(--ud-tabs-font-size);
+  line-height: var(--ud-tabs-line-height);
+}
+
+.ud-tabs--lg {
+  --ud-tabs-font-size: var(--ud-font-size-h4);
+  --ud-tabs-line-height: var(--ud-line-h4);
+}
+
+.ud-tabs--sm {
+  --ud-tabs-font-size: var(--ud-font-size-caption);
+  --ud-tabs-line-height: var(--ud-line-caption);
+  --ud-tabs-bottom: 8px;
+}
+
+/* Divider #DDDEDF maps to divider; the indicator's bottom edge overlaps it. */
+.ud-tabs--divider {
+  box-shadow: inset 0 -1px 0 var(--ud-tabs-divider);
+}
+
+.ud-tab {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0 0 var(--ud-tabs-bottom);
+  border: 0;
+  background: transparent;
+  color: var(--ud-tabs-color);
+  font: inherit;
+  font-weight: var(--ud-font-weight-regular);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.ud-tab__label {
+  display: inline-grid;
+}
+
+.ud-tab__text,
+.ud-tab__sizer {
+  grid-area: 1 / 1;
+}
+
+/* The bolder selected weight must not change the tab width. */
+.ud-tab__sizer {
+  font-weight: var(--ud-font-weight-medium);
+  visibility: hidden;
+}
+
+/* State figure: rest #1F2329, hover and selected #3370FF, disabled #BBBFC4. Selected ink is clearly heavier, so Medium. */
+.ud-tab:hover:not(:disabled),
+.ud-tab--selected {
+  color: var(--ud-tabs-color-active);
+}
+
+.ud-tabs--line .ud-tab--selected {
+  font-weight: var(--ud-font-weight-medium);
+}
+
+.ud-tabs--line .ud-tab--selected::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: var(--ud-tabs-indicator-height);
+  border-radius: var(--ud-tabs-indicator-radius) var(--ud-tabs-indicator-radius) 0 0;
+  background: var(--ud-tabs-color-active);
+  content: '';
+}
+
+.ud-tab:disabled {
+  color: var(--ud-tabs-color-disabled);
+  cursor: not-allowed;
+}
+
+.ud-tab:focus {
+  outline: none;
+}
+
+/* Focus style is unspecified; borrowed from the button focus colour (inferred). */
+.ud-tab:focus-visible {
+  border-radius: var(--ud-radius-xs);
+  outline: 2px solid var(--ud-tabs-focus-ring);
+  outline-offset: 2px;
+}
+
+/*
+ * Capsule. Specified colours: rest text N900 on N900 10%; selected text B500 on B100; hover text B500; disabled text N500.
+ * Height 28 / 24 and radius 6 are measured; gap 12 / 8 and min width 48 come from the size callouts.
+ */
+.ud-tabs--capsule {
+  --ud-tabs-gap: 12px;
+  --ud-tabs-height: 28px;
+  /* Measured "Tab 2" at 54 (md) and 49 (sm) wide; subtracting the text width gives 8 inline padding for both. */
+  --ud-tabs-padding-inline: 8px;
+  --ud-tabs-bg: var(--ud-color-text-a10);
+  --ud-tabs-bg-active: var(--ud-blue-10);
+  --ud-tabs-color-disabled: var(--ud-color-text-placeholder);
+
+  align-items: center;
+}
+
+.ud-tabs--capsule.ud-tabs--sm {
+  --ud-tabs-gap: 8px;
+  --ud-tabs-height: 24px;
+}
+
+.ud-tabs--capsule .ud-tab {
+  min-width: 48px;
+  height: var(--ud-tabs-height);
+  padding: 0 var(--ud-tabs-padding-inline);
+  border-radius: var(--ud-radius-s);
+  background: var(--ud-tabs-bg);
+}
+
+.ud-tabs--capsule .ud-tab__sizer {
+  display: none;
+}
+
+.ud-tabs--capsule .ud-tab--selected {
+  background: var(--ud-tabs-bg-active);
+}
+
+.ud-tabs--capsule .ud-tab:focus-visible {
+  border-radius: var(--ud-radius-s);
+}

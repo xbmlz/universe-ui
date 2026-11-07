@@ -1,0 +1,167 @@
+.ud-tag {
+  /*
+   * Option tag size callouts: height 16 / 20 / 24 / 32, inline padding 4 / 6 / 6 / 8, gap 2 / 4 / 4 / 4, radius Radius-XS.
+   * Font sizes 10 / 12 / 14 / 16 measured from cap height. Property tags measure the same as XS.
+   */
+  --ud-tag-height: 16px;
+  --ud-tag-padding-inline: 4px;
+  --ud-tag-gap: 2px;
+  --ud-tag-font-size: var(--ud-font-size-label);
+  --ud-tag-line-height: var(--ud-line-label);
+  --ud-tag-font-weight: var(--ud-font-weight-regular);
+  /* Measured icon ink 12 / 12 / 14 / 16. Close ink 6 / 8 / 8 / 10; the Close glyph spans about 35/48 of its canvas, giving canvases 8 / 11 / 11 / 14. */
+  --ud-tag-icon-size: 12px;
+  --ud-tag-close-size: 8px;
+  --ud-tag-bg: var(--ud-color-text-a10);
+  --ud-tag-bg-hover: var(--ud-tag-bg);
+  --ud-tag-bg-active: var(--ud-tag-bg);
+  --ud-tag-color: var(--ud-color-text);
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ud-tag-gap);
+  box-sizing: border-box;
+  max-width: 100%;
+  height: var(--ud-tag-height);
+  padding: 0 var(--ud-tag-padding-inline);
+  border-radius: var(--ud-radius-xs);
+  background: var(--ud-tag-bg);
+  color: var(--ud-tag-color);
+  font-family: var(--ud-font-family);
+  font-size: var(--ud-tag-font-size);
+  font-weight: var(--ud-tag-font-weight);
+  line-height: var(--ud-tag-line-height);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+/* The text figure labels the small status tag as 10px Medium. Property tags share that size, so Medium is inferred. */
+.ud-tag--property {
+  --ud-tag-font-weight: var(--ud-font-weight-medium);
+  --ud-tag-color: var(--ud-color-text-secondary);
+}
+
+.ud-tag--sm {
+  --ud-tag-height: 20px;
+  --ud-tag-padding-inline: 6px;
+  --ud-tag-gap: 4px;
+  --ud-tag-font-size: var(--ud-font-size-caption);
+  --ud-tag-line-height: var(--ud-line-caption);
+  --ud-tag-close-size: 11px;
+}
+
+.ud-tag--md {
+  --ud-tag-height: 24px;
+  --ud-tag-padding-inline: 6px;
+  --ud-tag-gap: 4px;
+  --ud-tag-font-size: var(--ud-font-size-body);
+  --ud-tag-line-height: var(--ud-line-body);
+  --ud-tag-icon-size: 14px;
+  --ud-tag-close-size: 11px;
+}
+
+.ud-tag--lg {
+  --ud-tag-height: 32px;
+  --ud-tag-padding-inline: 8px;
+  --ud-tag-gap: 4px;
+  --ud-tag-font-size: var(--ud-font-size-h4);
+  --ud-tag-line-height: var(--ud-line-h4);
+  --ud-tag-icon-size: 16px;
+  --ud-tag-close-size: 14px;
+}
+
+/* Grey fills #E9E9EA / #DEDEDF / #D2D3D4 are exactly #1F2329 at 10% / 15% / 20%. */
+.ud-tag--neutral {
+  --ud-tag-bg-hover: var(--ud-color-text-a15);
+  --ud-tag-bg-active: var(--ud-color-text-a20);
+}
+
+/* Blue option tag: fill #D6E2FF maps to blue-10, text #0C296E to blue-1. */
+.ud-tag--option.ud-tag--blue {
+  --ud-tag-bg: var(--ud-blue-10);
+  --ud-tag-color: var(--ud-blue-1);
+}
+
+/* Blue property tag: text #245BDB maps to brand-pressed. The translucent fill reads #D6E2FF on white; its alpha cannot be recovered, so it maps to blue-10. The solid fill #BACEFD maps to blue-9. */
+.ud-tag--property.ud-tag--blue {
+  --ud-tag-bg: var(--ud-blue-10);
+  --ud-tag-color: var(--ud-color-brand-pressed);
+}
+
+.ud-tag--property.ud-tag--blue.ud-tag--solid {
+  --ud-tag-bg: var(--ud-blue-9);
+}
+
+.ud-tag:hover:not(.ud-tag--disabled):not(:has(.ud-tag__close:hover)) {
+  background: var(--ud-tag-bg-hover);
+}
+
+.ud-tag:active:not(.ud-tag--disabled):not(:has(.ud-tag__close:active)) {
+  background: var(--ud-tag-bg-active);
+}
+
+.ud-tag__icon {
+  display: inline-flex;
+  flex: none;
+  font-size: var(--ud-tag-icon-size);
+  line-height: 0;
+}
+
+.ud-tag__label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Measured: the close glyph is the text colour at 60%, 100% on hover, 80% when pressed, for both grey and blue. */
+.ud-tag__close {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: var(--ud-tag-close-size);
+  line-height: 0;
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.ud-tag__close:hover {
+  opacity: 1;
+}
+
+.ud-tag__close:active {
+  opacity: 0.8;
+}
+
+.ud-tag__close:focus {
+  outline: none;
+}
+
+/* Focus style is unspecified; borrowed from the button focus colour (inferred). */
+.ud-tag__close:focus-visible {
+  border-radius: 2px;
+  outline: 2px solid var(--ud-color-focus-ring);
+}
+
+.ud-tag--disabled {
+  cursor: not-allowed;
+}
+
+.ud-tag--disabled .ud-tag__close {
+  opacity: 1;
+  cursor: not-allowed;
+}
+
+.ud-tag--neutral.ud-tag--disabled {
+  --ud-tag-color: var(--ud-color-text-disabled);
+}
+
+/* Disabled blue: text, icon and close glyph drop to 30%; the fill is unchanged. */
+.ud-tag--blue.ud-tag--disabled > * {
+  opacity: 0.3;
+}
