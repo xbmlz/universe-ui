@@ -1,10 +1,10 @@
 :root {
-  --ud-font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", system-ui, sans-serif;
+  --ud-font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Segoe UI', system-ui, sans-serif;
   --ud-font-weight-regular: 400;
   --ud-font-weight-medium: 500;
   --ud-font-weight-semibold: 600;
 
-  /* PC 字阶。字号 / 行高 / 字重 */
+  /* Desktop type scale: size / line height / weight */
   --ud-font-size-display: 30px;
   --ud-line-display: 46px;
   --ud-font-size-h1: 24px;
@@ -30,7 +30,7 @@
   --ud-font-size-label-sm: 10px;
   --ud-line-label-sm: 16px;
 
-  /* 移动端 1 倍 */
+  /* Mobile, 1x */
   --ud-font-size-display-mobile: 26px;
   --ud-line-display-mobile: 40px;
   --ud-font-size-h1-mobile: 24px;

@@ -1,5 +1,5 @@
 :root {
-  /* 品牌色板从深到浅。图上没有阶名，第 4 档是圆点标出的品牌色。 */
+  /* Brand ramp, dark to light. The figure has no step names; step 4 is the one marked as the brand colour. */
   --ud-blue-1: #002270;
   --ud-blue-2: #002f9e;
   --ud-blue-3: #0442d2;
@@ -17,7 +17,29 @@
   --ud-color-brand-loading: var(--ud-blue-8);
   --ud-color-focus-ring: #aec5fb;
 
-  /* 功能色。文字色用于文字，内容色用于色块。Error 两处都是 #F54A45。 */
+  /*
+   * Old palette steps, measured from component figures and added only as they are needed.
+   * Names follow the old step labels (T600 = turquoise-600). Old blue steps map onto the ramp above.
+   */
+  --ud-purple-500: #7f3bf5;
+  --ud-turquoise-600: #04b49c;
+  --ud-green-600: #2ea121;
+  --ud-lime-600: #8fac02;
+  --ud-yellow-600: #dc9b04;
+  --ud-orange-600: #de7802;
+  --ud-carmine-500: #f01d94;
+  /* Feedback fills, measured from the Notice type figure. */
+  --ud-green-50: #e4fae1;
+  --ud-red-50: #fef0f0;
+  --ud-orange-50: #fff3e5;
+
+  /* Personal avatar fills, measured top to bottom from the avatar colour figure. */
+  --ud-gradient-blue: linear-gradient(180deg, #3f79ff, #2864f0);
+  --ud-gradient-purple: linear-gradient(180deg, #9259f6, #7e33ff);
+  --ud-gradient-turquoise: linear-gradient(180deg, #00d9bc, #00c0a6);
+  --ud-gradient-orange: linear-gradient(180deg, #fe9d2d, #f18202);
+
+  /* Functional colours. *-text is for text, the plain one for fills. Error is #F54A45 in both. */
   --ud-color-success-text: #32a645;
   --ud-color-success: #35bd4b;
   --ud-color-warning-text: #ed6d0c;
@@ -26,39 +48,41 @@
   --ud-color-danger: #f54a45;
   --ud-color-info: var(--ud-color-brand);
 
-  /* 文字 */
+  /* Text */
   --ud-color-text: #1f2329;
   --ud-color-text-secondary: #646a73;
   --ud-color-text-placeholder: #8f959e;
   --ud-color-text-disabled: #bbbfc4;
 
-  /* 图标 */
+  /* Icons */
   --ud-color-icon: #2b2f36;
   --ud-color-icon-secondary: #646a73;
   --ud-color-icon-tertiary: #8f959e;
   --ud-color-icon-disabled: #bbbfc4;
 
-  /* color.md 背景 */
+  /* Backgrounds from color.md */
   --ud-color-bg-1: #eff0f1;
   --ud-color-bg-2: #f5f6f7;
   --ud-color-bg-3: #f8f9fa;
-  /* style.md 把产品详情页背景写成 #F2F3F5，和 Background 2 不是同一个值。 */
+  /* style.md gives the product detail page background as #F2F3F5, which differs from Background 2. */
   --ud-color-bg-page: #f2f3f5;
   --ud-color-bg-white: #ffffff;
 
-  /* 描边与填充 */
+  /* Borders and fills */
   --ud-color-border: #d0d3d6;
   --ud-color-border-card: #dee0e3;
   --ud-color-fill-disabled: #eff0f1;
   --ud-color-divider: rgb(31 35 41 / 15%);
   --ud-color-mask: rgb(0 0 0 / 55%);
 
-  /* 投影用色 */
+  /* Shadow colours */
   --ud-color-shadow: #1f2327;
   --ud-color-shadow-brand: #245bdb;
 
-  /* 中性色透明度只允许叠在 #1F2329 和 #FFFFFF 上。 */
+  /* Neutral alphas are only allowed over #1F2329 and #FFFFFF. */
   --ud-color-text-a5: rgb(31 35 41 / 5%);
+  /* Specified by loading.md as the skeleton gradient end. */
+  --ud-color-text-a8: rgb(31 35 41 / 8%);
   --ud-color-text-a10: rgb(31 35 41 / 10%);
   --ud-color-text-a15: rgb(31 35 41 / 15%);
   --ud-color-text-a20: rgb(31 35 41 / 20%);

@@ -1,5 +1,5 @@
-/* 在 Tailwind v4 的入口里引入这一份。组件样式不依赖 Tailwind。 */
-@import "./index.css";
+/* Import this from a Tailwind v4 entry. Component styles do not depend on Tailwind. */
+@import './index.css';
 
 @theme inline {
   --color-ud-brand: var(--ud-color-brand);
