@@ -1,8 +1,8 @@
 {
   "name": "@universe-ui/tokens",
+  "type": "module",
   "version": "0.0.0",
   "private": true,
-  "type": "module",
   "exports": {
     ".": "./src/index.css",
     "./tailwind.css": "./src/tailwind.css"

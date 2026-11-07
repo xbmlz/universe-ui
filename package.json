@@ -1,9 +1,16 @@
 {
   "name": "universe-ui",
-  "private": true,
   "type": "module",
+  "private": true,
   "packageManager": "pnpm@12.4.2",
   "scripts": {
-    "dev": "pnpm --filter @universe-ui/playground dev"
+    "dev": "pnpm --filter @universe-ui/playground dev",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^10.0.0",
+    "eslint": "^10.14.0",
+    "eslint-plugin-format": "^2.0.1"
   }
 }
