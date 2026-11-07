@@ -1,7 +1,7 @@
 <script setup lang="ts" vapor>
 import type { ButtonType, InputAddonOption, SelectOption } from '@universe-ui/vue'
 import { Info, Remind, Search, Share, SmilingFace } from '@icon-park/vue-next'
-import { Avatar, AvatarGroup, Badge, Breadcrumb, Button, ButtonGroup, Checkbox, CheckboxGroup, Collapse, CollapseItem, Dialog, Drawer, Dropdown, DropdownItem, Input, InputAddon, InputArea, InputChars, InputGroup, InputNumber, Notice, Notification, notification, Pagination, Popover, Progress, Radio, RadioGroup, Select, Skeleton, Spin, Steps, StepsItem, Switch, Tab, Tabs, Tag, Toast, toast } from '@universe-ui/vue'
+import { Avatar, AvatarGroup, Badge, Breadcrumb, Button, ButtonGroup, Checkbox, CheckboxGroup, Collapse, CollapseItem, Dialog, Drawer, Dropdown, DropdownItem, Input, InputAddon, InputArea, InputChars, InputGroup, InputNumber, Notice, Notification, notification, Pagination, Placeholder, Popover, Progress, Radio, RadioGroup, Select, Skeleton, Spin, Steps, StepsItem, Switch, Tab, Tabs, Tag, Toast, toast } from '@universe-ui/vue'
 import { computed, reactive, shallowRef, useTemplateRef } from 'vue'
 import ParkIcon from '../../packages/vue/src/internal/park-icon.vue'
 
@@ -1338,6 +1338,21 @@ function focusPrimary() {
         >
           清零
         </Button>
+      </div>
+      <h2>占位符</h2>
+      <div class="badges">
+        <Placeholder />
+        <Placeholder type="failure" />
+        <Placeholder :size="24" />
+        <Placeholder
+          :size="18"
+          type="failure"
+        />
+        <Placeholder :size="48" />
+        <Placeholder
+          :size="48"
+          type="failure"
+        />
       </div>
       <h2>加载</h2>
       <div class="badges">

@@ -31,6 +31,8 @@ export type {
 } from './components/notification'
 export { Pagination } from './components/pagination'
 export type { PaginationSize } from './components/pagination'
+export { Placeholder } from './components/placeholder'
+export type { PlaceholderType } from './components/placeholder'
 export { Popover } from './components/popover'
 export type { PopoverPlacement, PopoverSize, PopoverTrigger, PopoverType } from './components/popover'
 export { Progress } from './components/progress'

@@ -18,7 +18,6 @@ lists the components with a spec in `docs/design` but no implementation yet.
 - **Tag** — avatar tags. Avatar now exists. Spec adds hover / pressed / disabled states and a two-colour organization variant.
 - **Toast** — merge toasts with identical content into one (specified suggestion).
 - **Toast** — surface a close button when text exceeds 20 chars (specified suggestion).
-- **Spin** — optional delayed display, recommended at least 1000ms (specified in loading.md); no delay option today.
 - **Dropdown** — contextual menu. It opens beside the pointer, prefers right then down, and when the bottom runs out it aligns to the 16px page edge instead of the pointer.
 - **Button** — icon, float, round, and split-button-with-menu variants (`button_icon.md`, `button_float.md`, `button_round.md`, `button_splitbutton_menu.md`). Text and basic variants exist.
 - **Collapse** — text expand/collapse (“展开/收起”) for a paragraph, usually 3 or 5 lines, with the trigger at the lower left or right and a 4px gap once expanded.
@@ -41,13 +40,13 @@ lists the components with a spec in `docs/design` but no implementation yet.
 
 ## C. Remaining components (spec exists, not started)
 
-20 components still to build. Do the small data-display ones first (Placeholder,
-Empty, Timeline, Card), then the entry components that need dependency decisions
+19 components still to build. Do the small data-display ones next (Empty,
+Timeline, Card), then the entry components that need dependency decisions
 (dayjs for DatePicker / TimePicker, Zod for Form, TanStack Table for Table —
 each still needs a yes before install).
 
 - **data-entry**: Form, DatePicker, TimePicker, Upload, Cascader, TreeSelect, Transfer, Slider, Stepper, Rate, ColorPicker
-- **data-display**: Table, Card, Empty, ImageViewer, Placeholder, Timeline
+- **data-display**: Table, Card, Empty, ImageViewer, Timeline
 - **navigation**: Anchor, ScrollBar, NavigationMenu
 
 Note: there is no `image.md` in `docs/design`; the Loading image-placeholder work

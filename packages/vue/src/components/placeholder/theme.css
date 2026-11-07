@@ -1,0 +1,5 @@
+.ud-placeholder {
+  display: block;
+  /* N400 per placeholder.md. The neutral ramp has no dedicated role token; the disabled grey is the same value. */
+  color: var(--ud-color-text-disabled);
+}
