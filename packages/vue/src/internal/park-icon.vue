@@ -1,8 +1,6 @@
-<script setup lang="ts" vapor>
-import { createVNode, onBeforeUnmount, onMounted, render, useTemplateRef, watch } from 'vue'
+<script setup lang="ts">
 import type { Component } from 'vue'
-
-const host = useTemplateRef<HTMLElement>('host')
+import { createVNode, onBeforeUnmount, onMounted, render, useTemplateRef, watch } from 'vue'
 
 const {
   icon,
@@ -16,9 +14,12 @@ const {
   fill?: string
 }>()
 
+const host = useTemplateRef<HTMLElement>('host')
+
 function paint() {
   const el = host.value
-  if (!el) return
+  if (!el)
+    return
   render(createVNode(icon, { theme, size, fill }), el)
 }
 
@@ -26,12 +27,16 @@ onMounted(paint)
 watch(() => [icon, theme, size, fill], paint)
 
 onBeforeUnmount(() => {
-  if (host.value) render(null, host.value)
+  if (host.value)
+    render(null, host.value)
 })
 </script>
 
 <template>
-  <span ref="host" class="ud-park" />
+  <span
+    ref="host"
+    class="ud-park"
+  />
 </template>
 
 <style>
