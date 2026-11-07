@@ -1,6 +1,7 @@
 # Universe UI — contributor guide
 
-Vue Vapor component library for Feishu Universe Design.
+Vue component library for Feishu Universe Design. Components are normal SFCs.
+Vue 3.6 is pinned so the same components run in a Vapor app and in a normal app.
 Visual specification: `docs/design`. Implemented colours and metrics:
 `packages/tokens` (`src/index.css` aggregates them).
 
@@ -20,9 +21,17 @@ Visual specification: `docs/design`. Implemented colours and metrics:
 
 ## Rules
 
-- Vue SFCs use `<script setup lang="ts" vapor>`, `defineModel`, named slots,
-  composables, and `provide` / `inject`. Do not use Reka `as` / `as-child`.
-  Vapor's missing features are constraints; work around them in the component.
+- Design follows `docs/design` strictly. Sizes, spacing, colour roles, states, and
+  behaviour come from that spec. Element Plus and Nuxt UI are not a visual source.
+- Code design can follow Element Plus and Nuxt UI throughout: component API, state,
+  structure, and how behaviour is split. Do not add Reka or copy their CSS.
+- Library SFCs use `<script setup lang="ts">`, `defineModel`, named slots,
+  composables, and `provide` / `inject`. Do not add the `vapor` attribute, and
+  do not set Vite `features.vapor`: that forces every script-setup SFC,
+  including this library, into Vapor mode. A normal app uses `createApp`. A
+  Vapor app calls `app.use(vaporInteropPlugin)` before mount so it can render
+  these components. Vue stays on `3.6.0-rc.14` for that interop. Do not use
+  Reka `as` / `as-child`.
 - No Sass or Less. Tokens are three layers: primitive and semantic variables in
   `packages/tokens`, component variables in that component's `theme.css`.
   Component CSS is global, not `<style scoped>`, and uses tokens rather than raw colours.
@@ -30,9 +39,11 @@ Visual specification: `docs/design`. Implemented colours and metrics:
   (default size `1em`). Do not add an icons package.
 - Ask before adding any dependency. Time uses dayjs, tables use TanStack Table,
   form validation uses Zod. Those three still need a yes before install.
-- Vue is pinned to `3.6.0-rc.14`. Do not publish these packages as a dependency
-  until `3.6.0` is stable.
+- Vue is pinned to `3.6.0-rc.14` for Vapor interop. Do not publish these
+  packages as a dependency until `3.6.0` is stable.
 - Keep comments sparse. A comment that records a measured or inferred value says so.
+- Deferred work goes in `TODO.md` at the repository root. Add to it whenever a component ships with gaps.
+- Write all code comments in English. User-facing strings (labels, placeholders) may stay Chinese.
 
 ## Specification
 
@@ -62,6 +73,7 @@ Visual specification: `docs/design`. Implemented colours and metrics:
 
 - `pnpm install` — install the workspace.
 - `pnpm dev` — run the playground.
+- `pnpm lint` — ESLint (`@antfu/eslint-config`, same shape as reka-ui).
 
 ## Pitfalls
 
@@ -74,4 +86,5 @@ Visual specification: `docs/design`. Implemented colours and metrics:
   keep serving a stale transform. Touch the file mtime if the playground stays blank
   after an edit.
 - Semi Design's default theme is Douyin, not Feishu. Do not depend on Semi CSS.
-  Element Plus cannot be skinned to this spec.
+  Element Plus and Nuxt UI are references for component structure only. Do not
+  import their themes or treat their metrics as the spec.
