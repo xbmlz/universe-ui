@@ -111,8 +111,22 @@
  */
 .ud-drawer__header {
   flex: none;
+  box-sizing: border-box;
   padding: 16px var(--ud-drawer-padding);
   border-bottom: 1px solid var(--ud-color-border-card);
+}
+
+/* Specified in drawer.md: a title-only header is 56 on web and 68 in the PC client. */
+.ud-drawer--header-web .ud-drawer__header {
+  min-height: 56px;
+}
+
+.ud-drawer--header-pc {
+  --ud-drawer-padding: 20px;
+}
+
+.ud-drawer--header-pc .ud-drawer__header {
+  min-height: 68px;
 }
 
 .ud-drawer--tabs .ud-drawer__header {
@@ -169,6 +183,15 @@
   margin-left: 32px;
   color: var(--ud-color-icon-secondary);
   font-size: 20px;
+}
+
+.ud-drawer__action {
+  display: inline-flex;
+}
+
+.ud-drawer__more-caret {
+  margin-left: 4px;
+  font-size: 12px;
 }
 
 .ud-drawer--avatar .ud-drawer__actions {

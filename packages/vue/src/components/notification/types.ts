@@ -1,4 +1,8 @@
+import type { Component, VNode } from 'vue'
 import type { ButtonType } from '../button/types'
+
+/** Content accepted by the imperative service. */
+export type NotificationContent = string | VNode | Component
 
 export type NotificationType = 'info' | 'success' | 'warning' | 'error'
 
@@ -13,7 +17,7 @@ export interface NotificationAction {
 }
 
 export interface NotificationOptions {
-  content: string
+  content: NotificationContent
   title?: string
   type?: NotificationType
   /** Milliseconds before closing. 0 keeps the notification until it is closed. */
@@ -35,4 +39,6 @@ export interface NotificationConfig {
   max?: number
   top?: number
   right?: number
+  /** Element or selector that should contain the notification host. Defaults to the page body. */
+  container?: string | HTMLElement | null
 }

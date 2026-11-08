@@ -1,14 +1,19 @@
 <script setup lang="ts">
-import { nextTick, onBeforeUnmount, shallowRef, useTemplateRef, watch } from 'vue'
+import type { TooltipProps } from './types'
+import { useEventListener } from '@vueuse/core'
+import { nextTick, onBeforeUnmount, onMounted, shallowRef, useTemplateRef } from 'vue'
 import { nextLayerZ } from '../dialog/scroll-lock'
+import { placeTooltip } from './position'
 
-const { content, onlyOverflow = false } = defineProps<{
-  content: string
-  onlyOverflow?: boolean
-}>()
+const { content, onlyOverflow = false } = defineProps<TooltipProps>()
 
 const triggerRef = useTemplateRef<HTMLElement>('trigger')
 const bubbleRef = useTemplateRef<HTMLElement>('bubble')
+// `window` does not exist while rendering on the server, so the target stays null until mount.
+const windowTarget = shallowRef<Window | null>(null)
+onMounted(() => {
+  windowTarget.value = window
+})
 const shown = shallowRef(false)
 const placement = shallowRef<'top' | 'bottom'>('top')
 const bubbleStyle = shallowRef<Record<string, string>>({})
@@ -42,31 +47,22 @@ function overflowing() {
 }
 
 function place() {
+  if (!shown.value)
+    return
   const trigger = triggerRef.value
   const bubble = bubbleRef.value
   if (!trigger || !bubble)
     return
-  const rect = trigger.getBoundingClientRect()
-  const width = bubble.offsetWidth
-  const height = bubble.offsetHeight
-  // Specified: 4px from the trigger, arrow 6px tall. The arrow tip sits 4px from the trigger.
-  const offset = 10
-  let nextPlacement: 'top' | 'bottom' = 'top'
-  let top = rect.top - offset - height
-  if (top < 8) {
-    nextPlacement = 'bottom'
-    top = rect.bottom + offset
-  }
-  const center = rect.left + rect.width / 2
-  let left = center - width / 2
-  left = Math.min(Math.max(8, left), window.innerWidth - width - 8)
-  const arrow = Math.min(Math.max(12, center - left), width - 12)
-  placement.value = nextPlacement
+  const placed = placeTooltip(trigger.getBoundingClientRect(), {
+    width: bubble.offsetWidth,
+    height: bubble.offsetHeight,
+  }, window.innerWidth)
+  placement.value = placed.placement
   bubbleStyle.value = {
-    'top': `${top}px`,
-    'left': `${left}px`,
+    'top': `${placed.top}px`,
+    'left': `${placed.left}px`,
     'zIndex': String(layer),
-    '--ud-tooltip-arrow-left': `${arrow}px`,
+    '--ud-tooltip-arrow-left': `${placed.arrow}px`,
   }
 }
 
@@ -88,20 +84,14 @@ function hide() {
   }, 100)
 }
 
-watch(shown, (value) => {
-  if (value) {
-    window.addEventListener('scroll', place, true)
-    window.addEventListener('resize', place)
-    return
-  }
-  window.removeEventListener('scroll', place, true)
-  window.removeEventListener('resize', place)
-})
+// The bubble has to follow the trigger while it is open. Listeners stay bound for the
+// component's lifetime and `place` returns early when the bubble is hidden; that costs
+// one function call per scroll, and useEventListener unbinds them on scope dispose.
+useEventListener(windowTarget, 'scroll', place, { capture: true, passive: true })
+useEventListener(windowTarget, 'resize', place)
 
 onBeforeUnmount(() => {
   window.clearTimeout(timer)
-  window.removeEventListener('scroll', place, true)
-  window.removeEventListener('resize', place)
 })
 </script>
 

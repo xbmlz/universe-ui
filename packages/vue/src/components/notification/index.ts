@@ -6,6 +6,7 @@ export type {
   NotificationAction,
   NotificationColor,
   NotificationConfig,
+  NotificationContent,
   NotificationHandle,
   NotificationOptions,
   NotificationType,

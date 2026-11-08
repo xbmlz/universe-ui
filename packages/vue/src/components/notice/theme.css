@@ -91,6 +91,11 @@
   -webkit-box-orient: vertical;
 }
 
+/* Preserve the content's shrink-to-fit behaviour inside the Tooltip's flex wrapper. */
+.ud-notice__main .ud-notice__content-tooltip {
+  flex: 0 1 auto;
+}
+
 .ud-notice__content a {
   color: var(--ud-color-brand);
   text-decoration: none;

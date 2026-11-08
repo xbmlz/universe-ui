@@ -1,0 +1,130 @@
+/*
+ * Specified in scroll-bar.md: an 11px track and hit area, a 7px visible thumb with
+ * 2px padding, a 24px minimum thumb length, a 9px outlined thumb (7px fill plus a
+ * 1px inverse border) with 1px padding, and normal / hover / pressed colour states.
+ * The colours map to the N900 alpha steps already in the tokens.
+ */
+.ud-scrollbar {
+  --ud-scrollbar-track: 11px;
+  --ud-scrollbar-thumb: 7px;
+  --ud-scrollbar-padding: 2px;
+  --ud-scrollbar-min: 24px;
+  --ud-scrollbar-normal: var(--ud-color-text-a30);
+  --ud-scrollbar-hover: var(--ud-color-text-a50);
+  --ud-scrollbar-pressed: var(--ud-color-text-a60);
+  --ud-scrollbar-border: transparent;
+
+  position: relative;
+  display: block;
+  min-width: 0;
+  min-height: 0;
+}
+
+.ud-scrollbar__view {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  scrollbar-width: none;
+}
+
+.ud-scrollbar__view::-webkit-scrollbar {
+  display: none;
+}
+
+.ud-scrollbar--native .ud-scrollbar__view {
+  scrollbar-width: auto;
+}
+
+.ud-scrollbar--native .ud-scrollbar__view::-webkit-scrollbar {
+  display: initial;
+}
+
+.ud-scrollbar--native .ud-scrollbar__track {
+  display: none;
+}
+
+.ud-scrollbar__track {
+  position: absolute;
+  box-sizing: border-box;
+  width: var(--ud-scrollbar-track);
+  border-radius: var(--ud-radius-full);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.ud-scrollbar:hover .ud-scrollbar__track,
+.ud-scrollbar--always .ud-scrollbar__track {
+  opacity: 1;
+}
+
+.ud-scrollbar__track--vertical {
+  top: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.ud-scrollbar__track--horizontal {
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: auto;
+  height: var(--ud-scrollbar-track);
+}
+
+/* scroll-bar.md: when both axes scroll, the tracks must not cross. */
+.ud-scrollbar--both .ud-scrollbar__track--vertical {
+  bottom: var(--ud-scrollbar-track);
+}
+
+.ud-scrollbar--both .ud-scrollbar__track--horizontal {
+  right: var(--ud-scrollbar-track);
+}
+
+.ud-scrollbar__thumb {
+  position: absolute;
+  display: block;
+  box-sizing: border-box;
+  border-radius: var(--ud-radius-full);
+  background: var(--ud-scrollbar-normal);
+  cursor: pointer;
+}
+
+.ud-scrollbar__track--vertical .ud-scrollbar__thumb {
+  top: var(--ud-scrollbar-padding);
+  right: var(--ud-scrollbar-padding);
+  left: var(--ud-scrollbar-padding);
+  height: var(--ud-scrollbar-thumb);
+  min-height: var(--ud-scrollbar-min);
+}
+
+.ud-scrollbar__track--horizontal .ud-scrollbar__thumb {
+  top: var(--ud-scrollbar-padding);
+  bottom: var(--ud-scrollbar-padding);
+  left: var(--ud-scrollbar-padding);
+  width: var(--ud-scrollbar-thumb);
+  min-width: var(--ud-scrollbar-min);
+}
+
+.ud-scrollbar__thumb:hover {
+  background: var(--ud-scrollbar-hover);
+}
+
+.ud-scrollbar__thumb:active {
+  background: var(--ud-scrollbar-pressed);
+}
+
+.ud-scrollbar--styled {
+  --ud-scrollbar-track: 11px;
+  --ud-scrollbar-thumb: 9px;
+  --ud-scrollbar-padding: 1px;
+}
+
+.ud-scrollbar--styled .ud-scrollbar__thumb {
+  border: 1px solid var(--ud-color-white-a30);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ud-scrollbar__track {
+    transition: none;
+  }
+}

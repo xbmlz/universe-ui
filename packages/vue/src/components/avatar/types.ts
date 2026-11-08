@@ -11,3 +11,6 @@ export type AvatarColor
     | 'yellow'
     | 'orange'
     | 'carmine'
+
+/** Optional override for the script used by a personnel name. */
+export type AvatarNameLocale = 'auto' | 'zh' | 'en' | 'ja'

@@ -14,11 +14,85 @@
   --ud-tabs-focus-ring: var(--ud-color-focus-ring);
 
   display: flex;
+  box-sizing: border-box;
   align-items: flex-end;
   gap: var(--ud-tabs-gap);
+  /* A container-sized root stops hidden tabs from shrinking the width used to measure them. */
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
   font-family: var(--ud-font-family);
   font-size: var(--ud-tabs-font-size);
   line-height: var(--ud-tabs-line-height);
+}
+
+.ud-tabs__viewport {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: inherit;
+  gap: inherit;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.ud-tabs__viewport > [hidden],
+.ud-tabs__viewport > *[hidden] {
+  display: none !important;
+}
+
+.ud-tab--promoted {
+  order: 999;
+}
+
+.ud-tabs__control,
+.ud-tabs__add {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ud-radius-xs);
+  background: transparent;
+  color: var(--ud-color-icon-secondary);
+  font: inherit;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.ud-tabs__control:hover:not(:disabled),
+.ud-tabs__add:hover {
+  background: var(--ud-color-bg-1);
+  color: var(--ud-color-icon);
+}
+
+.ud-tabs__control:disabled {
+  color: var(--ud-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.ud-tabs__scroll {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 4px;
+}
+
+.ud-tabs__more {
+  flex: none;
+}
+
+.ud-tabs--scroll .ud-tabs__viewport {
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scrollbar-width: none;
+}
+
+.ud-tabs--scroll .ud-tabs__viewport::-webkit-scrollbar {
+  display: none;
 }
 
 .ud-tabs--lg {
@@ -56,7 +130,16 @@
 }
 
 .ud-tab__label {
+  position: relative;
   display: inline-grid;
+  max-width: var(--ud-tabs-label-max, 240px);
+  overflow: hidden;
+}
+
+.ud-tab__text,
+.ud-tab__sizer {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .ud-tab__text,
@@ -80,15 +163,33 @@
   font-weight: var(--ud-font-weight-medium);
 }
 
-.ud-tabs--line .ud-tab--selected::after {
+.ud-tab__indicator {
   position: absolute;
   right: 0;
-  bottom: 0;
+  bottom: calc(-1 * var(--ud-tabs-bottom));
   left: 0;
   height: var(--ud-tabs-indicator-height);
   border-radius: var(--ud-tabs-indicator-radius) var(--ud-tabs-indicator-radius) 0 0;
   background: var(--ud-tabs-color-active);
-  content: '';
+}
+
+.ud-tab__badge {
+  flex: none;
+  margin-left: 4px;
+  color: var(--ud-color-text-secondary);
+  font-size: var(--ud-font-size-caption);
+  line-height: 1;
+}
+
+.ud-tab--selected .ud-tab__badge {
+  color: var(--ud-tabs-color-active);
+}
+
+.ud-tab__badge--dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--ud-radius-full);
+  background: var(--ud-color-brand);
 }
 
 .ud-tab:disabled {
@@ -144,6 +245,78 @@
   background: var(--ud-tabs-bg-active);
 }
 
+.ud-tabs--capsule .ud-tab__indicator {
+  display: none;
+}
+
 .ud-tabs--capsule .ud-tab:focus-visible {
   border-radius: var(--ud-radius-s);
+}
+
+/*
+ * Card tabs are drawn as an interaction sample in the spec, not a fixed visual table.
+ * The 32px row, 8px gap, 12px inline padding and tab surfaces here are inferred from the card-tab figure's layout.
+ */
+.ud-tab-shell {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  height: 32px;
+  border: 1px solid var(--ud-color-border-card);
+  border-radius: var(--ud-radius-s);
+  background: var(--ud-color-bg-1);
+}
+
+.ud-tabs--card {
+  --ud-tabs-gap: 8px;
+  align-items: center;
+}
+
+.ud-tabs--card .ud-tab {
+  height: 100%;
+  padding: 0 8px 0 12px;
+  border-radius: var(--ud-radius-s) 0 0 var(--ud-radius-s);
+}
+
+.ud-tabs--card .ud-tab__indicator {
+  display: none;
+}
+
+.ud-tabs--card .ud-tab__sizer {
+  display: none;
+}
+
+.ud-tabs--card .ud-tab--selected {
+  background: var(--ud-color-bg-white);
+}
+
+.ud-tab__close {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  margin-right: 4px;
+  padding: 0;
+  border: 0;
+  border-radius: var(--ud-radius-xs);
+  background: transparent;
+  color: var(--ud-color-icon-secondary);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.ud-tab__close:hover:not(:disabled) {
+  background: var(--ud-color-bg-1);
+  color: var(--ud-color-icon);
+}
+
+.ud-tab__close:disabled {
+  color: var(--ud-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.ud-tabs--card .ud-tab__close {
+  border-radius: 0 var(--ud-radius-s) var(--ud-radius-s) 0;
 }

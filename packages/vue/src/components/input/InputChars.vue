@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { InputSize } from './types'
 import { computed, nextTick, shallowRef, useTemplateRef } from 'vue'
+import { cellStates, cursorIndex } from './chars'
 
 const {
   length = 6,
@@ -41,10 +42,8 @@ function cellsIn(node?: EventTarget | null) {
   ]
 }
 
-function cursorIndex() {
-  if (complete.value)
-    return length - 1
-  return model.value.length
+function caret() {
+  return cursorIndex(model.value, length)
 }
 
 function focusAt(index: number, from?: EventTarget | null) {
@@ -54,13 +53,7 @@ function focusAt(index: number, from?: EventTarget | null) {
 }
 
 const activeFlags = computed(() =>
-  indexes.value.map((index) => {
-    if (disabled || complete.value)
-      return false
-    if (index < model.value.length)
-      return true
-    return focused.value && index === model.value.length
-  }),
+  cellStates(model.value, length, focused.value, disabled).map(cell => cell.active),
 )
 
 function onFocusIn() {
@@ -89,7 +82,7 @@ function focusFrom(event: Event, index: number) {
 }
 
 function onCellMouseDown(event: MouseEvent, index: number) {
-  const cursor = cursorIndex()
+  const cursor = caret()
   if (index === cursor)
     return
   event.preventDefault()
@@ -98,7 +91,7 @@ function onCellMouseDown(event: MouseEvent, index: number) {
 
 function onCellFocus(event: FocusEvent, index: number) {
   focused.value = true
-  const cursor = cursorIndex()
+  const cursor = caret()
   if (index !== cursor)
     focusFrom(event, cursor)
 }
@@ -139,7 +132,7 @@ function onPaste(event: ClipboardEvent) {
 }
 
 function focus() {
-  focusAt(cursorIndex())
+  focusAt(caret())
 }
 
 function clear() {

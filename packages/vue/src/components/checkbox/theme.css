@@ -6,7 +6,7 @@
   --ud-checkbox-line: var(--ud-line-body);
   --ud-checkbox-border: var(--ud-color-icon-tertiary);
   --ud-checkbox-bg: var(--ud-color-bg-white);
-  --ud-checkbox-mark: var(--ud-color-bg-white);
+  --ud-checkbox-mark: var(--ud-color-text-inverse);
   --ud-checkbox-color: var(--ud-color-text);
 
   position: relative;

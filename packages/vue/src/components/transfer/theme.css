@@ -1,0 +1,254 @@
+/*
+ * Specified in transfer.md: a 544-960px width is recommended and 240px is the
+ * minimum height; the header, search and custom area stay fixed while the list
+ * scrolls; titles wrap to two lines. Row height, padding and the arrow gutter are
+ * inferred from the 4N rule.
+ */
+.ud-transfer {
+  --ud-transfer-height: 320px;
+  /* Measured at 2x: rows sit 64px apart, so a 32px row. */
+  --ud-transfer-row: 32px;
+  --ud-transfer-gap: 8px;
+  --ud-transfer-radius: var(--ud-radius-m);
+
+  /* Specified recommendation: 544px minimum width, 960px maximum. */
+  width: 100%;
+  min-width: 544px;
+  max-width: 960px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--ud-color-text);
+  font-family: var(--ud-font-family);
+  font-size: var(--ud-font-size-body);
+  line-height: var(--ud-line-body);
+}
+
+.ud-transfer__label {
+  color: var(--ud-color-text-secondary);
+  font-size: var(--ud-font-size-body-sm);
+  line-height: var(--ud-line-body-sm);
+}
+
+/* Measured at 2x: one 544x320 card split by a 1px divider, both lists touching it. */
+.ud-transfer__body {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  box-sizing: border-box;
+  height: var(--ud-transfer-height);
+  min-height: 240px;
+  overflow: hidden;
+  border: 1px solid var(--ud-color-border-card);
+  border-radius: var(--ud-transfer-radius);
+  background: var(--ud-color-bg-white);
+}
+
+.ud-transfer__panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.ud-transfer__panel + .ud-transfer__panel {
+  border-left: 1px solid var(--ud-color-border-card);
+}
+
+/* Measured at 2x: the optional search field sits 16px below the top and 16px in from both edges. */
+.ud-transfer__search-row {
+  flex: none;
+  padding: 16px 16px 0;
+}
+
+.ud-transfer__search {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid var(--ud-color-border);
+  border-radius: var(--ud-radius-s);
+  background: var(--ud-color-bg-white);
+  color: var(--ud-color-text);
+}
+
+.ud-transfer__search:focus-within {
+  border-color: var(--ud-color-brand);
+}
+
+.ud-transfer__search-icon {
+  flex: none;
+  color: var(--ud-color-icon-secondary);
+  font-size: 16px;
+}
+
+.ud-transfer__search-input {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+
+.ud-transfer__search-input::placeholder {
+  color: var(--ud-color-text-placeholder);
+}
+
+/* Measured at 2x: both headers start their text and checkbox 16px from the card edge. */
+.ud-transfer__header {
+  box-sizing: content-box;
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  padding: 16px 16px 0;
+}
+
+/* The left header is a button that selects every visible row. */
+.ud-transfer__all {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 32px;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ud-color-text);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ud-transfer__all:disabled {
+  cursor: not-allowed;
+}
+
+.ud-transfer__count-label {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.ud-transfer__clear {
+  flex: none;
+  margin-left: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ud-color-brand);
+  font: inherit;
+  cursor: pointer;
+}
+
+.ud-transfer__clear:disabled {
+  color: var(--ud-color-text-disabled);
+  cursor: not-allowed;
+}
+
+/* Measured at 2x: the hover band sits 8px inside the panel; rows add the next 8px. */
+.ud-transfer__list {
+  flex: 1;
+  min-height: 0;
+  padding: 8px;
+  overflow-y: auto;
+}
+
+/*
+ * Measured at 2x: 32px single-line rows, 8px row padding so the checkbox starts 16px
+ * inside the card and the text at 40px. A row carrying helper text grows with its
+ * content (specified). Left rows are buttons so the whole row selects; right rows are
+ * plain rows.
+ */
+.ud-transfer__row {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: var(--ud-transfer-row);
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--ud-radius-xs);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ud-transfer__row:hover {
+  background: var(--ud-color-bg-1);
+}
+
+.ud-transfer__row.is-disabled {
+  color: var(--ud-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.ud-transfer__text {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  gap: 2px;
+}
+
+.ud-transfer__title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ud-transfer__description {
+  color: var(--ud-color-text-secondary);
+  font-size: var(--ud-font-size-caption);
+  line-height: var(--ud-line-caption);
+}
+
+.ud-transfer__remove {
+  display: inline-flex;
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 12px;
+  line-height: 0;
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.ud-transfer__remove:hover {
+  opacity: 1;
+}
+
+.ud-transfer__remove:focus-visible,
+.ud-transfer__clear:focus-visible,
+.ud-transfer__all:focus-visible {
+  border-radius: var(--ud-radius-xs);
+  outline: 2px solid var(--ud-color-focus-ring);
+  outline-offset: 2px;
+}
+
+.ud-transfer__empty {
+  margin: 0;
+  padding: 24px 8px;
+  color: var(--ud-color-text-placeholder);
+  text-align: center;
+}
+
+.ud-transfer--disabled .ud-transfer__panel {
+  background: var(--ud-color-fill-disabled);
+}

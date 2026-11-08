@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { InputAddonOption } from './types'
 import { Check, Down, Up } from '@icon-park/vue-next'
-import { computed, nextTick, onBeforeUnmount, onMounted, shallowRef, useTemplateRef, watch } from 'vue'
+import { useEventListener } from '@vueuse/core'
+import { computed, nextTick, onMounted, shallowRef, useTemplateRef } from 'vue'
 import ParkIcon from '../../internal/park-icon.vue'
 import { nextLayerZ } from '../dialog/scroll-lock'
 
@@ -16,7 +17,11 @@ const menuRef = useTemplateRef<HTMLElement>('menu')
 const open = shallowRef(false)
 const placement = shallowRef<'bottom' | 'top'>('bottom')
 const menuStyle = shallowRef<Record<string, string>>({})
+const windowTarget = shallowRef<Window | null>(null)
 let layer = 0
+onMounted(() => {
+  windowTarget.value = window
+})
 
 const current = computed(() => options.find(option => option.value === model.value) ?? options[0])
 
@@ -72,7 +77,7 @@ function onKeydown(event: KeyboardEvent) {
   }
 }
 
-function onDocPointerDown(event: PointerEvent) {
+function onOutside(event: PointerEvent) {
   const root = rootRef.value
   if (!open.value || !root)
     return
@@ -82,25 +87,9 @@ function onDocPointerDown(event: PointerEvent) {
   open.value = false
 }
 
-watch(open, (value) => {
-  if (value) {
-    window.addEventListener('scroll', place, true)
-    window.addEventListener('resize', place)
-    return
-  }
-  window.removeEventListener('scroll', place, true)
-  window.removeEventListener('resize', place)
-})
-
-onMounted(() => {
-  document.addEventListener('pointerdown', onDocPointerDown)
-})
-
-onBeforeUnmount(() => {
-  document.removeEventListener('pointerdown', onDocPointerDown)
-  window.removeEventListener('scroll', place, true)
-  window.removeEventListener('resize', place)
-})
+useEventListener(windowTarget, 'pointerdown', onOutside, { capture: true })
+useEventListener(windowTarget, 'scroll', place, { capture: true, passive: true })
+useEventListener(windowTarget, 'resize', place)
 </script>
 
 <template>

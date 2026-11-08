@@ -2,7 +2,7 @@
   --ud-avatar-size: 32px;
   --ud-avatar-tone: var(--ud-color-brand);
   --ud-avatar-fill: var(--ud-avatar-tone);
-  --ud-avatar-color: var(--ud-color-bg-white);
+  --ud-avatar-color: var(--ud-color-text-inverse);
   --ud-avatar-inner: 0 0 0 0 transparent;
   --ud-avatar-ring: 0 0 0 0 transparent;
 
@@ -25,6 +25,14 @@
   line-height: 1;
   vertical-align: middle;
   user-select: none;
+}
+
+/* Avatar tooltips keep the avatar's inline flow and intrinsic size. */
+.ud-avatar-tooltip {
+  display: inline-flex;
+  flex: none;
+  width: auto;
+  max-width: none;
 }
 
 .ud-avatar[hidden] {
@@ -154,14 +162,21 @@
   --ud-avatar-group-overlap: 4px;
 }
 
-.ud-avatar-group > .ud-avatar,
-.ud-avatar-group__more {
+.ud-avatar-group > .ud-avatar-tooltip > .ud-avatar,
+.ud-avatar-group__more-tooltip > .ud-avatar-group__more {
   --ud-avatar-ring: 0 0 0 2px var(--ud-avatar-group-stroke);
 }
 
-.ud-avatar-group > * + .ud-avatar,
-.ud-avatar-group > * + .ud-avatar-group__more {
+.ud-avatar-group > * + .ud-avatar-tooltip,
+.ud-avatar-group > * + .ud-avatar-group__more-tooltip {
   margin-left: calc(var(--ud-avatar-group-overlap) * -1);
+}
+
+.ud-avatar-group__more-tooltip {
+  display: inline-flex;
+  flex: none;
+  width: auto;
+  max-width: none;
 }
 
 /*

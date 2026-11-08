@@ -5,6 +5,8 @@ shellEmulator: true
 packages:
   - packages/*
   - playground
+  - docs
 
 allowBuilds:
   esbuild: true
+  vue-demi: true

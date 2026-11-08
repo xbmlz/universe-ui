@@ -28,9 +28,9 @@
   --ud-select-menu-max-height: 246px;
   --ud-select-tag-max-height: 188px;
   /* Size figure tag fill #E9E9EA, state figure active option fill #EDEEEF. Neither is in the palette. */
-  --ud-select-tag-bg: #e9e9ea;
-  --ud-select-tag-bg-hover: #dddedf;
-  --ud-select-option-bg-active: #edeeef;
+  --ud-select-tag-bg: var(--ud-color-fill-secondary);
+  --ud-select-tag-bg-hover: var(--ud-color-fill-secondary-hover);
+  --ud-select-option-bg-active: var(--ud-color-fill-tertiary);
   /* Measured at 2x from the size figure: trigger text S 12/20, M 14/22, L 16/24; tag text matches. */
   --ud-select-font-size: var(--ud-font-size-body);
   --ud-select-line-height: var(--ud-line-body);
@@ -88,7 +88,7 @@
   --ud-select-bg: var(--ud-color-fill-disabled);
   --ud-select-border-color-hover: var(--ud-color-border);
   /* Measured at 2x from the state figure: tags on a grey box go one step darker, matching the disabled textarea counter chip. */
-  --ud-select-tag-bg: #dadcdd;
+  --ud-select-tag-bg: var(--ud-color-fill-secondary-pressed);
 }
 
 .ud-select--disabled {
@@ -155,7 +155,7 @@
 }
 
 .ud-select__trigger:hover::-webkit-scrollbar-thumb {
-  background-color: #bcbdbf;
+  background-color: var(--ud-color-text-a30);
 }
 
 .ud-select--open .ud-select__trigger,
@@ -356,7 +356,7 @@
   box-shadow: var(--ud-shadow-down-s4);
 }
 
-/* Measured at 2x from the menu figure: thumb 7px wide, 2px from the edge, round ends; #BCBDBF is not in the palette. */
+/* Measured at 2x from the menu figure: thumb 7px wide, 2px from the edge, round ends; mapped to the neutral alpha. */
 .ud-select__menu::-webkit-scrollbar {
   width: 11px;
 }
@@ -364,7 +364,7 @@
 .ud-select__menu::-webkit-scrollbar-thumb {
   border: 2px solid transparent;
   border-radius: var(--ud-radius-full);
-  background: #bcbdbf padding-box;
+  background: var(--ud-color-text-a30) padding-box;
 }
 
 .ud-select__menu::-webkit-scrollbar-track {
@@ -374,7 +374,7 @@
 @supports not selector(::-webkit-scrollbar) {
   .ud-select__menu {
     scrollbar-width: thin;
-    scrollbar-color: #bcbdbf transparent;
+    scrollbar-color: var(--ud-color-text-a30) transparent;
   }
 }
 
@@ -452,18 +452,6 @@
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-/* Measured from the search figure: spinner outer diameter about 19.5px. */
-.ud-select__spinner {
-  box-sizing: border-box;
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--ud-color-brand);
-  border-right-color: transparent;
-  border-radius: var(--ud-radius-full);
-  /* Spin duration borrowed from Button; the spec gives none for Select. */
-  animation: ud-button-spin 0.7s linear infinite;
 }
 
 .ud-select__check {

@@ -51,7 +51,7 @@
 .ud-steps__item.is-process .ud-steps__node {
   border-color: var(--ud-color-brand);
   background: var(--ud-color-brand);
-  color: var(--ud-color-bg-white);
+  color: var(--ud-color-text-inverse);
 }
 
 .ud-steps__item.is-finish .ud-steps__node {
@@ -63,7 +63,7 @@
 .ud-steps__item.is-error .ud-steps__node {
   border-color: var(--ud-color-danger);
   background: var(--ud-color-danger);
-  color: var(--ud-color-bg-white);
+  color: var(--ud-color-text-inverse);
 }
 
 .ud-steps__line {

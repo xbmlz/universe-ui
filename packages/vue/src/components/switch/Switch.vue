@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { SwitchSize } from './types'
 import { computed } from 'vue'
+import Spin from '../spin/Spin.vue'
 
 const {
   size = 'md',
@@ -42,9 +43,13 @@ function onClick() {
     @click="onClick"
   >
     <span class="ud-switch__knob">
-      <span
+      <Spin
         v-if="loading"
         class="ud-switch__spinner"
+        :style="{
+          '--ud-spin-size': size === 'sm' ? '7px' : '11px',
+          '--ud-spin-color': 'var(--ud-switch-spinner-color)',
+        }"
         aria-hidden="true"
       />
     </span>

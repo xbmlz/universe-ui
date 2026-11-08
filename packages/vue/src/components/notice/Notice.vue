@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import type { NoticeAction, NoticeActionPlacement, NoticeAlign, NoticeType } from './types'
 import { Attention, CheckOne, Close, CloseOne, Info } from '@icon-park/vue-next'
-import { computed, useSlots } from 'vue'
+import { computed, useSlots, useTemplateRef } from 'vue'
 import ParkIcon from '../../internal/park-icon.vue'
+import { Tooltip } from '../tooltip'
 
 const {
   type = 'info',
@@ -31,6 +32,7 @@ const {
 const emit = defineEmits<{ close: [] }>()
 const open = defineModel<boolean>('open', { default: true })
 const slots = useSlots()
+const contentRef = useTemplateRef<HTMLElement>('content')
 
 const ICONS = {
   info: Info,
@@ -42,6 +44,12 @@ const ICONS = {
 const centered = computed(() => align === 'center')
 const hasTitle = computed(() => !centered.value && (!!title || !!slots.title))
 const hasActions = computed(() => actions.length > 0 || !!slots.actions)
+const tooltipContent = computed(() => slots.default
+  ? contentRef.value?.textContent?.trim() ?? ''
+  : content)
+const contentStyle = computed(() => maxLines
+  ? { '-webkit-line-clamp': maxLines }
+  : undefined)
 
 function close() {
   open.value = false
@@ -84,10 +92,24 @@ function close() {
             {{ title }}
           </slot>
         </div>
+        <Tooltip
+          v-if="maxLines"
+          class="ud-notice__content-tooltip"
+          only-overflow
+          :content="tooltipContent"
+        >
+          <div
+            ref="content"
+            class="ud-notice__content ud-notice__content--clamp"
+            :style="contentStyle"
+          >
+            <slot>{{ content }}</slot>
+          </div>
+        </Tooltip>
         <div
+          v-else
+          ref="content"
           class="ud-notice__content"
-          :class="{ 'ud-notice__content--clamp': !!maxLines }"
-          :style="maxLines ? { '-webkit-line-clamp': maxLines } : undefined"
         >
           <slot>{{ content }}</slot>
         </div>

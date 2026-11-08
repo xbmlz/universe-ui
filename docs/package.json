@@ -1,0 +1,26 @@
+{
+  "name": "@universe-ui/docs",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "typecheck": "nuxt typecheck"
+  },
+  "dependencies": {
+    "@icon-park/vue-next": "1.4.2",
+    "@iconify-json/lucide": "^1.2.0",
+    "@iconify-json/simple-icons": "^1.2.0",
+    "@nuxt/content": "^3.0.0",
+    "@nuxt/ui": "^4.0.0",
+    "@universe-ui/tokens": "workspace:*",
+    "@universe-ui/vue": "workspace:*",
+    "nuxt": "^4.0.0",
+    "shiki": "^3.0.0",
+    "tailwindcss": "^4.0.0",
+    "vue": "3.6.0-rc.14",
+    "zod": "^3.24.0"
+  }
+}

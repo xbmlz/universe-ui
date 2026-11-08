@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { PopoverPlacement, PopoverSize, PopoverTrigger, PopoverType } from './types'
 import { Attention, CheckOne, CloseOne, Info } from '@icon-park/vue-next'
-import { computed, nextTick, onBeforeUnmount, shallowRef, useSlots, useTemplateRef, watch } from 'vue'
+import { useEventListener } from '@vueuse/core'
+import { computed, nextTick, onBeforeUnmount, onMounted, shallowRef, useSlots, useTemplateRef, watch } from 'vue'
 import ParkIcon from '../../internal/park-icon.vue'
 import { nextLayerZ } from '../dialog/scroll-lock'
 import Spin from '../spin/Spin.vue'
@@ -39,6 +40,10 @@ const bodyRef = useTemplateRef<HTMLElement>('body')
 const side = shallowRef<PopoverPlacement>('top')
 const divided = shallowRef(false)
 const cardStyle = shallowRef<Record<string, string>>({})
+const windowTarget = shallowRef<Window | null>(null)
+onMounted(() => {
+  windowTarget.value = window
+})
 
 const ICONS = {
   info: Info,
@@ -163,6 +168,8 @@ function onClick() {
 }
 
 function onPointerDown(event: PointerEvent) {
+  if (!open.value)
+    return
   const target = event.target
   if (!(target instanceof Node))
     return
@@ -176,27 +183,16 @@ function onKeydown(event: KeyboardEvent) {
     open.value = false
 }
 
-function bind(active: boolean) {
-  if (active) {
-    window.addEventListener('scroll', place, true)
-    window.addEventListener('resize', place)
-    document.addEventListener('keydown', onKeydown)
-    if (props.trigger === 'click')
-      document.addEventListener('pointerdown', onPointerDown, true)
-    return
-  }
-  window.removeEventListener('scroll', place, true)
-  window.removeEventListener('resize', place)
-  document.removeEventListener('keydown', onKeydown)
-  document.removeEventListener('pointerdown', onPointerDown, true)
-}
+useEventListener(windowTarget, 'scroll', place, { capture: true, passive: true })
+useEventListener(windowTarget, 'resize', place)
+useEventListener(windowTarget, 'keydown', onKeydown)
+useEventListener(windowTarget, 'pointerdown', onPointerDown, { capture: true })
 
 watch(open, (value) => {
-  if (value)
+  if (value) {
     layer = nextLayerZ()
-  bind(value)
-  if (value)
     nextTick(place)
+  }
 })
 
 watch(() => [
@@ -225,7 +221,6 @@ watch(cardRef, (card) => {
 onBeforeUnmount(() => {
   window.clearTimeout(timer)
   observer?.disconnect()
-  bind(false)
 })
 </script>
 

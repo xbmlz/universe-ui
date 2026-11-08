@@ -4,21 +4,27 @@ import { config, entries } from './store'
 import ToastItem from './ToastItem.vue'
 
 const style = computed(() => ({ top: `${config.value.top}px` }))
+const target = computed(() => config.value.container ?? 'body')
 </script>
 
 <template>
-  <TransitionGroup
-    name="ud-toast"
-    tag="div"
-    class="ud-toast-host"
-    :style="style"
+  <Teleport
+    :to="target"
+    :disabled="!config.value.container"
   >
-    <div
-      v-for="entry in entries"
-      :key="entry.id"
-      class="ud-toast-host__item"
+    <TransitionGroup
+      name="ud-toast"
+      tag="div"
+      class="ud-toast-host"
+      :style="style"
     >
-      <ToastItem :entry="entry" />
-    </div>
-  </TransitionGroup>
+      <div
+        v-for="entry in entries"
+        :key="entry.id"
+        class="ud-toast-host__item"
+      >
+        <ToastItem :entry="entry" />
+      </div>
+    </TransitionGroup>
+  </Teleport>
 </template>

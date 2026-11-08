@@ -142,7 +142,7 @@
 
 .ud-progress__icon path {
   fill: none;
-  stroke: var(--ud-color-bg-white);
+  stroke: var(--ud-color-white);
   stroke-width: 1.5;
   stroke-linecap: round;
   stroke-linejoin: round;

@@ -37,7 +37,7 @@
 
 /* Specified: B500 by default, N00 on dark backgrounds, N400 on grey placeholders. */
 .ud-spin--white {
-  --ud-spin-color: var(--ud-color-bg-white);
+  --ud-spin-color: var(--ud-color-white);
 }
 
 .ud-spin--grey {
@@ -116,6 +116,18 @@
 
 .ud-skeleton--rect {
   border-radius: var(--ud-radius-xs);
+}
+
+/* loading.md image placeholder: N200 fill, grey 24px spinner, 48px minimum, 180x120 default. */
+.ud-skeleton--image {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: 48px;
+  min-height: 48px;
+  border-radius: var(--ud-radius-xs);
+  background: var(--ud-color-bg-2);
 }
 
 /* Measured at 2x: 8px between text bars. The shorter last bar is inferred. */

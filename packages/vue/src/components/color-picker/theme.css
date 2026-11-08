@@ -1,0 +1,474 @@
+/*
+ * color-picker.md gives the parts, states and interaction, but no pixel sizes.
+ * Measured at 2x from the supplied figures: a limited panel is 184x72 with 20px
+ * swatches, an 8px gap and 12px padding; its hover ring is 3px outside the swatch
+ * and its selected ring is 2px. The full panel is 233px wide with 24px padding
+ * and a 13px column gap. The custom area is 200x128. Trigger sizes are inferred
+ * from the input scale.
+ */
+.ud-color-picker {
+  --ud-color-picker-height: 32px;
+  --ud-color-picker-gap: 8px;
+  --ud-color-picker-chip: 16px;
+  --ud-color-picker-panel-padding: 12px;
+  --ud-color-picker-swatch: 20px;
+  --ud-color-picker-swatch-gap: 8px;
+  --ud-color-picker-radius: var(--ud-radius-s);
+  --ud-color-picker-border: var(--ud-color-border);
+  --ud-color-picker-custom-width: 236px;
+  --ud-color-picker-custom-padding: 18px;
+  --ud-color-picker-area-width: 200px;
+  --ud-color-picker-area-height: 128px;
+  --ud-color-picker-hue-size: 26px;
+  --ud-color-picker-field-height: 26px;
+  --ud-color-picker-hover-ring: var(--ud-blue-7);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--ud-color-picker-gap);
+  color: var(--ud-color-text);
+  font-family: var(--ud-font-family);
+  font-size: var(--ud-font-size-body);
+  line-height: var(--ud-line-body);
+}
+
+.ud-color-picker--sm {
+  --ud-color-picker-height: 28px;
+  --ud-color-picker-chip: 12px;
+}
+
+.ud-color-picker--lg {
+  --ud-color-picker-height: 40px;
+  --ud-color-picker-chip: 20px;
+}
+
+.ud-color-picker__trigger {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: var(--ud-color-picker-height);
+  padding: 0 12px;
+  border: 1px solid var(--ud-color-picker-border);
+  border-radius: var(--ud-color-picker-radius);
+  background: var(--ud-color-bg-white);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.ud-color-picker__trigger:hover {
+  --ud-color-picker-border: var(--ud-color-brand);
+}
+
+.ud-color-picker__trigger:focus-visible {
+  outline: 2px solid var(--ud-color-focus-ring);
+  outline-offset: 1px;
+}
+
+.ud-color-picker__chip {
+  flex: none;
+  width: var(--ud-color-picker-chip);
+  height: var(--ud-color-picker-chip);
+  border-radius: var(--ud-radius-xs);
+}
+
+.ud-color-picker__chip.is-empty {
+  box-sizing: border-box;
+  border: 1px solid var(--ud-color-border);
+  background:
+    linear-gradient(
+      to bottom right,
+      transparent calc(50% - 0.5px),
+      var(--ud-color-border) calc(50% - 0.5px),
+      var(--ud-color-border) calc(50% + 0.5px),
+      transparent calc(50% + 0.5px)
+    ),
+    var(--ud-color-bg-white);
+}
+
+.ud-color-picker__text {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ud-color-picker__text.is-placeholder {
+  color: var(--ud-color-text-placeholder);
+}
+
+.ud-color-picker__arrow {
+  flex: none;
+  color: var(--ud-color-icon-tertiary);
+  font-size: 12px;
+}
+
+.ud-color-picker__panel {
+  /* The panel is teleported to the body, so it must restate the variables and type it uses. */
+  --ud-color-picker-panel-padding: 12px;
+  --ud-color-picker-swatch: 20px;
+  --ud-color-picker-swatch-gap: 8px;
+  --ud-color-picker-custom-width: 236px;
+  --ud-color-picker-custom-padding: 18px;
+  --ud-color-picker-area-width: 200px;
+  --ud-color-picker-area-height: 128px;
+  --ud-color-picker-hue-size: 26px;
+  --ud-color-picker-field-height: 26px;
+  --ud-color-picker-hover-ring: var(--ud-blue-7);
+
+  position: fixed;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: var(--ud-color-picker-panel-padding);
+  border-radius: var(--ud-radius-m);
+  background: var(--ud-color-bg-white);
+  box-shadow: var(--ud-shadow-down-s2);
+  color: var(--ud-color-text);
+  font-family: var(--ud-font-family);
+  font-size: var(--ud-font-size-body);
+  line-height: var(--ud-line-body);
+}
+
+.ud-color-picker__panel.is-full {
+  padding: 24px 24px 20px;
+}
+
+.ud-color-picker__panel.is-custom {
+  width: var(--ud-color-picker-custom-width);
+  padding: var(--ud-color-picker-custom-padding);
+}
+
+.ud-color-picker__grid {
+  display: grid;
+  gap: var(--ud-color-picker-swatch-gap);
+}
+
+.ud-color-picker__panel.is-full .ud-color-picker__grid {
+  column-gap: 13px;
+  row-gap: 8px;
+}
+
+.ud-color-picker__swatch {
+  position: relative;
+  z-index: 0;
+  box-sizing: border-box;
+  width: var(--ud-color-picker-swatch);
+  height: var(--ud-color-picker-swatch);
+  padding: 0;
+  border: 0;
+  border-radius: var(--ud-radius-xs);
+  color: var(--ud-color-white);
+  cursor: pointer;
+}
+
+.ud-color-picker__panel.is-full .ud-color-picker__swatch.is-first-row {
+  margin-bottom: 18px;
+}
+
+.ud-color-picker__swatch.is-none {
+  border: 1px solid var(--ud-color-border);
+  background:
+    linear-gradient(
+      to bottom right,
+      transparent calc(50% - 0.5px),
+      var(--ud-color-border) calc(50% - 0.5px),
+      var(--ud-color-border) calc(50% + 0.5px),
+      transparent calc(50% + 0.5px)
+    ),
+    var(--ud-color-bg-white);
+}
+
+.ud-color-picker__swatch:hover,
+.ud-color-picker__swatch:active {
+  z-index: 1;
+}
+
+.ud-color-picker__swatch:hover::after,
+.ud-color-picker__swatch:active::after {
+  position: absolute;
+  inset: -3px;
+  box-sizing: border-box;
+  border: 2px solid var(--ud-color-picker-hover-ring);
+  border-radius: var(--ud-radius-s);
+  content: '';
+  pointer-events: none;
+}
+
+.ud-color-picker__swatch.is-selected {
+  z-index: 1;
+}
+
+.ud-color-picker__swatch.is-selected::after {
+  position: absolute;
+  inset: -3.5px;
+  box-sizing: border-box;
+  border: 2px solid var(--ud-color-brand);
+  border-radius: var(--ud-radius-s);
+  content: '';
+  pointer-events: none;
+}
+
+.ud-color-picker__swatch.is-selected:hover::after,
+.ud-color-picker__swatch.is-selected:active::after {
+  border-color: var(--ud-color-brand);
+}
+
+.ud-color-picker__swatch.is-light {
+  color: var(--ud-color-brand);
+}
+
+.ud-color-picker__check {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.ud-color-picker__recent {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1px solid var(--ud-color-border-card);
+}
+
+.ud-color-picker__recent-label {
+  color: var(--ud-color-text-secondary);
+  font-size: var(--ud-font-size-caption);
+  line-height: var(--ud-line-caption);
+}
+
+.ud-color-picker__recent-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ud-color-picker-swatch-gap);
+}
+
+.ud-color-picker__footer {
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1px solid var(--ud-color-border-card);
+}
+
+.ud-color-picker__panel.is-full .ud-color-picker__recent {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 18px;
+  padding-top: 12px;
+  border-top: 1px solid var(--ud-color-border-card);
+}
+
+.ud-color-picker__recent-label {
+  color: var(--ud-color-text-secondary);
+  font-size: var(--ud-font-size-caption);
+  line-height: var(--ud-line-caption);
+}
+
+.ud-color-picker__recent-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ud-color-picker-swatch-gap);
+}
+
+.ud-color-picker__footer {
+  padding-top: 8px;
+}
+
+.ud-color-picker__more {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ud-color-text-secondary);
+  font: inherit;
+  cursor: pointer;
+}
+
+.ud-color-picker__more:hover {
+  color: var(--ud-color-brand);
+}
+
+.ud-color-picker__rainbow {
+  flex: none;
+  width: 16px;
+  height: 16px;
+  border-radius: var(--ud-radius-full);
+  background: conic-gradient(#f54a45, #ff8800, #ffc60c, #34c724, #00d6b9, #3270ff, #7f3bf5, #f01e94, #f54a45);
+}
+
+.ud-color-picker__more-text {
+  flex: 1;
+  text-align: left;
+}
+
+.ud-color-picker__more-arrow {
+  flex: none;
+  color: var(--ud-color-icon-tertiary);
+  font-size: 12px;
+}
+
+.ud-color-picker__area {
+  position: relative;
+  width: var(--ud-color-picker-area-width);
+  height: var(--ud-color-picker-area-height);
+  border-radius: var(--ud-radius-xs);
+  cursor: crosshair;
+  touch-action: none;
+}
+
+.ud-color-picker__area-white,
+.ud-color-picker__area-black {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.ud-color-picker__area-white {
+  background: linear-gradient(to right, #fff, rgb(255 255 255 / 0%));
+}
+
+.ud-color-picker__area-black {
+  background: linear-gradient(to top, #000, rgb(0 0 0 / 0%));
+}
+
+.ud-color-picker__cursor {
+  position: absolute;
+  box-sizing: border-box;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  border: 2px solid var(--ud-color-white);
+  border-radius: var(--ud-radius-full);
+  box-shadow: 0 0 0 1px var(--ud-color-text-a30);
+  pointer-events: none;
+}
+
+.ud-color-picker__hue-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: var(--ud-color-picker-hue-size);
+  margin-top: 9px;
+}
+
+.ud-color-picker__current {
+  flex: none;
+  width: var(--ud-color-picker-hue-size);
+  height: var(--ud-color-picker-hue-size);
+  border-radius: var(--ud-radius-xs);
+}
+
+.ud-color-picker__hue {
+  flex: 1;
+  min-width: 0;
+  height: var(--ud-color-picker-hue-size);
+  margin: 0;
+  padding: 0;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.ud-color-picker__hue::-webkit-slider-runnable-track {
+  height: 12px;
+  border-radius: var(--ud-radius-full);
+  background: linear-gradient(to right, #f54a45, #ffc60c, #34c724, #00d6b9, #3270ff, #7f3bf5, #f01e94, #f54a45);
+}
+
+.ud-color-picker__hue::-webkit-slider-thumb {
+  box-sizing: border-box;
+  width: 16px;
+  height: 16px;
+  margin-top: -2px;
+  appearance: none;
+  border: 2px solid var(--ud-color-white);
+  border-radius: var(--ud-radius-full);
+  background: var(--ud-color-white);
+  box-shadow: 0 1px 4px var(--ud-color-text-a20);
+}
+
+.ud-color-picker__hue::-moz-range-track {
+  height: 12px;
+  border-radius: var(--ud-radius-full);
+  background: linear-gradient(to right, #f54a45, #ffc60c, #34c724, #00d6b9, #3270ff, #7f3bf5, #f01e94, #f54a45);
+}
+
+.ud-color-picker__hue::-moz-range-thumb {
+  box-sizing: border-box;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--ud-color-white);
+  border-radius: var(--ud-radius-full);
+  background: var(--ud-color-white);
+  box-shadow: 0 1px 4px var(--ud-color-text-a20);
+}
+
+.ud-color-picker__fields {
+  display: grid;
+  grid-template-columns: 64px repeat(3, 26px);
+  column-gap: 16px;
+  margin-top: 10px;
+}
+
+.ud-color-picker__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.ud-color-picker__field-label {
+  color: var(--ud-color-text-secondary);
+  font-size: var(--ud-font-size-body-sm);
+  line-height: var(--ud-line-body-sm);
+  text-align: center;
+}
+
+.ud-color-picker__value {
+  box-sizing: border-box;
+  width: 100%;
+  height: var(--ud-color-picker-field-height);
+  padding: 0 4px;
+  border: 1px solid var(--ud-color-border);
+  border-radius: var(--ud-radius-s);
+  background: var(--ud-color-bg-white);
+  color: var(--ud-color-text);
+  font-family: inherit;
+  font-size: var(--ud-font-size-body-sm);
+  line-height: var(--ud-line-body-sm);
+  text-align: center;
+}
+
+.ud-color-picker__value.is-hex,
+.ud-color-picker__field.is-hex .ud-color-picker__value {
+  padding: 0 6px;
+  text-align: left;
+}
+
+.ud-color-picker__value:focus {
+  border-color: var(--ud-color-brand);
+  outline: none;
+}
+
+.ud-color-picker--disabled .ud-color-picker__trigger {
+  background: var(--ud-color-fill-disabled);
+  color: var(--ud-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.ud-color-picker--disabled .ud-color-picker__trigger:hover {
+  --ud-color-picker-border: var(--ud-color-border);
+}

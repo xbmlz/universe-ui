@@ -1,0 +1,143 @@
+/*
+ * Specified in anchor.md: 14px titles, a 200px column (never wider than 400px), a
+ * 24px minimum distance to other elements, a selected locator line, and a scrolling
+ * list that sticks to the viewport. Row gaps and the locator's 3px width are
+ * inferred from the navigation menu figure.
+ */
+.ud-anchor {
+  --ud-anchor-width: 200px;
+  --ud-anchor-max-width: 400px;
+  --ud-anchor-gap: 24px;
+  --ud-anchor-row-gap: 8px;
+  --ud-anchor-indent: 16px;
+  --ud-anchor-locator: 3px;
+
+  box-sizing: border-box;
+  width: var(--ud-anchor-width);
+  max-width: var(--ud-anchor-max-width);
+  margin: var(--ud-anchor-gap);
+  color: var(--ud-color-text);
+  font-family: var(--ud-font-family);
+  font-size: var(--ud-font-size-body);
+  line-height: var(--ud-line-body);
+}
+
+.ud-anchor--affix {
+  position: sticky;
+  top: 0;
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+.ud-anchor__list,
+.ud-anchor__sublist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ud-anchor-row-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ud-anchor__link {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 4px 8px;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--ud-radius-xs);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.ud-anchor__link:hover {
+  background: var(--ud-color-bg-1);
+}
+
+.ud-anchor__link.is-active {
+  color: var(--ud-color-brand);
+  font-weight: var(--ud-font-weight-medium);
+}
+
+/* The locator sits on the left edge of the active row. */
+.ud-anchor--marker .ud-anchor__link.is-active::before {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--ud-anchor-locator);
+  border-radius: var(--ud-radius-xs);
+  background: var(--ud-color-brand);
+  content: '';
+}
+
+.ud-anchor__link--sub {
+  padding-left: calc(8px + var(--ud-anchor-indent) * var(--ud-anchor-depth));
+  color: var(--ud-color-text-secondary);
+  font-size: var(--ud-font-size-body-sm);
+  line-height: var(--ud-line-body-sm);
+}
+
+.ud-anchor__link--sub.is-active {
+  color: var(--ud-color-brand);
+}
+
+.ud-anchor__loading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  color: var(--ud-color-text-secondary);
+  font-size: var(--ud-font-size-body-sm);
+}
+
+/* The failure illustration is not in the repository; this text state follows the loading layout. */
+.ud-anchor__failure {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px;
+  color: var(--ud-color-text-secondary);
+  font-size: var(--ud-font-size-body-sm);
+}
+
+.ud-anchor__retry {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ud-color-brand);
+  font: inherit;
+  cursor: pointer;
+}
+
+.ud-anchor__retry:hover {
+  color: var(--ud-color-brand-hover);
+}
+
+.ud-anchor__spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--ud-color-brand-loading);
+  border-top-color: var(--ud-color-brand);
+  border-radius: var(--ud-radius-full);
+  animation: ud-anchor-spin 0.8s linear infinite;
+}
+
+@keyframes ud-anchor-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ud-anchor__spinner {
+    animation: none;
+  }
+}

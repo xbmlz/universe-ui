@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ProgressInfoPlacement, ProgressStatus, ProgressVariant } from './types'
 import { computed } from 'vue'
+import { clampPercent, defaultInfoPlacement, progressInfo, showsInfo } from './value'
 
 const {
   percent = 0,
@@ -24,15 +25,15 @@ const {
   label?: string
 }>()
 
-const value = computed(() => Math.min(100, Math.max(0, percent)))
-const info = computed(() => (format
-  ? format(value.value)
-  : `${Math.round(value.value)}%`))
-const placement = computed(() => infoPlacement ?? (variant === 'circle'
-  ? 'left'
-  : 'right'))
-const iconOnly = computed(() => variant === 'circle' && status !== 'normal' && !indeterminate)
-const infoVisible = computed(() => showInfo && !indeterminate && !iconOnly.value && (variant === 'line' || status !== 'error'))
+const value = computed(() => clampPercent(percent))
+const info = computed(() => progressInfo(value.value, format))
+const placement = computed(() => defaultInfoPlacement(variant, infoPlacement))
+const infoVisible = computed(() => showsInfo({
+  variant,
+  status,
+  showInfo,
+  indeterminate,
+}))
 
 const classes = computed(() => [
   'ud-progress',

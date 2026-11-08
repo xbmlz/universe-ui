@@ -3,6 +3,7 @@ import { Down, Up } from '@icon-park/vue-next'
 import { computed, inject, shallowRef, useId, useTemplateRef, watch } from 'vue'
 import ParkIcon from '../../internal/park-icon.vue'
 import { INPUT_GROUP } from './context'
+import { blurAction, clampNumber, COMPLETE_NUMBER, inputValue, PARTIAL_NUMBER } from './number'
 
 const {
   size = 'md',
@@ -42,14 +43,11 @@ const inputId = useId()
 const fieldRef = useTemplateRef<HTMLInputElement>('field')
 const text = shallowRef('')
 
-const completeNumber = /^-?\d+(?:\.\d+)?$/
-const partialNumber = /^-?\d*\.?$/
-
 watch(
   () => model.value,
   (value) => {
     if (value == null) {
-      if (text.value === '' || completeNumber.test(text.value))
+      if (text.value === '' || COMPLETE_NUMBER.test(text.value))
         text.value = ''
       return
     }
@@ -59,7 +57,7 @@ watch(
   { immediate: true },
 )
 
-const typeError = computed(() => text.value !== '' && !completeNumber.test(text.value) && !partialNumber.test(text.value))
+const typeError = computed(() => text.value !== '' && !COMPLETE_NUMBER.test(text.value) && !PARTIAL_NUMBER.test(text.value))
 const invalid = computed(() => resolvedError.value || typeError.value)
 const shownMessage = computed(() => (typeError.value ? '输入类型错误' : message))
 
@@ -74,25 +72,8 @@ function focus() {
   fieldRef.value?.focus()
 }
 
-function decimalPlaces(value: number) {
-  const source = String(value)
-  const index = source.indexOf('.')
-  return index === -1
-    ? 0
-    : source.length - index - 1
-}
-
-function clamp(value: number) {
-  let next = value
-  if (min != null && next < min)
-    next = min
-  if (max != null && next > max)
-    next = max
-  return Number(next.toFixed(decimalPlaces(step)))
-}
-
 function commit(value: number) {
-  const next = clamp(value)
+  const next = clampNumber(value, { min, max, step })
   text.value = String(next)
   model.value = next
 }
@@ -110,31 +91,21 @@ function stepBy(direction: 1 | -1) {
 function onInput(event: Event) {
   const value = (event.target as HTMLInputElement).value
   text.value = value
-  if (value === '') {
-    model.value = null
-    return
-  }
-  if (completeNumber.test(value))
-    model.value = Number(value)
-  else if (!partialNumber.test(value))
-    model.value = null
+  const next = inputValue(value)
+  if (next !== undefined)
+    model.value = next
 }
 
 function onBlur() {
-  if (completeNumber.test(text.value)) {
-    commit(Number(text.value))
+  const action = blurAction(text.value)
+  if (action.kind === 'commit') {
+    commit(action.value)
     return
   }
-  if (text.value === '' || text.value === '-' || text.value === '.' || text.value.endsWith('.')) {
-    const parsed = Number(text.value)
-    if (text.value.endsWith('.') && Number.isFinite(parsed)) {
-      commit(parsed)
-    }
-    else {
-      text.value = model.value == null
-        ? ''
-        : String(model.value)
-    }
+  if (action.kind === 'reset') {
+    text.value = model.value == null
+      ? ''
+      : String(model.value)
   }
 }
 

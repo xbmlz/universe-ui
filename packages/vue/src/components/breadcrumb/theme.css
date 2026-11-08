@@ -50,14 +50,14 @@
 .ud-breadcrumb__link:hover,
 .ud-breadcrumb__more:hover {
   /* Hover fill measured #E4EBFB. The text is the old brand blue, mapped to the brand token. */
-  background: #e4ebfb;
+  background: var(--ud-color-brand-subtle);
   color: var(--ud-color-brand);
 }
 
 .ud-breadcrumb__link:active,
 .ud-breadcrumb__more:active {
   /* Pressed fill measured #D1DEFB. */
-  background: #d1defb;
+  background: var(--ud-color-brand-subtle-active);
   color: var(--ud-color-brand);
 }
 

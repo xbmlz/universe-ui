@@ -13,8 +13,8 @@
   padding: 8px 12px;
   border-radius: var(--ud-radius-s);
   /* Size figure fill is 31,35,41, the text colour, with white text. The radius is hidden behind callout lines, so a small radius is used. */
-  background: var(--ud-color-text);
-  color: var(--ud-color-bg-white);
+  background: var(--ud-color-bg-inverse);
+  color: var(--ud-color-text-on-inverse);
   font-size: var(--ud-font-size-caption);
   font-weight: var(--ud-font-weight-regular);
   line-height: 12px;
@@ -28,7 +28,7 @@
   width: 12px;
   height: 6px;
   margin-left: -6px;
-  background: var(--ud-color-text);
+  background: var(--ud-color-bg-inverse);
 }
 
 .ud-tooltip__bubble--top .ud-tooltip__arrow {

@@ -117,3 +117,65 @@
   /* Content lines up with the title: 16px padding, 10px icon, 8px gap. */
   padding-left: 34px;
 }
+
+/* Text folding has no header. The trigger is a plain text action below the paragraph. */
+.ud-collapse__item--text .ud-collapse__text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+.ud-collapse__item--text .ud-collapse__text-content {
+  width: 100%;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+
+.ud-collapse__item--text .ud-collapse__text-content.is-clamped {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+}
+
+.ud-collapse__item--text .ud-collapse__text-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ud-color-brand);
+  font: inherit;
+  line-height: inherit;
+  cursor: pointer;
+}
+
+.ud-collapse__item--text .ud-collapse__text-toggle:hover {
+  color: var(--ud-color-brand-hover);
+}
+
+.ud-collapse__item--text .ud-collapse__text-toggle:active {
+  color: var(--ud-color-brand-pressed);
+}
+
+.ud-collapse__item--text .ud-collapse__text-toggle:disabled {
+  color: var(--ud-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.ud-collapse__item--text .ud-collapse__text-toggle:focus {
+  outline: none;
+}
+
+.ud-collapse__item--text .ud-collapse__text-toggle:focus-visible {
+  border-radius: var(--ud-radius-xs);
+  outline: 2px solid var(--ud-color-focus-ring);
+}
+
+.ud-collapse__item--text .ud-collapse__text-chevron {
+  font-size: 14px;
+}
+
+.ud-collapse__text--right .ud-collapse__text {
+  align-items: flex-end;
+}

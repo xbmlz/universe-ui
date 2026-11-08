@@ -1,0 +1,246 @@
+/*
+ * Specified in timeline.md: 16 / 24 / 32px between nodes, title as a short phrase on
+ * one line, time and auxiliary text as optional parts.
+ * Inferred: the 8px dot, the 1px connector, the 16px icon badge, and every type
+ * size below 24px (the doc gives no numbers there).
+ */
+.ud-timeline {
+  --ud-timeline-gap: 24px;
+  --ud-timeline-rail: 8px;
+  --ud-timeline-content-gap: 12px;
+  --ud-timeline-dot: 8px;
+  --ud-timeline-line: 1px;
+  --ud-timeline-badge: 16px;
+  --ud-timeline-dot-color: var(--ud-color-text-disabled);
+  --ud-timeline-line-color: var(--ud-color-text-disabled);
+  --ud-timeline-title-color: var(--ud-color-text);
+  --ud-timeline-time-color: var(--ud-color-text-secondary);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--ud-timeline-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--ud-timeline-title-color);
+  font-family: var(--ud-font-family);
+  font-size: var(--ud-font-size-body);
+  line-height: var(--ud-line-body);
+}
+
+.ud-timeline--compact {
+  --ud-timeline-gap: 16px;
+}
+
+.ud-timeline--loose {
+  --ud-timeline-gap: 32px;
+}
+
+.ud-timeline__item {
+  display: grid;
+  grid-template-columns: var(--ud-timeline-rail) minmax(0, 1fr);
+  column-gap: var(--ud-timeline-content-gap);
+  min-width: 0;
+}
+
+.ud-timeline__item.is-left {
+  grid-template-columns: minmax(0, 1fr) var(--ud-timeline-rail);
+}
+
+.ud-timeline__item.is-left .ud-timeline__content {
+  grid-column: 1;
+  grid-row: 1;
+  text-align: right;
+}
+
+.ud-timeline__item.is-left .ud-timeline__rail {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+/*
+ * A two-sided timeline keeps one shared rail in the middle and alternates the content.
+ * The rail and connector metrics are the same as the single-sided layout.
+ */
+.ud-timeline--alternate .ud-timeline__item {
+  grid-template-columns: minmax(0, 1fr) var(--ud-timeline-rail) minmax(0, 1fr);
+}
+
+.ud-timeline--alternate .ud-timeline__item.is-right .ud-timeline__content {
+  grid-column: 3;
+  grid-row: 1;
+  text-align: left;
+}
+
+.ud-timeline--alternate .ud-timeline__item.is-left .ud-timeline__content {
+  grid-column: 1;
+  grid-row: 1;
+  text-align: right;
+}
+
+.ud-timeline--alternate .ud-timeline__rail {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.ud-timeline--alternate .ud-timeline__collapse {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.ud-timeline__rail {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  min-height: 22px;
+}
+
+.ud-timeline__dot {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--ud-timeline-dot);
+  height: var(--ud-timeline-dot);
+  /* Vertically centred on the 22px title line. */
+  margin-top: 7px;
+  border-radius: var(--ud-radius-full);
+  background: var(--ud-timeline-dot-color);
+  color: var(--ud-color-text-inverse);
+}
+
+.ud-timeline__item.is-process .ud-timeline__dot,
+.ud-timeline__item.is-finish .ud-timeline__dot {
+  background: var(--ud-color-brand);
+}
+
+.ud-timeline__item.is-success .ud-timeline__dot {
+  width: var(--ud-timeline-badge);
+  height: var(--ud-timeline-badge);
+  margin-top: 3px;
+  background: var(--ud-color-success);
+}
+
+.ud-timeline__item.is-warning .ud-timeline__dot {
+  width: var(--ud-timeline-badge);
+  height: var(--ud-timeline-badge);
+  margin-top: 3px;
+  background: var(--ud-color-warning);
+}
+
+.ud-timeline__item.is-error .ud-timeline__dot,
+.ud-timeline__item.is-failed .ud-timeline__dot {
+  width: var(--ud-timeline-badge);
+  height: var(--ud-timeline-badge);
+  margin-top: 3px;
+  background: var(--ud-color-danger);
+}
+
+.ud-timeline__item.is-loading .ud-timeline__dot {
+  width: var(--ud-timeline-badge);
+  height: var(--ud-timeline-badge);
+  margin-top: 3px;
+  border: 2px solid var(--ud-color-brand-loading);
+  background: var(--ud-color-bg-white);
+}
+
+.ud-timeline__dot .ud-park {
+  font-size: 12px;
+}
+
+.ud-timeline__spinner {
+  width: 100%;
+  height: 100%;
+  border: 2px solid var(--ud-color-brand-loading);
+  border-top-color: var(--ud-color-brand);
+  border-radius: var(--ud-radius-full);
+  animation: ud-timeline-spin 0.8s linear infinite;
+}
+
+@keyframes ud-timeline-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ud-timeline__spinner {
+    animation: none;
+  }
+}
+
+.ud-timeline__line {
+  position: absolute;
+  left: 50%;
+  width: var(--ud-timeline-line);
+  background: var(--ud-timeline-line-color);
+  transform: translateX(-50%);
+}
+
+.ud-timeline__line--before {
+  top: calc(-1 * var(--ud-timeline-gap) + 7px);
+  height: calc(var(--ud-timeline-gap) - 7px);
+}
+
+.ud-timeline__line--after {
+  top: 15px;
+  bottom: calc(-1 * var(--ud-timeline-gap));
+}
+
+.ud-timeline__item.is-success .ud-timeline__line--after,
+.ud-timeline__item.is-warning .ud-timeline__line--after,
+.ud-timeline__item.is-error .ud-timeline__line--after,
+.ud-timeline__item.is-loading .ud-timeline__line--after {
+  top: 19px;
+}
+
+.ud-timeline__content {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  gap: 4px;
+}
+
+.ud-timeline__time {
+  color: var(--ud-timeline-time-color);
+  font-size: var(--ud-font-size-caption);
+  line-height: var(--ud-line-caption);
+}
+
+.ud-timeline__title {
+  overflow: hidden;
+  font-size: var(--ud-font-size-body);
+  font-weight: var(--ud-font-weight-medium);
+  line-height: var(--ud-line-body);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ud-timeline__item.is-wait .ud-timeline__title {
+  color: var(--ud-color-text-placeholder);
+  font-weight: var(--ud-font-weight-regular);
+}
+
+.ud-timeline__description {
+  color: var(--ud-timeline-time-color);
+  font-size: var(--ud-font-size-caption);
+  line-height: var(--ud-line-caption);
+  overflow-wrap: anywhere;
+}
+
+.ud-timeline__collapse {
+  margin-left: calc(var(--ud-timeline-rail) + var(--ud-timeline-content-gap));
+}
+
+.ud-timeline__collapse-button {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ud-color-brand);
+  font: inherit;
+  font-size: var(--ud-font-size-caption);
+  line-height: var(--ud-line-caption);
+  cursor: pointer;
+}

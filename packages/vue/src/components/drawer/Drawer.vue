@@ -1,31 +1,44 @@
 <script setup lang="ts">
 import type { ButtonType } from '../button/types'
-import type { DrawerCloseReason, DrawerFooterAlign, DrawerMode, DrawerSize } from './types'
-import { Close } from '@icon-park/vue-next'
-import { computed, nextTick, onBeforeUnmount, shallowRef, useSlots, useTemplateRef, watch } from 'vue'
+import type { DrawerAction, DrawerCloseReason, DrawerFooterAlign, DrawerHeaderSize, DrawerMode, DrawerModeSetting, DrawerSize } from './types'
+import { Close, Down } from '@icon-park/vue-next'
+import { useEventListener } from '@vueuse/core'
+import { computed, nextTick, onBeforeUnmount, onMounted, shallowRef, useSlots, useTemplateRef, watch } from 'vue'
 import ParkIcon from '../../internal/park-icon.vue'
 import Button from '../button/Button.vue'
 import { lockScroll, nextDialogId, nextLayerZ, unlockScroll } from '../dialog/scroll-lock'
+import Dropdown from '../dropdown/Dropdown.vue'
+import DropdownItem from '../dropdown/DropdownItem.vue'
 
 const {
   title = '',
   description = '',
   size = 'sm',
   width,
+  headerSize,
   mode = 'overlay',
+  responsive = false,
+  pushBreakpoint = 1024,
   modal = false,
   closable = true,
   okText = '',
   cancelText = '',
   okType = 'primary',
   footerAlign = 'right',
+  actions = [],
   beforeOk,
 } = defineProps<{
   title?: string
   description?: string
   size?: DrawerSize
   width?: number | string
-  mode?: DrawerMode
+  /** Use the specified 56px web or 68px PC header height. */
+  headerSize?: DrawerHeaderSize
+  mode?: DrawerModeSetting
+  /** Switch between overlay below the breakpoint and push above it. */
+  responsive?: boolean
+  /** Spec leaves the responsive breakpoint open; 1024 is inferred from 350px drawer plus page content. */
+  pushBreakpoint?: number
   /** Modal drawers ignore the mask and Escape; close them with the close button or an action. */
   modal?: boolean
   closable?: boolean
@@ -33,6 +46,8 @@ const {
   cancelText?: string
   okType?: ButtonType
   footerAlign?: DrawerFooterAlign
+  /** Header actions. At most three are shown; from the fourth, the third slot becomes "更多". */
+  actions?: DrawerAction[]
   /** Return false (or a promise resolving to false) to keep the drawer open after OK. */
   beforeOk?: () => boolean | void | Promise<boolean | void>
 }>()
@@ -44,13 +59,28 @@ const slots = useSlots()
 const rootRef = useTemplateRef<HTMLElement>('root')
 const pending = shallowRef(false)
 const zIndex = shallowRef(0)
+const viewportWidth = shallowRef(0)
+const windowTarget = shallowRef<Window | null>(null)
 const id = nextDialogId()
 let locked = false
 let previousFocus: HTMLElement | null = null
 
 const hasTitle = computed(() => !!title || !!slots.title)
+const resolvedMode = computed<DrawerMode>(() => (
+  responsive && viewportWidth.value >= pushBreakpoint
+    ? 'push'
+    : mode === 'responsive'
+      ? 'overlay'
+      : mode
+))
 const hasDescription = computed(() => !!description || !!slots.description)
 const hasFooter = computed(() => !!okText || !!cancelText || !!slots.footer || !!slots['footer-extra'])
+const visibleActions = computed(() => (actions.length > 3
+  ? actions.slice(0, 2)
+  : actions))
+const overflowActions = computed(() => (actions.length > 3
+  ? actions.slice(2)
+  : []))
 const panelStyle = computed(() =>
   width === undefined
     ? undefined
@@ -62,7 +92,8 @@ const panelStyle = computed(() =>
 )
 const panelClass = computed(() => [
   `ud-drawer--${size}`,
-  `ud-drawer--${mode}`,
+  `ud-drawer--${resolvedMode.value}`,
+  headerSize && `ud-drawer--header-${headerSize}`,
   {
     'ud-drawer--avatar': !!slots.prefix,
     'ud-drawer--tabs': !!slots.tabs,
@@ -93,8 +124,8 @@ function onAfterLeave() {
   previousFocus = null
 }
 
-watch(open, (value) => {
-  if (mode !== 'overlay' || typeof document === 'undefined')
+watch([open, resolvedMode], ([value, drawerMode]) => {
+  if (drawerMode !== 'overlay' || typeof document === 'undefined')
     return
   if (!value)
     return
@@ -107,6 +138,14 @@ watch(open, (value) => {
     : null
   nextTick(() => rootRef.value?.focus())
 }, { immediate: true })
+
+onMounted(() => {
+  viewportWidth.value = window.innerWidth
+  windowTarget.value = window
+})
+useEventListener(windowTarget, 'resize', () => {
+  viewportWidth.value = window.innerWidth
+})
 
 onBeforeUnmount(onAfterLeave)
 
@@ -131,33 +170,46 @@ async function onOkButton() {
   }
   dismiss('ok')
 }
+
+function onHeaderAction(action: DrawerAction, event: MouseEvent) {
+  if (action.disabled)
+    return
+  action.onClick?.(event)
+}
+
+function onMoreAction(command: string | undefined) {
+  const action = overflowActions.value[Number(command)]
+  if (!action || action.disabled)
+    return
+  action.onClick?.()
+}
 </script>
 
 <template>
   <Teleport
     to="body"
-    :disabled="mode === 'push'"
+    :disabled="resolvedMode === 'push'"
   >
     <Transition
       name="ud-drawer"
-      :css="mode === 'overlay'"
+      :css="resolvedMode === 'overlay'"
       @after-leave="onAfterLeave"
     >
       <div
         v-if="open"
         ref="root"
         class="ud-drawer-root"
-        :class="`ud-drawer-root--${mode}`"
-        :style="mode === 'overlay' ? { zIndex } : undefined"
-        :role="mode === 'overlay' ? 'dialog' : undefined"
-        :aria-modal="mode === 'overlay' ? true : undefined"
+        :class="`ud-drawer-root--${resolvedMode}`"
+        :style="resolvedMode === 'overlay' ? { zIndex } : undefined"
+        :role="resolvedMode === 'overlay' ? 'dialog' : undefined"
+        :aria-modal="resolvedMode === 'overlay' ? true : undefined"
         :aria-labelledby="hasTitle ? `${id}-title` : undefined"
         :aria-describedby="hasDescription ? `${id}-desc` : undefined"
-        :tabindex="mode === 'overlay' ? -1 : undefined"
+        :tabindex="resolvedMode === 'overlay' ? -1 : undefined"
         @keydown="onKeydown"
       >
         <div
-          v-if="mode === 'overlay'"
+          v-if="resolvedMode === 'overlay'"
           class="ud-drawer-mask"
           @click="onMask"
         />
@@ -198,9 +250,49 @@ async function onOkButton() {
                 </div>
               </div>
               <div
-                v-if="$slots.actions || closable"
+                v-if="$slots.actions || actions.length || closable"
                 class="ud-drawer__actions"
               >
+                <span
+                  v-for="action in visibleActions"
+                  :key="action.text"
+                  class="ud-drawer__action"
+                >
+                  <Button
+                    type="text"
+                    :disabled="action.disabled"
+                    @click="onHeaderAction(action, $event)"
+                  >
+                    {{ action.text }}
+                  </Button>
+                </span>
+                <Dropdown
+                  v-if="overflowActions.length"
+                  trigger="click"
+                  placement="bottom-end"
+                  @select="onMoreAction"
+                >
+                  <span class="ud-drawer__action">
+                    <Button type="text">
+                      更多
+                      <ParkIcon
+                        class="ud-drawer__more-caret"
+                        :icon="Down"
+                      />
+                    </Button>
+                  </span>
+                  <template #menu>
+                    <DropdownItem
+                      v-for="(action, index) in overflowActions"
+                      :key="action.text"
+                      :command="String(index)"
+                      :disabled="action.disabled"
+                      :divided="index > 0"
+                    >
+                      {{ action.text }}
+                    </DropdownItem>
+                  </template>
+                </Dropdown>
                 <slot name="actions" />
                 <button
                   v-if="closable"

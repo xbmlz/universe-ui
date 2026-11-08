@@ -16,7 +16,7 @@ export default antfu(
     typescript: true,
     formatters: true,
     // Design specs stay as written. Do not reflow them.
-    ignores: ['docs/**'],
+    ignores: ['design/**', 'docs/**'],
   },
   {
     rules: {

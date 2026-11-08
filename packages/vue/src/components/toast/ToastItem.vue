@@ -25,11 +25,18 @@ onBeforeUnmount(pause)
 <template>
   <Toast
     :type="entry.type"
-    :content="entry.content"
     :closable="entry.closable"
     :actions="entry.actions"
     @mouseenter="pause"
     @mouseleave="start"
     @close="remove(entry.id)"
-  />
+  >
+    <component
+      :is="entry.content"
+      v-if="typeof entry.content !== 'string'"
+    />
+    <template v-else>
+      {{ entry.content }}
+    </template>
+  </Toast>
 </template>

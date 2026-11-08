@@ -10,7 +10,12 @@ export interface NotificationEntry extends NotificationOptions {
 
 /** Newest first, so the latest notification sits at the top (inferred). */
 export const entries = shallowReactive<NotificationEntry[]>([])
-export const config = shallowRef<Required<NotificationConfig>>({ max: 0, top: 16, right: 16 })
+export const config = shallowRef<Required<Omit<NotificationConfig, 'container'>> & Partial<Pick<NotificationConfig, 'container'>>>({
+  max: 0,
+  top: 16,
+  right: 16,
+  container: null,
+})
 
 let seed = 0
 

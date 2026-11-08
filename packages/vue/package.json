@@ -10,7 +10,8 @@
     "vue": "3.6.0-rc.14"
   },
   "dependencies": {
-    "@icon-park/vue-next": "1.4.2"
+    "@icon-park/vue-next": "1.4.2",
+    "@vueuse/core": "15.0.0"
   },
   "devDependencies": {
     "vue": "3.6.0-rc.14"

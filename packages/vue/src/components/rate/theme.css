@@ -1,0 +1,78 @@
+/*
+ * Specified in rate.md: 32x32 item, 16px gap, 28px icon growing to 32px on hover,
+ * N300 unselected, Y500 hover/selected.
+ * Inferred: N300 as --ud-color-border-card (#DEE0E3, the card border step).
+ */
+.ud-rate {
+  --ud-rate-item: 32px;
+  --ud-rate-gap: 16px;
+  --ud-rate-icon: 28px;
+  --ud-rate-icon-active: 32px;
+  --ud-rate-idle: var(--ud-color-border-card);
+  --ud-rate-active: var(--ud-yellow-500);
+  --ud-rate-disabled: var(--ud-color-text-disabled);
+
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ud-rate-gap);
+  font-family: var(--ud-font-family);
+  color: var(--ud-color-text);
+}
+
+.ud-rate__item {
+  position: relative;
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--ud-rate-item);
+  height: var(--ud-rate-item);
+  outline: none;
+  cursor: pointer;
+}
+
+.ud-rate__item:focus-visible {
+  border-radius: var(--ud-radius-xs);
+  box-shadow: 0 0 0 2px var(--ud-color-focus-ring);
+}
+
+.ud-rate__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--ud-rate-icon);
+  line-height: 0;
+  transition: font-size 0.2s ease;
+}
+
+.ud-rate__icon--base {
+  color: var(--ud-rate-idle);
+}
+
+.ud-rate__icon--fill {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  color: var(--ud-rate-active);
+}
+
+.ud-rate__item:hover .ud-rate__icon {
+  font-size: var(--ud-rate-icon-active);
+}
+
+.ud-rate--disabled .ud-rate__item,
+.ud-rate--readonly .ud-rate__item {
+  cursor: default;
+}
+
+.ud-rate--disabled .ud-rate__icon--base,
+.ud-rate--readonly .ud-rate__icon--base {
+  color: var(--ud-rate-disabled);
+}
+
+.ud-rate__text {
+  margin-left: 4px;
+  color: var(--ud-color-text-secondary);
+  font-size: var(--ud-font-size-body-sm);
+  line-height: var(--ud-line-body-sm);
+}

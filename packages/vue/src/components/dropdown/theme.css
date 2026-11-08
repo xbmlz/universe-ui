@@ -70,8 +70,8 @@
 
 .ud-dropdown__item:hover:not(.is-disabled),
 .ud-dropdown__item.is-active:not(.is-disabled) {
-  /* Highlight fill measured #EDEEEE from the size figure. */
-  background: #edeeef;
+  /* colour.md gives Background 1 for a dropdown option on hover. The figure samples #EDEEEE, one step off. */
+  background: var(--ud-color-bg-1);
 }
 
 .ud-dropdown__item.is-disabled {

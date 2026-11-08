@@ -1,0 +1,371 @@
+/*
+ * Specified in tree-select.md: the field follows the input scale, grows to 188px
+ * before scrolling, the panel matches the field width and stays under 256px, and
+ * rows are menu-like. Row height, indentation and the dropdown gap are inferred.
+ */
+.ud-tree-select {
+  --ud-tree-select-height: 32px;
+  --ud-tree-select-radius: var(--ud-radius-s);
+  --ud-tree-select-border: var(--ud-color-border);
+  --ud-tree-select-border-hover: var(--ud-color-brand);
+  --ud-tree-select-field-max: 188px;
+  --ud-tree-select-field-min-width: 240px;
+  --ud-tree-select-field-max-width: 600px;
+  --ud-tree-select-panel-max: 256px;
+  --ud-tree-select-panel-max-width: 420px;
+  --ud-tree-select-tag-height: 24px;
+  --ud-tree-select-tag-gap: 4px;
+  --ud-tree-select-tag-padding-inline: 6px;
+  --ud-tree-select-tag-close-size: 11px;
+  --ud-tree-select-arrow-size: 16px;
+  --ud-tree-select-clear-size: 12px;
+  --ud-input-label-gap: 8px;
+  --ud-input-required-color: var(--ud-color-danger);
+  --ud-input-message-gap: 2px;
+  --ud-input-message-color: var(--ud-color-text-secondary);
+  /* Measured at 2x: option text starts 64px lower on the next row. */
+  --ud-tree-select-row: 32px;
+  --ud-tree-select-indent: 16px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  min-width: var(--ud-tree-select-field-min-width);
+  max-width: var(--ud-tree-select-field-max-width);
+  color: var(--ud-color-text);
+  font-family: var(--ud-font-family);
+  font-size: var(--ud-font-size-body);
+  line-height: var(--ud-line-body);
+}
+
+.ud-tree-select--sm {
+  --ud-tree-select-height: 28px;
+  --ud-tree-select-tag-height: 20px;
+  --ud-tree-select-arrow-size: 13px;
+  --ud-tree-select-clear-size: 10.5px;
+  --ud-tree-select-tag-close-size: 9px;
+  --ud-tree-select-row: 28px;
+}
+
+.ud-tree-select--lg {
+  --ud-tree-select-height: 40px;
+  --ud-tree-select-tag-height: 32px;
+  --ud-tree-select-arrow-size: 22px;
+  --ud-tree-select-clear-size: 15px;
+  --ud-tree-select-tag-close-size: 13px;
+  --ud-tree-select-row: 36px;
+}
+
+.ud-tree-select__field {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  max-height: var(--ud-tree-select-field-max);
+  height: var(--ud-tree-select-height);
+  padding: 0 12px;
+  overflow: auto;
+  border: 1px solid var(--ud-tree-select-border);
+  border-radius: var(--ud-tree-select-radius);
+  background: var(--ud-color-bg-white);
+  cursor: pointer;
+}
+
+.ud-tree-select__field:hover {
+  --ud-tree-select-border: var(--ud-tree-select-border-hover);
+}
+
+.ud-tree-select--open .ud-tree-select__field,
+.ud-tree-select__field:focus-visible {
+  --ud-tree-select-border: var(--ud-tree-select-border-hover);
+}
+
+.ud-tree-select__field:focus-visible {
+  outline: 2px solid var(--ud-color-focus-ring);
+  outline-offset: -1px;
+}
+
+/* Measured at 2x: tags inset 4px from the left edge, while the arrow keeps the 12px text inset. */
+.ud-tree-select--multiple .ud-tree-select__field {
+  height: auto;
+  min-height: var(--ud-tree-select-height);
+  padding: 3px 12px 3px 3px;
+}
+
+.ud-tree-select--multiple .ud-tree-select__suffix {
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  height: var(--ud-tree-select-tag-height);
+}
+
+.ud-tree-select__value {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ud-tree-select__value.is-placeholder {
+  color: var(--ud-color-text-placeholder);
+}
+
+.ud-tree-select__tags {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: var(--ud-tree-select-tag-gap);
+  min-width: 0;
+}
+
+.ud-tree-select__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-sizing: border-box;
+  max-width: 100%;
+  height: var(--ud-tree-select-tag-height);
+  padding: 0 var(--ud-tree-select-tag-padding-inline);
+  border-radius: var(--ud-radius-xs);
+  background: var(--ud-color-text-a10);
+  color: var(--ud-color-text);
+  font-size: var(--ud-font-size-body);
+  line-height: var(--ud-line-body);
+}
+
+.ud-tree-select__tag-label {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ud-tree-select__tag-remove {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ud-color-icon-secondary);
+  font-size: var(--ud-tree-select-tag-close-size);
+  line-height: 0;
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+.ud-tree-select__tag-remove:hover {
+  opacity: 1;
+}
+
+.ud-tree-select__suffix {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  color: var(--ud-color-icon-secondary);
+}
+
+.ud-tree-select__clear {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--ud-tree-select-clear-size);
+  height: var(--ud-tree-select-clear-size);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: var(--ud-tree-select-clear-size);
+  line-height: 0;
+  cursor: pointer;
+}
+
+.ud-tree-select__field:hover .ud-tree-select__clear,
+.ud-tree-select--open .ud-tree-select__clear,
+.ud-tree-select__field:focus-within .ud-tree-select__clear {
+  display: inline-flex;
+}
+
+.ud-tree-select__clear:hover {
+  color: var(--ud-color-brand);
+}
+
+.ud-tree-select__arrow {
+  font-size: var(--ud-tree-select-arrow-size);
+  transition: transform 0.2s ease;
+}
+
+/* The glyph leaves padding inside IconPark's canvas; cancel it so the visible mark meets the 12px edge. */
+.ud-tree-select__arrow:last-child {
+  margin-right: calc(var(--ud-tree-select-arrow-size) * -10 / 48);
+}
+
+.ud-tree-select--open .ud-tree-select__arrow {
+  transform: rotate(180deg);
+}
+
+/*
+ * The panel is teleported to the body, so it does not inherit the trigger's custom
+ * properties or type. Restate the ones it needs and carry the size class.
+ */
+.ud-tree-select__panel {
+  --ud-tree-select-row: 32px;
+  --ud-tree-select-panel-max: 256px;
+
+  position: fixed;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  width: max-content;
+  max-height: var(--ud-tree-select-panel-max);
+  max-width: var(--ud-tree-select-panel-max-width);
+  overflow: hidden;
+  border: 1px solid var(--ud-color-border-card);
+  border-radius: var(--ud-radius-m);
+  background: var(--ud-color-bg-white);
+  box-shadow: var(--ud-shadow-down-s2);
+  color: var(--ud-color-text);
+  font-family: var(--ud-font-family);
+  font-size: var(--ud-font-size-body);
+  line-height: var(--ud-line-body);
+}
+
+.ud-tree-select__panel--sm {
+  --ud-tree-select-row: 28px;
+}
+
+.ud-tree-select__panel--lg {
+  --ud-tree-select-row: 36px;
+}
+
+.ud-tree-select__search {
+  flex: none;
+  padding: 8px;
+}
+
+.ud-tree-select__search-input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid var(--ud-color-border);
+  border-radius: var(--ud-radius-s);
+  font: inherit;
+}
+
+.ud-tree-select__search-input:focus {
+  border-color: var(--ud-color-brand);
+  outline: none;
+}
+
+.ud-tree-select__tree {
+  flex: 1;
+  padding: 4px;
+  overflow-y: auto;
+}
+
+.ud-tree-select__tree::-webkit-scrollbar {
+  width: 11px;
+}
+
+.ud-tree-select__tree::-webkit-scrollbar-thumb {
+  border: 2px solid transparent;
+  border-radius: var(--ud-radius-full);
+  background: var(--ud-color-text-disabled) padding-box;
+}
+
+.ud-tree-select__tree::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.ud-tree-select__empty {
+  padding: 12px;
+  color: var(--ud-color-text-placeholder);
+  text-align: center;
+}
+
+.ud-tree-select__row {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+  height: var(--ud-tree-select-row);
+  min-height: var(--ud-tree-select-row);
+  margin: 0;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--ud-radius-xs);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ud-tree-select__row:hover {
+  background: var(--ud-color-bg-1);
+}
+
+.ud-tree-select__row.is-selected {
+  color: var(--ud-color-brand);
+}
+
+.ud-tree-select__row.is-disabled {
+  color: var(--ud-color-text-disabled);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ud-tree-select__arrow-slot {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 12px;
+  height: 16px;
+  font-size: 12px;
+  color: var(--ud-color-icon-tertiary);
+}
+
+.ud-tree-select__check {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+}
+
+.ud-tree-select__label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ud-tree-select--error {
+  --ud-tree-select-border: var(--ud-color-danger);
+  --ud-tree-select-border-hover: var(--ud-color-danger);
+  --ud-input-message-color: var(--ud-color-danger);
+}
+
+.ud-tree-select--disabled .ud-tree-select__field {
+  background: var(--ud-color-fill-disabled);
+  color: var(--ud-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.ud-tree-select--disabled .ud-tree-select__field:hover,
+.ud-tree-select--readonly .ud-tree-select__field:hover {
+  --ud-tree-select-border: var(--ud-color-border);
+}
+
+.ud-tree-select--readonly .ud-tree-select__field {
+  background: var(--ud-color-fill-disabled);
+  cursor: default;
+}

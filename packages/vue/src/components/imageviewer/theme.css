@@ -1,0 +1,132 @@
+/*
+ * Specified in imageviewer.md: the mask is 80% black over the whole window, the
+ * image fills the area but never exceeds 1:1 unless the user zooms in, the toolbar
+ * is split into three groups by dividers, and modal viewers always carry a close
+ * button. Toolbar metrics and the 24px padding are inferred.
+ */
+.ud-imageviewer {
+  --ud-imageviewer-mask: rgb(0 0 0 / 80%);
+  --ud-imageviewer-toolbar: 56px;
+  --ud-imageviewer-gap: 8px;
+  --ud-imageviewer-icon: 16px;
+
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--ud-imageviewer-mask);
+}
+
+.ud-imageviewer__stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  margin: 24px;
+  overflow: hidden;
+}
+
+.ud-imageviewer__stage.is-pannable {
+  cursor: grab;
+}
+
+.ud-imageviewer__stage.is-panning {
+  cursor: grabbing;
+}
+
+.ud-imageviewer__image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  max-width: none;
+  max-height: none;
+  transform-origin: center;
+  transition: transform 0.2s ease;
+}
+
+.ud-imageviewer__placeholder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: var(--ud-color-white-a60);
+  font-size: var(--ud-font-size-body);
+  transform: translate(-50%, -50%);
+}
+
+.ud-imageviewer__toolbar {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  display: flex;
+  align-items: center;
+  gap: var(--ud-imageviewer-gap);
+  height: var(--ud-imageviewer-toolbar);
+  padding: 0 12px;
+  border-radius: var(--ud-radius-m);
+  background: var(--ud-color-media-overlay);
+  color: var(--ud-color-text-inverse);
+  transform: translateX(-50%);
+}
+
+.ud-imageviewer__group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ud-imageviewer__divider {
+  width: 1px;
+  height: 20px;
+  background: var(--ud-color-white-a30);
+}
+
+.ud-imageviewer__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  height: 32px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: var(--ud-radius-xs);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: var(--ud-imageviewer-icon);
+  line-height: 0;
+  cursor: pointer;
+}
+
+.ud-imageviewer__button:hover {
+  background: var(--ud-color-white-a15);
+}
+
+.ud-imageviewer__button:active {
+  background: var(--ud-color-white-a20);
+}
+
+.ud-imageviewer__button:disabled {
+  color: var(--ud-color-white-a30);
+  cursor: not-allowed;
+}
+
+.ud-imageviewer__count {
+  min-width: 40px;
+  text-align: center;
+  font-size: var(--ud-font-size-caption);
+  line-height: var(--ud-line-caption);
+}
+
+.ud-imageviewer__fit {
+  font-size: var(--ud-font-size-caption);
+  line-height: var(--ud-line-caption);
+}
+
+.ud-imageviewer__close {
+  margin-left: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ud-imageviewer__image {
+    transition: none;
+  }
+}

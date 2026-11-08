@@ -1,0 +1,356 @@
+/*
+ * Specified in cascader.md: a 160px column width, a 720px panel cap, Shadow-S2-down
+ * and a border for the panel, and a scrollbar per column. Row height and padding are
+ * inferred from the select menu.
+ */
+.ud-cascader {
+  --ud-cascader-height: 32px;
+  --ud-cascader-radius: var(--ud-radius-s);
+  --ud-cascader-border: var(--ud-color-border);
+  --ud-cascader-border-hover: var(--ud-color-brand);
+  --ud-cascader-field-min-width: 240px;
+  --ud-cascader-field-max-width: 600px;
+  --ud-cascader-field-max: 188px;
+  --ud-cascader-column: 160px;
+  --ud-cascader-column-max: 320px;
+  --ud-cascader-panel-max: 720px;
+  --ud-cascader-option-height: 32px;
+  /* Measured from the select size figure: tag fill matches neutral 10% on white, 24 / 20 / 32 tall by size. */
+  --ud-cascader-tag-height: 24px;
+  --ud-cascader-tag-bg: var(--ud-color-text-a10);
+  --ud-cascader-arrow-size: 16px;
+  --ud-cascader-clear-size: 12px;
+  --ud-cascader-tag-close-size: 11px;
+  --ud-input-label-gap: 8px;
+  --ud-input-required-color: var(--ud-color-danger);
+  --ud-input-message-gap: 2px;
+  --ud-input-message-color: var(--ud-color-text-secondary);
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  min-width: var(--ud-cascader-field-min-width);
+  max-width: var(--ud-cascader-field-max-width);
+  color: var(--ud-color-text);
+  font-family: var(--ud-font-family);
+  font-size: var(--ud-font-size-body);
+  line-height: var(--ud-line-body);
+}
+
+.ud-cascader--sm {
+  --ud-cascader-height: 28px;
+  --ud-cascader-option-height: 28px;
+  --ud-cascader-tag-height: 20px;
+  --ud-cascader-arrow-size: 13px;
+  --ud-cascader-clear-size: 10.5px;
+  --ud-cascader-tag-close-size: 9px;
+}
+
+.ud-cascader--lg {
+  --ud-cascader-height: 40px;
+  --ud-cascader-option-height: 36px;
+  --ud-cascader-tag-height: 32px;
+  --ud-cascader-arrow-size: 22px;
+  --ud-cascader-clear-size: 15px;
+  --ud-cascader-tag-close-size: 13px;
+}
+
+.ud-cascader__field {
+  box-sizing: border-box;
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  height: var(--ud-cascader-height);
+  border: 1px solid var(--ud-cascader-border);
+  border-radius: var(--ud-cascader-radius);
+  background: var(--ud-color-bg-white);
+}
+
+/* Specified: multi-select shows its chosen values as tags and grows with them. */
+.ud-cascader--tags .ud-cascader__field {
+  height: auto;
+  min-height: var(--ud-cascader-height);
+  max-height: var(--ud-cascader-field-max);
+  overflow: auto;
+}
+
+/* Measured at 2x: tags inset 4px from the left edge, while the arrow keeps the 12px text inset. */
+.ud-cascader--tags .ud-cascader__trigger {
+  padding: 3px 12px 3px 3px;
+}
+
+.ud-cascader__field:hover {
+  --ud-cascader-border: var(--ud-cascader-border-hover);
+}
+
+.ud-cascader--open .ud-cascader__field,
+.ud-cascader__field:focus-within {
+  --ud-cascader-border: var(--ud-cascader-border-hover);
+}
+
+.ud-cascader__trigger {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 0 12px;
+  cursor: pointer;
+}
+
+.ud-cascader--tags .ud-cascader__trigger {
+  min-height: var(--ud-cascader-tag-height);
+}
+
+.ud-cascader--tags .ud-cascader__suffix {
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  height: var(--ud-cascader-tag-height);
+}
+
+.ud-cascader__trigger:focus-visible {
+  outline: 2px solid var(--ud-color-focus-ring);
+  outline-offset: -1px;
+  border-radius: var(--ud-cascader-radius);
+}
+
+.ud-cascader__value {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ud-cascader__value.is-placeholder {
+  color: var(--ud-color-text-placeholder);
+}
+
+.ud-cascader__tags {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-width: 0;
+}
+
+.ud-cascader__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-sizing: border-box;
+  max-width: 100%;
+  height: var(--ud-cascader-tag-height);
+  padding-inline: 6px;
+  border-radius: var(--ud-radius-xs);
+  background: var(--ud-cascader-tag-bg);
+  color: var(--ud-color-text);
+}
+
+.ud-cascader__tag-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ud-cascader__tag-remove {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ud-color-icon-secondary);
+  font-size: var(--ud-cascader-tag-close-size);
+  cursor: pointer;
+}
+
+.ud-cascader__tag-remove:hover {
+  color: var(--ud-color-brand);
+}
+
+.ud-cascader__suffix {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  color: var(--ud-color-icon-tertiary);
+}
+
+.ud-cascader__clear {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--ud-cascader-clear-size);
+  height: var(--ud-cascader-clear-size);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: var(--ud-cascader-clear-size);
+  line-height: 0;
+  cursor: pointer;
+}
+
+.ud-cascader__field:hover .ud-cascader__clear,
+.ud-cascader--open .ud-cascader__clear,
+.ud-cascader__trigger:focus-within .ud-cascader__clear {
+  display: inline-flex;
+}
+
+.ud-cascader__clear:hover {
+  color: var(--ud-color-brand);
+}
+
+.ud-cascader__arrow {
+  font-size: var(--ud-cascader-arrow-size);
+}
+
+.ud-cascader__arrow:last-child {
+  margin-right: calc(var(--ud-cascader-arrow-size) * -10 / 48);
+}
+
+/*
+ * The panel is teleported to the body, so it does not inherit the trigger's custom
+ * properties or type. Restate the ones it needs and carry the size class.
+ */
+.ud-cascader__panel {
+  --ud-cascader-column: 160px;
+  --ud-cascader-panel-max: 720px;
+  --ud-cascader-option-height: 32px;
+
+  position: fixed;
+  box-sizing: border-box;
+  display: flex;
+  max-width: var(--ud-cascader-panel-max);
+  max-height: 256px;
+  overflow: hidden;
+  border: 1px solid var(--ud-color-border-card);
+  border-radius: var(--ud-radius-m);
+  background: var(--ud-color-bg-white);
+  box-shadow: var(--ud-shadow-down-s2);
+  color: var(--ud-color-text);
+  font-family: var(--ud-font-family);
+  font-size: var(--ud-font-size-body);
+  line-height: var(--ud-line-body);
+}
+
+.ud-cascader__panel--sm {
+  --ud-cascader-option-height: 28px;
+}
+
+.ud-cascader__panel--lg {
+  --ud-cascader-option-height: 36px;
+}
+
+.ud-cascader__column {
+  box-sizing: border-box;
+  flex: 0 1 auto;
+  /* Specified: 160px default, but columns size to their options and may differ. */
+  width: max-content;
+  min-width: var(--ud-cascader-column);
+  max-width: var(--ud-cascader-column-max);
+  max-height: inherit;
+  padding: 4px;
+  overflow-y: auto;
+  border-right: 1px solid var(--ud-color-border-card);
+}
+
+.ud-cascader__column:last-child {
+  border-right: 0;
+}
+
+.ud-cascader__option {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  height: var(--ud-cascader-option-height);
+  min-height: var(--ud-cascader-option-height);
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--ud-radius-xs);
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.ud-cascader__option:hover {
+  background: var(--ud-color-bg-1);
+}
+
+.ud-cascader__option.is-active {
+  background: var(--ud-color-bg-1);
+  color: var(--ud-color-brand);
+}
+
+.ud-cascader__option.is-selected {
+  color: var(--ud-color-brand);
+  font-weight: var(--ud-font-weight-medium);
+}
+
+.ud-cascader__option:disabled {
+  color: var(--ud-color-text-disabled);
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.ud-cascader__check {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  margin: 0;
+}
+
+.ud-cascader__label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ud-cascader__next {
+  flex: none;
+  font-size: 12px;
+}
+
+.ud-cascader__mark {
+  flex: none;
+  color: var(--ud-color-brand);
+  font-size: 16px;
+}
+
+.ud-cascader--error {
+  --ud-cascader-border: var(--ud-color-danger);
+  --ud-cascader-border-hover: var(--ud-color-danger);
+  --ud-input-message-color: var(--ud-color-danger);
+}
+
+.ud-cascader--disabled .ud-cascader__field {
+  background: var(--ud-color-fill-disabled);
+  cursor: not-allowed;
+}
+
+.ud-cascader--disabled .ud-cascader__trigger {
+  color: var(--ud-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.ud-cascader--disabled .ud-cascader__field:hover,
+.ud-cascader--readonly .ud-cascader__field:hover {
+  --ud-cascader-border: var(--ud-color-border);
+}
+
+.ud-cascader--readonly .ud-cascader__field,
+.ud-cascader--readonly .ud-cascader__trigger {
+  background: var(--ud-color-fill-disabled);
+  cursor: default;
+}

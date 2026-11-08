@@ -5,6 +5,7 @@ import { computed, nextTick, onBeforeUnmount, onMounted, shallowRef, useId, useT
 import ParkIcon from '../../internal/park-icon.vue'
 import { nextLayerZ } from '../dialog/scroll-lock'
 import Tooltip from '../tooltip/Tooltip.vue'
+import { hiddenCrumbs, visibleCrumbs } from './path'
 
 const props = defineProps<{
   items: BreadcrumbItem[]
@@ -25,27 +26,9 @@ let layer = 0
 let generation = 0
 let observer: ResizeObserver | undefined
 
-const hidden = computed(() => {
-  const count = Math.min(hiddenCount.value, Math.max(0, props.items.length - 2))
-  return props.items.slice(1, 1 + count)
-})
+const hidden = computed(() => hiddenCrumbs(props.items, hiddenCount.value))
 
-const visible = computed(() => {
-  const count = hidden.value.length
-  if (count === 0)
-    return props.items.map((item, index) => ({ item, index }))
-  const first = props.items[0]
-  if (!first)
-    return []
-  const tail = props.items.slice(1 + count).map((item, offset) => ({
-    item,
-    index: offset + 1 + count,
-  }))
-  return [
-    { item: first, index: 0 },
-    ...tail,
-  ]
-})
+const visible = computed(() => visibleCrumbs(props.items, hiddenCount.value))
 
 function choose(event: MouseEvent, index: number) {
   emit('select', index)

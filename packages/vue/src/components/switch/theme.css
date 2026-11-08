@@ -4,12 +4,11 @@
   --ud-switch-height: 22px;
   --ud-switch-knob: 18px;
   --ud-switch-inset: 2px;
-  /* Measured from the medium figure: spinner diameter 11, stroke 1.5. */
+  /* Measured from the medium figure: spinner diameter 11. */
   --ud-switch-spinner: 11px;
-  --ud-switch-spinner-line: 1.5px;
   /* Figure colours: on #3370FF, off #D0D3D6, disabled on #BACEFD, disabled off #DEE0E3. */
   --ud-switch-track: var(--ud-color-border);
-  --ud-switch-knob-bg: var(--ud-color-bg-white);
+  --ud-switch-knob-bg: var(--ud-color-white);
   --ud-switch-knob-shadow: var(--ud-shadow-down-s1);
   --ud-switch-spinner-color: var(--ud-color-text-disabled);
   --ud-switch-focus-ring: var(--ud-color-focus-ring);
@@ -35,7 +34,6 @@
   --ud-switch-knob: 12px;
   /* No small loading figure; scaled from the medium spinner-to-knob ratio (inferred). */
   --ud-switch-spinner: 7px;
-  --ud-switch-spinner-line: 1px;
 }
 
 .ud-switch:focus {
@@ -87,26 +85,6 @@
 .ud-switch--checked.ud-switch--disabled,
 .ud-switch--checked.ud-switch--loading {
   --ud-switch-track: var(--ud-blue-9);
-}
-
-.ud-switch__spinner {
-  box-sizing: border-box;
-  width: var(--ud-switch-spinner);
-  height: var(--ud-switch-spinner);
-  border: var(--ud-switch-spinner-line) solid var(--ud-switch-spinner-color);
-  border-top-color: transparent;
-  border-radius: var(--ud-radius-full);
-  animation: ud-switch-spin 0.7s linear infinite;
-}
-
-@keyframes ud-switch-spin {
-  from {
-    transform: rotate(45deg);
-  }
-
-  to {
-    transform: rotate(405deg);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

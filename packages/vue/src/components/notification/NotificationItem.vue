@@ -26,7 +26,6 @@ onBeforeUnmount(pause)
   <Notification
     :type="entry.type"
     :title="entry.title"
-    :content="entry.content"
     :closable="entry.closable ?? true"
     :show-icon="entry.showIcon ?? true"
     :color="entry.color"
@@ -34,5 +33,13 @@ onBeforeUnmount(pause)
     @mouseenter="pause"
     @mouseleave="start"
     @close="remove(entry.id)"
-  />
+  >
+    <component
+      :is="entry.content"
+      v-if="typeof entry.content !== 'string'"
+    />
+    <template v-else>
+      {{ entry.content }}
+    </template>
+  </Notification>
 </template>

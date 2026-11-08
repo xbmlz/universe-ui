@@ -4,4 +4,4 @@ export type SpinColor = 'brand' | 'white' | 'grey'
 
 export type SpinDirection = 'vertical' | 'horizontal'
 
-export type SkeletonVariant = 'text' | 'circle' | 'rect'
+export type SkeletonVariant = 'text' | 'circle' | 'rect' | 'image'

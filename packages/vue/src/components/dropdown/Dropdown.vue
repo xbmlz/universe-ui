@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import type { DropdownPlacement, DropdownTrigger } from './types'
-import { computed, nextTick, onBeforeUnmount, provide, shallowRef, useId, useTemplateRef, watch } from 'vue'
+import { useEventListener } from '@vueuse/core'
+import { computed, nextTick, onBeforeUnmount, onMounted, provide, shallowRef, useId, useTemplateRef, watch } from 'vue'
 import { nextLayerZ } from '../dialog/scroll-lock'
 import Spin from '../spin/Spin.vue'
 import { DROPDOWN_KEY } from './context'
+import { placeContextMenu } from './position'
 
 const props = withDefaults(defineProps<{
   trigger?: DropdownTrigger
@@ -27,6 +29,11 @@ const id = useId()
 const triggerRef = useTemplateRef<HTMLElement>('trigger')
 const menuRef = useTemplateRef<HTMLElement>('menu')
 const menuStyle = shallowRef<Record<string, string>>({})
+const contextPoint = shallowRef<{ x: number, y: number } | null>(null)
+const windowTarget = shallowRef<Window | null>(null)
+onMounted(() => {
+  windowTarget.value = window
+})
 
 let timer = 0
 let layer = 0
@@ -65,9 +72,30 @@ function place() {
   const menu = menuRef.value
   if (!trigger || !menu)
     return
-  const rect = trigger.getBoundingClientRect()
   const width = menu.offsetWidth
   const height = menu.offsetHeight
+  if (props.trigger === 'contextmenu' && contextPoint.value) {
+    const placed = placeContextMenu(contextPoint.value, {
+      width,
+      height,
+    }, {
+      width: window.innerWidth,
+      height: window.innerHeight,
+    })
+    const style: Record<string, string> = {
+      top: `${placed.top}px`,
+      left: `${placed.left}px`,
+      zIndex: String(layer),
+    }
+    if (props.width != null) {
+      style['--ud-dropdown-width'] = typeof props.width === 'number'
+        ? `${props.width}px`
+        : props.width
+    }
+    menuStyle.value = style
+    return
+  }
+  const rect = trigger.getBoundingClientRect()
   const order = props.placement
     ? [
         props.placement,
@@ -148,7 +176,21 @@ function onClick() {
   open.value = !open.value
 }
 
+function onContextMenu(event: MouseEvent) {
+  if (props.trigger !== 'contextmenu' || props.disabled)
+    return
+  event.preventDefault()
+  contextPoint.value = { x: event.clientX, y: event.clientY }
+  if (open.value) {
+    nextTick(place)
+    return
+  }
+  open.value = true
+}
+
 function onPointerDown(event: PointerEvent) {
+  if (!open.value)
+    return
   const target = event.target
   if (!(target instanceof Element))
     return
@@ -162,20 +204,10 @@ function onKeydown(event: KeyboardEvent) {
     open.value = false
 }
 
-function bind(active: boolean) {
-  if (active) {
-    window.addEventListener('scroll', place, true)
-    window.addEventListener('resize', place)
-    document.addEventListener('keydown', onKeydown)
-    if (props.trigger === 'click')
-      document.addEventListener('pointerdown', onPointerDown, true)
-    return
-  }
-  window.removeEventListener('scroll', place, true)
-  window.removeEventListener('resize', place)
-  document.removeEventListener('keydown', onKeydown)
-  document.removeEventListener('pointerdown', onPointerDown, true)
-}
+useEventListener(windowTarget, 'scroll', place, { capture: true, passive: true })
+useEventListener(windowTarget, 'resize', place)
+useEventListener(windowTarget, 'keydown', onKeydown)
+useEventListener(windowTarget, 'pointerdown', onPointerDown, { capture: true })
 
 function close() {
   open.value = false
@@ -188,11 +220,10 @@ function select(command: string | undefined) {
 provide(DROPDOWN_KEY, { id, close, hold, hide, select })
 
 watch(open, (value) => {
-  if (value)
+  if (value) {
     layer = nextLayerZ()
-  bind(value)
-  if (value)
     nextTick(place)
+  }
 })
 
 watch(() => [props.placement, props.width, props.loading], () => {
@@ -202,7 +233,6 @@ watch(() => [props.placement, props.width, props.loading], () => {
 
 onBeforeUnmount(() => {
   window.clearTimeout(timer)
-  bind(false)
 })
 </script>
 
@@ -214,6 +244,7 @@ onBeforeUnmount(() => {
     @pointerenter="show"
     @pointerleave="hide"
     @click="onClick"
+    @contextmenu="onContextMenu"
   >
     <slot />
     <Teleport to="body">

@@ -6,11 +6,19 @@
   "scripts": {
     "dev": "pnpm --filter @universe-ui/playground dev",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc -p packages/vue/tsconfig.check.json",
+    "docs:dev": "pnpm --filter @universe-ui/docs dev",
+    "docs:build": "pnpm --filter @universe-ui/docs build",
+    "docs:preview": "pnpm --filter @universe-ui/docs preview"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^10.0.0",
     "eslint": "^10.14.0",
-    "eslint-plugin-format": "^2.0.1"
+    "eslint-plugin-format": "^2.0.1",
+    "typescript": "6.0.3",
+    "vitest": "5.1.0"
   }
 }

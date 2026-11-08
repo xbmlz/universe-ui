@@ -1,0 +1,290 @@
+/*
+ * Specified in upload.md: the attachment row is 40px (small) or 60px (normal), the
+ * image wall item is 80px, the drop area defaults to 552x156 with 40px inline
+ * padding and text that may span two lines, and the helper text stays at least 12px
+ * from the edges. Row paddings and the 8px gaps are inferred.
+ */
+.ud-upload {
+  --ud-upload-row: 60px;
+  --ud-upload-thumb: 80px;
+  --ud-upload-drop-height: 156px;
+  --ud-upload-drop-padding: 40px;
+  --ud-upload-gap: 8px;
+  --ud-upload-radius: var(--ud-radius-m);
+  --ud-upload-border: var(--ud-color-border);
+  --ud-upload-bg: var(--ud-color-bg-white);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--ud-upload-gap);
+  color: var(--ud-color-text);
+  font-family: var(--ud-font-family);
+  font-size: var(--ud-font-size-body);
+  line-height: var(--ud-line-body);
+}
+
+.ud-upload__drop {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  /* Specified default: 552 x 156, narrowed by the container. */
+  width: 552px;
+  max-width: 100%;
+  min-height: var(--ud-upload-drop-height);
+  padding: 24px var(--ud-upload-drop-padding);
+  border: 1px dashed var(--ud-upload-border);
+  border-radius: var(--ud-upload-radius);
+  background: var(--ud-color-bg-2);
+  text-align: center;
+  cursor: pointer;
+}
+
+.ud-upload__drop:hover,
+.ud-upload__drop.is-dragging {
+  border-color: var(--ud-color-brand);
+  color: var(--ud-color-brand);
+}
+
+.ud-upload__drop.is-disabled {
+  background: var(--ud-color-fill-disabled);
+  color: var(--ud-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.ud-upload__drop-text {
+  font-size: var(--ud-font-size-body);
+  line-height: var(--ud-line-body);
+}
+
+.ud-upload__drop-hint {
+  display: -webkit-box;
+  max-width: calc(100% - 24px);
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  color: var(--ud-color-text-secondary);
+  font-size: var(--ud-font-size-caption);
+  line-height: var(--ud-line-caption);
+}
+
+.ud-upload__button {
+  align-self: flex-start;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--ud-color-border);
+  border-radius: var(--ud-radius-s);
+  background: var(--ud-color-bg-white);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.ud-upload__button:hover {
+  border-color: var(--ud-color-brand);
+  color: var(--ud-color-brand);
+}
+
+.ud-upload__button:disabled {
+  color: var(--ud-color-text-disabled);
+  cursor: not-allowed;
+}
+
+.ud-upload__input {
+  display: none;
+}
+
+.ud-upload__tip {
+  margin: 0;
+  color: var(--ud-color-text-secondary);
+  font-size: var(--ud-font-size-caption);
+  line-height: var(--ud-line-caption);
+}
+
+.ud-upload__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ud-upload__list--picture {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, var(--ud-upload-thumb));
+  gap: var(--ud-upload-gap);
+}
+
+.ud-upload__file {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: var(--ud-upload-row);
+  padding: 8px 12px;
+  border: 1px solid var(--ud-color-border-card);
+  border-radius: var(--ud-upload-radius);
+  background: var(--ud-upload-bg);
+}
+
+.ud-upload__file-icon {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 24px;
+  color: var(--ud-color-icon-secondary);
+  font-size: 20px;
+}
+
+.ud-upload--small .ud-upload__file {
+  --ud-upload-row: 40px;
+  padding-block: 4px;
+}
+
+.ud-upload__list--picture .ud-upload__file {
+  position: relative;
+  flex-direction: column;
+  align-items: flex-start;
+  min-height: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: var(--ud-radius-s);
+}
+
+.ud-upload__thumb {
+  display: block;
+  width: var(--ud-upload-thumb);
+  height: var(--ud-upload-thumb);
+  object-fit: cover;
+}
+
+.ud-upload__thumb--empty {
+  background: var(--ud-color-bg-1);
+}
+
+.ud-upload__info {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  gap: 2px;
+}
+
+.ud-upload__list--picture .ud-upload__info {
+  width: 100%;
+  padding: 4px;
+}
+
+.ud-upload__list--picture .ud-upload__meta,
+.ud-upload__list--picture .ud-upload__progress {
+  display: none;
+}
+
+/* Specified: an attachment name takes at most two lines, then an ellipsis. */
+.ud-upload__name {
+  display: -webkit-box;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.ud-upload__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--ud-color-text-secondary);
+  font-size: var(--ud-font-size-caption);
+  line-height: var(--ud-line-caption);
+}
+
+.ud-upload__error {
+  color: var(--ud-color-danger-text);
+}
+
+.ud-upload__percent {
+  color: var(--ud-color-brand);
+}
+
+.ud-upload__progress {
+  display: block;
+  height: 2px;
+  overflow: hidden;
+  border-radius: var(--ud-radius-full);
+  background: var(--ud-color-fill-disabled);
+}
+
+.ud-upload__progress-fill {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: var(--ud-color-brand);
+  transition: width 0.2s ease;
+}
+
+.ud-upload__retry {
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ud-color-brand);
+  font: inherit;
+  font-size: var(--ud-font-size-caption);
+  cursor: pointer;
+}
+
+.ud-upload__remove {
+  display: inline-flex;
+  flex: none;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ud-color-icon-tertiary);
+  font-size: 12px;
+  line-height: 0;
+  cursor: pointer;
+}
+
+.ud-upload__remove:hover {
+  color: var(--ud-color-icon);
+}
+
+.ud-upload--actions-hover .ud-upload__retry,
+.ud-upload--actions-hover .ud-upload__remove {
+  opacity: 0;
+}
+
+.ud-upload--actions-hover .ud-upload__file:hover .ud-upload__retry,
+.ud-upload--actions-hover .ud-upload__file:focus-within .ud-upload__retry,
+.ud-upload--actions-hover .ud-upload__file:hover .ud-upload__remove,
+.ud-upload--actions-hover .ud-upload__file:focus-within .ud-upload__remove,
+.ud-upload--actions-hover .ud-upload__file:focus .ud-upload__retry,
+.ud-upload--actions-hover .ud-upload__file:focus .ud-upload__remove {
+  opacity: 1;
+}
+
+.ud-upload__list--picture .ud-upload__remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  padding: 2px;
+  border-radius: var(--ud-radius-xs);
+  background: var(--ud-color-media-overlay-weak);
+  color: var(--ud-color-text-inverse);
+}
+
+.ud-upload__empty {
+  margin: 0;
+  color: var(--ud-color-text-placeholder);
+  font-size: var(--ud-font-size-caption);
+  line-height: var(--ud-line-caption);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ud-upload__progress-fill {
+    transition: none;
+  }
+}

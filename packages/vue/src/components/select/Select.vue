@@ -2,11 +2,14 @@
 import type { InputSize } from '../input/types'
 import type { SelectOption } from './types'
 import { Check, Close, CloseOne, Down, Up } from '@icon-park/vue-next'
-import { computed, inject, nextTick, onBeforeUnmount, onMounted, shallowRef, useId, useTemplateRef, watch } from 'vue'
+import { useEventListener } from '@vueuse/core'
+import { computed, inject, nextTick, onMounted, shallowRef, useId, useTemplateRef } from 'vue'
 import ParkIcon from '../../internal/park-icon.vue'
 import { nextLayerZ } from '../dialog/scroll-lock'
 import { INPUT_GROUP } from '../input/context'
+import Spin from '../spin/Spin.vue'
 import { Tooltip } from '../tooltip'
+import { filterOptions, firstEnabledIndex, matchParts } from './options'
 
 const {
   options,
@@ -63,7 +66,11 @@ const query = shallowRef('')
 const activeIndex = shallowRef(0)
 const placement = shallowRef<'bottom' | 'top'>('bottom')
 const menuStyle = shallowRef<Record<string, string>>({})
+const windowTarget = shallowRef<Window | null>(null)
 let layer = 0
+onMounted(() => {
+  windowTarget.value = window
+})
 
 const selectedValues = computed(() => {
   if (multiple) {
@@ -92,12 +99,9 @@ const hiddenCount = computed(() => hiddenTags.value.length)
 const hasValue = computed(() => selectedValues.value.length > 0)
 const singleLabel = computed(() => selectedOptions.value[0]?.label ?? '')
 const showClear = computed(() => ((clearable && hasValue.value) || query.value.length > 0) && !resolvedDisabled.value && !resolvedReadonly.value)
-const filteredOptions = computed(() => {
-  const text = query.value.trim().toLowerCase()
-  if (!filterable || !text)
-    return options
-  return options.filter(option => option.label.toLowerCase().includes(text))
-})
+const filteredOptions = computed(() => (filterable
+  ? filterOptions(options, query.value)
+  : options))
 const searchPlaceholder = computed(() => {
   if (multiple && hasValue.value)
     return ''
@@ -111,36 +115,7 @@ function isSelected(value: string) {
 }
 
 function firstEnabled() {
-  const index = filteredOptions.value.findIndex(option => !option.disabled)
-  return index < 0
-    ? 0
-    : index
-}
-
-function matchParts(labelText: string) {
-  const text = query.value.trim()
-  const index = text
-    ? labelText.toLowerCase().indexOf(text.toLowerCase())
-    : -1
-  if (!text || index < 0) {
-    return [
-      { text: labelText, match: false },
-    ]
-  }
-  return [
-    {
-      text: labelText.slice(0, index),
-      match: false,
-    },
-    {
-      text: labelText.slice(index, index + text.length),
-      match: true,
-    },
-    {
-      text: labelText.slice(index + text.length),
-      match: false,
-    },
-  ].filter(part => part.text)
+  return firstEnabledIndex(filteredOptions.value)
 }
 
 function place() {
@@ -308,7 +283,7 @@ function onKeydown(event: KeyboardEvent) {
   }
 }
 
-function onDocPointerDown(event: PointerEvent) {
+function onOutside(event: PointerEvent) {
   const root = rootRef.value
   if (!open.value || !root)
     return
@@ -318,29 +293,13 @@ function onDocPointerDown(event: PointerEvent) {
   closeMenu()
 }
 
-watch(open, (value) => {
-  if (value) {
-    window.addEventListener('scroll', place, true)
-    window.addEventListener('resize', place)
-    return
-  }
-  window.removeEventListener('scroll', place, true)
-  window.removeEventListener('resize', place)
-})
+useEventListener(windowTarget, 'pointerdown', onOutside, { capture: true })
+useEventListener(windowTarget, 'scroll', place, { capture: true, passive: true })
+useEventListener(windowTarget, 'resize', place)
 
 function focus() {
   triggerRef.value?.focus()
 }
-
-onMounted(() => {
-  document.addEventListener('pointerdown', onDocPointerDown)
-})
-
-onBeforeUnmount(() => {
-  document.removeEventListener('pointerdown', onDocPointerDown)
-  window.removeEventListener('scroll', place, true)
-  window.removeEventListener('resize', place)
-})
 
 defineExpose({ focus })
 </script>
@@ -477,9 +436,9 @@ defineExpose({ focus })
               v-if="loading"
               class="ud-select__loading"
             >
-              <span
+              <Spin
+                :size="20"
                 class="ud-select__spinner"
-                aria-hidden="true"
               />
             </div>
             <div
@@ -511,7 +470,7 @@ defineExpose({ focus })
                 >
                   <span class="ud-select__option-label">
                     <template
-                      v-for="(part, partIndex) in matchParts(option.label)"
+                      v-for="(part, partIndex) in matchParts(option.label, query)"
                       :key="partIndex"
                     >
                       <span

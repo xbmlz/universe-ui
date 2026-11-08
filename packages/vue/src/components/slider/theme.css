@@ -1,0 +1,179 @@
+/*
+ * slider.md states the parts and the interactions but no pixel sizes. The 4px rail
+ * is measured from the figure at 2x (8px raw). The 32px rail box, 16px thumb and
+ * 12px label gap are inferred from the input scale.
+ */
+.ud-slider {
+  --ud-slider-height: 32px;
+  --ud-slider-rail: 4px;
+  --ud-slider-thumb: 16px;
+  --ud-slider-thumb-border: 2px;
+  --ud-slider-label-gap: 12px;
+  --ud-slider-rail-color: var(--ud-color-fill-disabled);
+  --ud-slider-fill-color: var(--ud-color-brand);
+  --ud-slider-thumb-color: var(--ud-color-white);
+  --ud-slider-thumb-ring: var(--ud-color-brand);
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  color: var(--ud-color-text);
+  font-family: var(--ud-font-family);
+  font-size: var(--ud-font-size-body);
+  line-height: var(--ud-line-body);
+}
+
+.ud-slider--vertical {
+  flex-direction: row;
+  align-items: center;
+  width: auto;
+  height: 240px;
+}
+
+.ud-slider__label {
+  font-size: var(--ud-font-size-body-sm);
+  line-height: var(--ud-line-body-sm);
+  color: var(--ud-color-text-secondary);
+}
+
+.ud-slider__track {
+  position: relative;
+  flex: 1;
+  height: var(--ud-slider-height);
+  touch-action: none;
+  cursor: pointer;
+}
+
+.ud-slider--vertical .ud-slider__track {
+  width: var(--ud-slider-height);
+  height: 100%;
+}
+
+.ud-slider__rail {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: var(--ud-slider-rail);
+  border-radius: var(--ud-radius-full);
+  background: var(--ud-slider-rail-color);
+  transform: translateY(-50%);
+}
+
+.ud-slider--vertical .ud-slider__rail {
+  top: 0;
+  left: 50%;
+  width: var(--ud-slider-rail);
+  height: 100%;
+  transform: translateX(-50%);
+}
+
+.ud-slider__fill {
+  position: absolute;
+  border-radius: var(--ud-radius-full);
+  background: var(--ud-slider-fill-color);
+}
+
+.ud-slider--vertical .ud-slider__fill {
+  top: auto;
+  left: 0;
+  width: 100%;
+}
+
+.ud-slider__thumb {
+  position: absolute;
+  top: 50%;
+  box-sizing: border-box;
+  width: var(--ud-slider-thumb);
+  height: var(--ud-slider-thumb);
+  margin: 0;
+  padding: 0;
+  border: var(--ud-slider-thumb-border) solid var(--ud-slider-thumb-ring);
+  border-radius: var(--ud-radius-full);
+  background: var(--ud-slider-thumb-color);
+  transform: translate(-50%, -50%);
+  cursor: grab;
+}
+
+.ud-slider--vertical .ud-slider__thumb {
+  top: auto;
+  left: 50%;
+  transform: translate(-50%, 50%);
+}
+
+.ud-slider__thumb:focus-visible {
+  outline: 2px solid var(--ud-color-focus-ring);
+  outline-offset: 2px;
+}
+
+.ud-slider__mark {
+  position: absolute;
+  top: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  transform: translate(-50%, 4px);
+  cursor: pointer;
+}
+
+.ud-slider--vertical .ud-slider__mark {
+  top: auto;
+  left: calc(50% + var(--ud-slider-rail));
+  flex-direction: row;
+  transform: translate(8px, 50%);
+}
+
+.ud-slider__mark-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: var(--ud-radius-full);
+  background: var(--ud-color-text-placeholder);
+}
+
+.ud-slider__mark-label {
+  color: var(--ud-color-text-secondary);
+  font-size: var(--ud-font-size-caption);
+  line-height: var(--ud-line-caption);
+  white-space: nowrap;
+}
+
+.ud-slider__bubble {
+  position: absolute;
+  top: -2px;
+  box-sizing: border-box;
+  padding: 2px 8px;
+  border-radius: var(--ud-radius-xs);
+  background: var(--ud-color-bg-inverse);
+  color: var(--ud-color-text-on-inverse);
+  font-size: var(--ud-font-size-caption);
+  line-height: var(--ud-line-caption);
+  white-space: nowrap;
+  transform: translate(-50%, -100%);
+  pointer-events: none;
+}
+
+.ud-slider--vertical .ud-slider__bubble {
+  top: auto;
+  left: calc(50% + 12px);
+  transform: translate(0, 50%);
+}
+
+.ud-slider--disabled,
+.ud-slider--readonly {
+  --ud-slider-rail-color: var(--ud-color-fill-disabled);
+  --ud-slider-fill-color: var(--ud-color-text-disabled);
+  --ud-slider-thumb-ring: var(--ud-color-text-disabled);
+  cursor: default;
+}
+
+.ud-slider--disabled .ud-slider__track,
+.ud-slider--readonly .ud-slider__track {
+  cursor: default;
+}
+
+.ud-slider--disabled .ud-slider__thumb,
+.ud-slider--readonly .ud-slider__thumb {
+  cursor: default;
+}

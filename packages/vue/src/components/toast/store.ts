@@ -10,17 +10,28 @@ export interface ToastEntry extends Required<Omit<ToastOptions, 'onClose' | 'act
 }
 
 export const entries = shallowReactive<ToastEntry[]>([])
-export const config = shallowRef<Required<ToastConfig>>({ max: 2, top: 32 })
+export const config = shallowRef<Required<Omit<ToastConfig, 'container'>> & Partial<Pick<ToastConfig, 'container'>>>({
+  max: 2,
+  top: 32,
+  container: null,
+})
 
 let seed = 0
 
 /**
- * Spec: at least 4s without actions and 6s with actions; loading stays until closed.
+ * Spec ranges: 0–40 characters take 3–5s (4–6s with actions), over 40 take 6–8s
+ * (6–10s with actions), with a floor of 4s without actions and 6s with them.
+ * The point inside each range is inferred; with actions the floor decides the
+ * short bucket, otherwise the range middle. Loading stays until it is updated
+ * or closed.
  */
-export function defaultDuration(options: ToastOptions) {
+export function defaultDuration(options: ToastOptions): number {
   if (options.type === 'loading')
     return 0
-  return options.actions?.length ? 6000 : 4000
+  const long = typeof options.content === 'string' && options.content.trim().length > 40
+  if (options.actions?.length)
+    return long ? 8000 : 6000
+  return long ? 7000 : 4000
 }
 
 export function add(options: ToastOptions) {
@@ -37,7 +48,8 @@ export function add(options: ToastOptions) {
     type,
     content: options.content,
     duration: options.duration ?? defaultDuration(options),
-    closable: options.closable ?? false,
+    closable: options.closable
+      ?? (typeof options.content === 'string' && options.content.trim().length > 20),
     actions: options.actions ?? [],
     onClose: options.onClose,
     revision: 0,

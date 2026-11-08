@@ -16,6 +16,7 @@
   --ud-tag-bg-hover: var(--ud-tag-bg);
   --ud-tag-bg-active: var(--ud-tag-bg);
   --ud-tag-color: var(--ud-color-text);
+  --ud-tag-solid: var(--ud-color-text);
 
   display: inline-flex;
   align-items: center;
@@ -76,20 +77,174 @@
   --ud-tag-bg-active: var(--ud-color-text-a20);
 }
 
-/* Blue option tag: fill #D6E2FF maps to blue-10, text #0C296E to blue-1. */
+/* The 12 fills and their text roles are measured from the option palette and property figures. */
+.ud-tag--neutral {
+  --ud-tag-bg: var(--ud-tag-neutral-bg);
+  --ud-tag-color: var(--ud-tag-neutral-ink);
+  --ud-tag-bg-hover: var(--ud-color-text-a15);
+  --ud-tag-bg-active: var(--ud-color-text-a20);
+  --ud-tag-solid: var(--ud-tag-neutral-ink);
+}
+
+.ud-tag--blue {
+  --ud-tag-bg: var(--ud-tag-blue-bg);
+  --ud-tag-color: var(--ud-tag-blue-ink);
+  --ud-tag-solid: var(--ud-tag-blue-ink);
+}
+
+.ud-tag--turquoise {
+  --ud-tag-bg: var(--ud-tag-turquoise-bg);
+  --ud-tag-color: var(--ud-tag-turquoise-ink);
+  --ud-tag-solid: var(--ud-tag-turquoise-ink);
+}
+
+.ud-tag--green {
+  --ud-tag-bg: var(--ud-tag-green-bg);
+  --ud-tag-color: var(--ud-tag-green-ink);
+  --ud-tag-solid: var(--ud-tag-green-ink);
+}
+
+.ud-tag--lime {
+  --ud-tag-bg: var(--ud-tag-lime-bg);
+  --ud-tag-color: var(--ud-tag-lime-ink);
+  --ud-tag-solid: var(--ud-tag-lime-ink);
+}
+
+.ud-tag--yellow {
+  --ud-tag-bg: var(--ud-tag-yellow-bg);
+  --ud-tag-color: var(--ud-tag-yellow-ink);
+  --ud-tag-solid: var(--ud-tag-yellow-ink);
+}
+
+.ud-tag--orange {
+  --ud-tag-bg: var(--ud-tag-orange-bg);
+  --ud-tag-color: var(--ud-tag-orange-ink);
+  --ud-tag-solid: var(--ud-tag-orange-ink);
+}
+
+.ud-tag--red {
+  --ud-tag-bg: var(--ud-tag-red-bg);
+  --ud-tag-color: var(--ud-tag-red-ink);
+  --ud-tag-solid: var(--ud-tag-red-ink);
+}
+
+.ud-tag--carmine {
+  --ud-tag-bg: var(--ud-tag-carmine-bg);
+  --ud-tag-color: var(--ud-tag-carmine-ink);
+  --ud-tag-solid: var(--ud-tag-carmine-ink);
+}
+
+.ud-tag--indigo {
+  --ud-tag-bg: var(--ud-tag-indigo-bg);
+  --ud-tag-color: var(--ud-tag-indigo-ink);
+  --ud-tag-solid: var(--ud-tag-indigo-ink);
+}
+
+.ud-tag--purple {
+  --ud-tag-bg: var(--ud-tag-purple-bg);
+  --ud-tag-color: var(--ud-tag-purple-ink);
+  --ud-tag-solid: var(--ud-tag-purple-ink);
+}
+
+.ud-tag--cyan {
+  --ud-tag-bg: var(--ud-tag-cyan-bg);
+  --ud-tag-color: var(--ud-tag-cyan-ink);
+  --ud-tag-solid: var(--ud-tag-cyan-ink);
+}
+
+.ud-tag--option.ud-tag--neutral {
+  --ud-tag-color: var(--ud-tag-neutral-option-ink);
+}
+
 .ud-tag--option.ud-tag--blue {
-  --ud-tag-bg: var(--ud-blue-10);
-  --ud-tag-color: var(--ud-blue-1);
+  --ud-tag-color: var(--ud-tag-blue-option-ink);
 }
 
-/* Blue property tag: text #245BDB maps to brand-pressed. The translucent fill reads #D6E2FF on white; its alpha cannot be recovered, so it maps to blue-10. The solid fill #BACEFD maps to blue-9. */
-.ud-tag--property.ud-tag--blue {
-  --ud-tag-bg: var(--ud-blue-10);
-  --ud-tag-color: var(--ud-color-brand-pressed);
+.ud-tag--option.ud-tag--turquoise {
+  --ud-tag-color: var(--ud-tag-turquoise-option-ink);
 }
 
-.ud-tag--property.ud-tag--blue.ud-tag--solid {
-  --ud-tag-bg: var(--ud-blue-9);
+.ud-tag--option.ud-tag--green {
+  --ud-tag-color: var(--ud-tag-green-option-ink);
+}
+
+.ud-tag--option.ud-tag--lime {
+  --ud-tag-color: var(--ud-tag-lime-option-ink);
+}
+
+.ud-tag--option.ud-tag--yellow {
+  --ud-tag-color: var(--ud-tag-yellow-option-ink);
+}
+
+.ud-tag--option.ud-tag--orange {
+  --ud-tag-color: var(--ud-tag-orange-option-ink);
+}
+
+.ud-tag--option.ud-tag--red {
+  --ud-tag-color: var(--ud-tag-red-option-ink);
+}
+
+.ud-tag--option.ud-tag--carmine {
+  --ud-tag-color: var(--ud-tag-carmine-option-ink);
+}
+
+.ud-tag--option.ud-tag--indigo {
+  --ud-tag-color: var(--ud-tag-indigo-option-ink);
+}
+
+.ud-tag--option.ud-tag--purple {
+  --ud-tag-color: var(--ud-tag-purple-option-ink);
+}
+
+.ud-tag--option.ud-tag--cyan {
+  --ud-tag-color: var(--ud-tag-cyan-option-ink);
+}
+
+.ud-tag--property .ud-tag--neutral {
+  --ud-tag-bg-hover: var(--ud-color-text-a15);
+  --ud-tag-bg-active: var(--ud-color-text-a20);
+}
+
+.ud-tag--solid {
+  --ud-tag-bg: var(--ud-tag-solid);
+  --ud-tag-bg-hover: var(--ud-tag-solid);
+  --ud-tag-bg-active: var(--ud-tag-solid);
+  --ud-tag-color: var(--ud-color-text-inverse);
+}
+
+.ud-tag--icon-only {
+  width: var(--ud-tag-height);
+  padding-inline: 0;
+  justify-content: center;
+}
+
+.ud-tag--avatar {
+  --ud-tag-padding-inline: 2px;
+  --ud-tag-gap: 4px;
+}
+
+.ud-tag--avatar .ud-tag__avatar {
+  flex: none;
+}
+
+.ud-tag--two-tone {
+  background: linear-gradient(135deg, var(--ud-tag-bg), var(--ud-color-bg-white));
+}
+
+.ud-tag__status {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--ud-tag-icon-size);
+  line-height: 0;
+}
+
+.ud-tag__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: var(--ud-radius-full);
+  background: currentColor;
 }
 
 .ud-tag:hover:not(.ud-tag--disabled):not(:has(.ud-tag__close:hover)) {
@@ -161,7 +316,7 @@
   --ud-tag-color: var(--ud-color-text-disabled);
 }
 
-/* Disabled blue: text, icon and close glyph drop to 30%; the fill is unchanged. */
-.ud-tag--blue.ud-tag--disabled > * {
+/* Disabled coloured tags drop text, icon and close glyph to 30%; the fill is unchanged. */
+.ud-tag--disabled:not(.ud-tag--neutral) > * {
   opacity: 0.3;
 }

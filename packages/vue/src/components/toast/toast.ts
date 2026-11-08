@@ -1,4 +1,4 @@
-import type { ToastConfig, ToastHandle, ToastOptions, ToastType } from './types'
+import type { ToastConfig, ToastContent, ToastHandle, ToastOptions, ToastType } from './types'
 import { createApp } from 'vue'
 import { add, config, remove, update } from './store'
 import ToastHost from './ToastHost.vue'
@@ -23,7 +23,7 @@ function show(options: ToastOptions): ToastHandle {
   }
 }
 
-type Shortcut = (content: string, options?: Omit<ToastOptions, 'content' | 'type'>) => ToastHandle
+type Shortcut = (content: ToastContent, options?: Omit<ToastOptions, 'content' | 'type'>) => ToastHandle
 
 const shortcut = (type: ToastType): Shortcut => (content, options) => show({ ...options, content, type })
 

@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import type { AvatarColor, AvatarKind, AvatarShape } from './types'
+import type { AvatarColor, AvatarKind, AvatarNameLocale, AvatarShape } from './types'
 import { ApplicationOne, BuildingOne, Peoples, User } from '@icon-park/vue-next'
 import { computed, inject, shallowRef, watch } from 'vue'
 import ParkIcon from '../../internal/park-icon.vue'
+import { Tooltip } from '../tooltip'
 import { AVATAR_GROUP } from './context'
 import { fontRatio, groupLines, initials } from './text'
 
@@ -14,6 +15,7 @@ const {
   shape,
   size,
   color = 'blue',
+  nameLocale = 'auto',
 } = defineProps<{
   src?: string
   name?: string
@@ -22,6 +24,8 @@ const {
   shape?: AvatarShape
   size?: number
   color?: AvatarColor
+  /** Use the Japanese surname rule when automatic script detection is not enough. */
+  nameLocale?: AvatarNameLocale
 }>()
 
 const group = inject(AVATAR_GROUP, null)
@@ -43,7 +47,7 @@ const resolvedShape = computed(() => shape ?? (kind === 'app' || kind === 'enter
   ? 'square'
   : 'circle'))
 const showImage = computed(() => !!src && status.value !== 'error')
-const label = computed(() => text ?? initials(name, kind))
+const label = computed(() => text ?? initials(name, kind, nameLocale))
 const lines = computed(() => (kind === 'group'
   ? groupLines(label.value)
   : [label.value]))
@@ -67,41 +71,47 @@ const style = computed(() => ({
 </script>
 
 <template>
-  <span
-    :class="classes"
-    :style="style"
-    :role="showImage ? undefined : 'img'"
-    :aria-label="showImage ? undefined : name || label || undefined"
+  <Tooltip
+    class="ud-avatar-tooltip"
+    :content="name"
   >
-    <img
-      v-if="showImage"
-      class="ud-avatar__image"
-      :src="src"
-      :alt="name"
-      @load="status = 'loaded'"
-      @error="status = 'error'"
-    >
     <span
-      v-else-if="$slots.icon"
-      class="ud-avatar__icon"
-    ><slot name="icon" /></span>
-    <span
-      v-else-if="label"
-      class="ud-avatar__text"
-      aria-hidden="true"
+      :class="classes"
+      :style="style"
+      :role="showImage ? undefined : 'img'"
+      :aria-label="showImage ? undefined : name || label || undefined"
+      :data-name="name || undefined"
     >
+      <img
+        v-if="showImage"
+        class="ud-avatar__image"
+        :src="src"
+        :alt="name"
+        @load="status = 'loaded'"
+        @error="status = 'error'"
+      >
       <span
-        v-for="(line, index) in lines"
-        :key="index"
-        class="ud-avatar__line"
-      >{{ line }}</span>
+        v-else-if="$slots.icon"
+        class="ud-avatar__icon"
+      ><slot name="icon" /></span>
+      <span
+        v-else-if="label"
+        class="ud-avatar__text"
+        aria-hidden="true"
+      >
+        <span
+          v-for="(line, index) in lines"
+          :key="index"
+          class="ud-avatar__line"
+        >{{ line }}</span>
+      </span>
+      <span
+        v-else
+        class="ud-avatar__icon"
+      ><ParkIcon
+        :icon="DEFAULT_ICONS[kind]"
+        theme="filled"
+      /></span>
     </span>
-    <span
-      v-else
-      class="ud-avatar__icon"
-    ><ParkIcon
-      :icon="DEFAULT_ICONS[kind]"
-      theme="filled"
-    /></span>
-  </span>
+  </Tooltip>
 </template>

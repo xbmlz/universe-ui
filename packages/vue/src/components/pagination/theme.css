@@ -128,8 +128,8 @@
 }
 
 .ud-pagination--sm .ud-pagination__btn:hover:not(:disabled):not(.is-current) {
-  /* Hover pill sampled #E2E4E5. No palette step matches it. */
+  /* Hover pill sampled #E2E4E5. No palette step matches it, so it lives in tokens as a measured fill. */
   border-color: transparent;
-  background: #e2e4e5;
+  background: var(--ud-color-fill-hover);
   color: var(--ud-color-text);
 }

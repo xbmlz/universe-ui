@@ -1,4 +1,4 @@
-import type { AvatarKind } from './types'
+import type { AvatarKind, AvatarNameLocale } from './types'
 
 const WIDE = /[\u1100-\u11FF\u2E80-\u9FFF\uAC00-\uD7AF\uF900-\uFAFF\uFF00-\uFFEF]/
 
@@ -6,7 +6,7 @@ export function isWide(char: string) {
   return WIDE.test(char)
 }
 
-export function initials(name: string, kind: AvatarKind) {
+export function initials(name: string, kind: AvatarKind, locale: AvatarNameLocale = 'auto') {
   const value = name.trim()
   if (!value)
     return ''
@@ -19,7 +19,9 @@ export function initials(name: string, kind: AvatarKind) {
   const wide = chars.some(isWide)
 
   if (kind === 'person') {
-    if (wide)
+    if (locale === 'ja')
+      return chars[0] ?? ''
+    if (locale === 'zh' || (locale === 'auto' && wide))
       return chars.slice(-2).join('')
     const words = value.split(/\s+/)
     const first = words[0]![0] ?? ''

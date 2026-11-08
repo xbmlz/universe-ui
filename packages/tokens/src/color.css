@@ -16,6 +16,9 @@
   --ud-color-brand-pressed: var(--ud-blue-3);
   --ud-color-brand-loading: var(--ud-blue-8);
   --ud-color-focus-ring: #aec5fb;
+  /* Measured breadcrumb link hover / pressed fills. */
+  --ud-color-brand-subtle: #e4ebfb;
+  --ud-color-brand-subtle-active: #d1defb;
 
   /*
    * Old palette steps, measured from component figures and added only as they are needed.
@@ -25,9 +28,51 @@
   --ud-turquoise-600: #04b49c;
   --ud-green-600: #2ea121;
   --ud-lime-600: #8fac02;
+  /* Measured from the saturated yellow swatch in the color picker palette. */
+  --ud-yellow-500: #ffc60c;
   --ud-yellow-600: #dc9b04;
   --ud-orange-600: #de7802;
   --ud-carmine-500: #f01d94;
+  /*
+   * Tag palette measured from the 12 swatches in tag.md. The first value is the
+   * translucent fill; the other two are the property and option text colours.
+   */
+  --ud-tag-neutral-bg: #e9e9ea;
+  --ud-tag-neutral-ink: #646a73;
+  --ud-tag-neutral-option-ink: #1f2329;
+  --ud-tag-blue-bg: #d6e2ff;
+  --ud-tag-blue-ink: #245bdb;
+  --ud-tag-blue-option-ink: #0c296e;
+  --ud-tag-turquoise-bg: #ccf7f1;
+  --ud-tag-turquoise-ink: #078372;
+  --ud-tag-turquoise-option-ink: #024b41;
+  --ud-tag-green-bg: #d6f4d3;
+  --ud-tag-green-ink: #237b19;
+  --ud-tag-green-option-ink: #124b0c;
+  --ud-tag-lime-bg: #f0f7cc;
+  --ud-tag-lime-ink: #667901;
+  --ud-tag-lime-option-ink: #354200;
+  --ud-tag-yellow-bg: #ffeeb6;
+  --ud-tag-yellow-ink: #aa7803;
+  --ud-tag-yellow-option-ink: #5c3a00;
+  --ud-tag-orange-bg: #ffe7cc;
+  --ud-tag-orange-ink: #b26206;
+  --ud-tag-orange-option-ink: #6b3900;
+  --ud-tag-red-bg: #fddcda;
+  --ud-tag-red-ink: #d83931;
+  --ud-tag-red-option-ink: #621c18;
+  --ud-tag-carmine-bg: #fcd2ea;
+  --ud-tag-carmine-ink: #c71077;
+  --ud-tag-carmine-option-ink: #520a32;
+  --ud-tag-indigo-bg: #dbddfa;
+  --ud-tag-indigo-ink: #2933c7;
+  --ud-tag-indigo-option-ink: #0c1264;
+  --ud-tag-purple-bg: #e5d8fd;
+  --ud-tag-purple-ink: #6425d0;
+  --ud-tag-purple-option-ink: #270561;
+  --ud-tag-cyan-bg: #d0f2ff;
+  --ud-tag-cyan-ink: #037eaa;
+  --ud-tag-cyan-option-ink: #004761;
   /* Feedback fills, measured from the Notice type figure. */
   --ud-green-50: #e4fae1;
   --ud-red-50: #fef0f0;
@@ -39,6 +84,47 @@
   --ud-gradient-turquoise: linear-gradient(180deg, #00d9bc, #00c0a6);
   --ud-gradient-orange: linear-gradient(180deg, #fe9d2d, #f18202);
 
+  /* Measured from the 39 swatches in the collaboration palette figure, row-major order. */
+  --ud-collab-1: #3370ff;
+  --ud-collab-2: #64e8d6;
+  --ud-collab-3: #667901;
+  --ud-collab-4: #ff8800;
+  --ud-collab-5: #c71077;
+  --ud-collab-6: #ad82f7;
+  --ud-collab-7: #049fd7;
+  --ud-collab-8: #2ea121;
+  --ud-collab-9: #f76964;
+  --ud-collab-10: #aa7803;
+  --ud-collab-11: #b220b2;
+  --ud-collab-12: #4954e6;
+  --ud-collab-13: #50cefb;
+  --ud-collab-14: #237b19;
+  --ud-collab-15: #b26206;
+  --ud-collab-16: #f57ac0;
+  --ud-collab-17: #7f3bf5;
+  --ud-collab-18: #00d6b9;
+  --ud-collab-19: #8fac02;
+  --ud-collab-20: #ffba6b;
+  --ud-collab-21: #9e1361;
+  --ud-collab-22: #6425d0;
+  --ud-collab-23: #b3d600;
+  --ud-collab-24: #d83931;
+  --ud-collab-25: #1c4cba;
+  --ud-collab-26: #de7702;
+  --ud-collab-27: #4e83fd;
+  --ud-collab-28: #935af6;
+  --ud-collab-29: #078372;
+  --ud-collab-30: #db66db;
+  --ud-collab-31: #f54a45;
+  --ud-collab-32: #2933c7;
+  --ud-collab-33: #82a7fc;
+  --ud-collab-34: #62d256;
+  --ud-collab-35: #616ae5;
+  --ud-collab-36: #04b49c;
+  --ud-collab-37: #d136d1;
+  --ud-collab-38: #14c0ff;
+  --ud-collab-39: #f01d94;
+
   /* Functional colours. *-text is for text, the plain one for fills. Error is #F54A45 in both. */
   --ud-color-success-text: #32a645;
   --ud-color-success: #35bd4b;
@@ -48,11 +134,15 @@
   --ud-color-danger: #f54a45;
   --ud-color-info: var(--ud-color-brand);
 
-  /* Text */
+  /*
+   * Text and icons. text-inverse is for content drawn on a brand, danger,
+   * inverse or other filled surface; it stays light in both themes.
+   */
   --ud-color-text: #1f2329;
   --ud-color-text-secondary: #646a73;
   --ud-color-text-placeholder: #8f959e;
   --ud-color-text-disabled: #bbbfc4;
+  --ud-color-text-inverse: #ffffff;
 
   /* Icons */
   --ud-color-icon: #2b2f36;
@@ -60,20 +150,38 @@
   --ud-color-icon-tertiary: #8f959e;
   --ud-color-icon-disabled: #bbbfc4;
 
-  /* Backgrounds from color.md */
+  /* Backgrounds from color.md. bg-surface is the normal control and container surface. */
   --ud-color-bg-1: #eff0f1;
   --ud-color-bg-2: #f5f6f7;
   --ud-color-bg-3: #f8f9fa;
   /* style.md gives the product detail page background as #F2F3F5, which differs from Background 2. */
   --ud-color-bg-page: #f2f3f5;
-  --ud-color-bg-white: #ffffff;
+  --ud-color-bg-surface: #ffffff;
+  --ud-color-bg-elevated: #ffffff;
+  /* Kept as a compatibility alias: the token now follows the active surface. */
+  --ud-color-bg-white: var(--ud-color-bg-surface);
+  /* A physical white value for marks that must stay white regardless of theme. */
+  --ud-color-white: #ffffff;
+  /* Inverse foreground and background pairs, used by tooltips and value bubbles. */
+  --ud-color-bg-inverse: #1f2329;
+  --ud-color-text-on-inverse: #ffffff;
 
   /* Borders and fills */
   --ud-color-border: #d0d3d6;
   --ud-color-border-card: #dee0e3;
   --ud-color-fill-disabled: #eff0f1;
+  /* Measured from the pagination figure. The neutral ramp has no matching step, so this stays a single sampled fill. */
+  --ud-color-fill-hover: #e2e4e5;
+  /* Measured component fills that were previously local literals in Select and Input. */
+  --ud-color-fill-secondary: #e9e9ea;
+  --ud-color-fill-secondary-hover: #dddedf;
+  --ud-color-fill-secondary-pressed: #dadcdd;
+  --ud-color-fill-tertiary: #edeeef;
   --ud-color-divider: rgb(31 35 41 / 15%);
   --ud-color-mask: rgb(0 0 0 / 55%);
+  /* Media chrome sits over images and should not follow the page surface. */
+  --ud-color-media-overlay: rgb(31 35 41 / 89%);
+  --ud-color-media-overlay-weak: rgb(31 35 41 / 50%);
 
   /* Shadow colours */
   --ud-color-shadow: #1f2327;
@@ -104,4 +212,125 @@
   --ud-color-white-a69: rgb(255 255 255 / 69%);
   --ud-color-white-a80: rgb(255 255 255 / 80%);
   --ud-color-white-a89: rgb(255 255 255 / 89%);
+}
+
+/*
+ * Dark theme. docs/design specifies the light palette only, so these values are
+ * derived from the same neutral roles and checked for contrast on the dark
+ * surfaces. Apply .dark to an ancestor, conventionally html.dark.
+ */
+.dark {
+  /* Brand */
+  --ud-color-brand: var(--ud-blue-4);
+  --ud-color-brand-hover: var(--ud-blue-5);
+  --ud-color-brand-pressed: var(--ud-blue-3);
+  --ud-color-brand-loading: var(--ud-blue-8);
+  --ud-color-focus-ring: #aec5fb;
+  --ud-color-brand-subtle: #20305a;
+  --ud-color-brand-subtle-active: #29417a;
+
+  /* Text and icons */
+  --ud-color-text: #e8eaed;
+  --ud-color-text-secondary: #b1b7c0;
+  --ud-color-text-placeholder: #8f959e;
+  --ud-color-text-disabled: #60656d;
+  --ud-color-text-inverse: #ffffff;
+  --ud-color-icon: #e8eaed;
+  --ud-color-icon-secondary: #b1b7c0;
+  --ud-color-icon-tertiary: #8f959e;
+  --ud-color-icon-disabled: #60656d;
+
+  /* Backgrounds */
+  --ud-color-bg-1: #2d3035;
+  --ud-color-bg-2: #202226;
+  --ud-color-bg-3: #1b1d20;
+  --ud-color-bg-page: #151619;
+  --ud-color-bg-surface: #24262b;
+  --ud-color-bg-elevated: #2b2e33;
+  --ud-color-bg-white: var(--ud-color-bg-surface);
+  --ud-color-white: #ffffff;
+  --ud-color-bg-inverse: #f5f6f7;
+  --ud-color-text-on-inverse: #1f2329;
+
+  /* Borders and fills */
+  --ud-color-border: #494d55;
+  --ud-color-border-card: #383b41;
+  --ud-color-fill-disabled: #2b2e33;
+  --ud-color-fill-hover: #35383e;
+  --ud-color-fill-secondary: #303338;
+  --ud-color-fill-secondary-hover: #3a3d43;
+  --ud-color-fill-secondary-pressed: #454950;
+  --ud-color-fill-tertiary: #34373c;
+  --ud-color-divider: rgb(255 255 255 / 12%);
+  --ud-color-mask: rgb(0 0 0 / 65%);
+  --ud-color-media-overlay: rgb(15 17 21 / 82%);
+  --ud-color-media-overlay-weak: rgb(15 17 21 / 58%);
+
+  /* Shadows */
+  --ud-color-shadow: #000000;
+  --ud-color-shadow-brand: #245bdb;
+
+  /* Neutral alphas become light-on-dark so the same semantic role survives. */
+  --ud-color-text-a5: rgb(255 255 255 / 5%);
+  --ud-color-text-a8: rgb(255 255 255 / 8%);
+  --ud-color-text-a10: rgb(255 255 255 / 10%);
+  --ud-color-text-a15: rgb(255 255 255 / 15%);
+  --ud-color-text-a20: rgb(255 255 255 / 20%);
+  --ud-color-text-a30: rgb(255 255 255 / 30%);
+  --ud-color-text-a40: rgb(255 255 255 / 40%);
+  --ud-color-text-a50: rgb(255 255 255 / 50%);
+  --ud-color-text-a60: rgb(255 255 255 / 60%);
+  --ud-color-text-a69: rgb(255 255 255 / 69%);
+  --ud-color-text-a80: rgb(255 255 255 / 80%);
+  --ud-color-text-a89: rgb(255 255 255 / 89%);
+
+  /* Tag palette: muted dark tints with light ink at the same semantic steps. */
+  --ud-tag-neutral-bg: #303338;
+  --ud-tag-neutral-ink: #c7cbd2;
+  --ud-tag-neutral-option-ink: #f0f2f5;
+  --ud-tag-blue-bg: #1d2a4b;
+  --ud-tag-blue-ink: #8fb0ff;
+  --ud-tag-blue-option-ink: #c5d6ff;
+  --ud-tag-turquoise-bg: #153a36;
+  --ud-tag-turquoise-ink: #64d9c9;
+  --ud-tag-turquoise-option-ink: #b0f0e7;
+  --ud-tag-green-bg: #1d3520;
+  --ud-tag-green-ink: #78d97c;
+  --ud-tag-green-option-ink: #c0efc2;
+  --ud-tag-lime-bg: #2d3316;
+  --ud-tag-lime-ink: #b8cf54;
+  --ud-tag-lime-option-ink: #e1edaa;
+  --ud-tag-yellow-bg: #3b3117;
+  --ud-tag-yellow-ink: #e0b94f;
+  --ud-tag-yellow-option-ink: #f6df9b;
+  --ud-tag-orange-bg: #3b2818;
+  --ud-tag-orange-ink: #f0a05a;
+  --ud-tag-orange-option-ink: #f9d1a8;
+  --ud-tag-red-bg: #3b2220;
+  --ud-tag-red-ink: #f58b86;
+  --ud-tag-red-option-ink: #f9c0bd;
+  --ud-tag-carmine-bg: #3a2031;
+  --ud-tag-carmine-ink: #ef78b5;
+  --ud-tag-carmine-option-ink: #f8b7d9;
+  --ud-tag-indigo-bg: #24284a;
+  --ud-tag-indigo-ink: #8d98f2;
+  --ud-tag-indigo-option-ink: #cbd0fa;
+  --ud-tag-purple-bg: #2d2342;
+  --ud-tag-purple-ink: #b79aef;
+  --ud-tag-purple-option-ink: #ddd0fa;
+  --ud-tag-cyan-bg: #18333d;
+  --ud-tag-cyan-ink: #67c6e0;
+  --ud-tag-cyan-option-ink: #b4e5f1;
+
+  /* Feedback */
+  --ud-green-50: #1b3520;
+  --ud-red-50: #3b2222;
+  --ud-orange-50: #3a2b1b;
+  --ud-color-success-text: #5ad36a;
+  --ud-color-success: #35bd4b;
+  --ud-color-warning-text: #ffa940;
+  --ud-color-warning: #ff811a;
+  --ud-color-danger-text: #ff7a75;
+  --ud-color-danger: #f54a45;
+  --ud-color-info: var(--ud-color-brand);
 }

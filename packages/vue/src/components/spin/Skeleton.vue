@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { SkeletonVariant } from './types'
 import { computed } from 'vue'
+import Spin from './Spin.vue'
 
 const {
   variant = 'text',
@@ -21,10 +22,14 @@ function toLength(value: number | string | undefined) {
 }
 
 const style = computed(() => ({
-  width: toLength(width),
+  width: toLength(width ?? (variant === 'image'
+    ? 180
+    : undefined)),
   height: toLength(height ?? (variant === 'circle'
     ? width
-    : undefined)),
+    : variant === 'image'
+      ? 120
+      : undefined)),
 }))
 </script>
 
@@ -48,5 +53,12 @@ const style = computed(() => ({
     :class="`ud-skeleton--${variant}`"
     :style="style"
     aria-hidden="true"
-  />
+  >
+    <Spin
+      v-if="variant === 'image'"
+      size="sm"
+      color="grey"
+      label=""
+    />
+  </span>
 </template>

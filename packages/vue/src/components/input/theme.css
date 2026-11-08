@@ -373,7 +373,7 @@
 
 .ud-input-addon__option:hover,
 .ud-input-addon__option:focus-visible {
-  background: #edeeef;
+  background: var(--ud-color-fill-tertiary);
 }
 
 .ud-input-addon__option.is-selected {
@@ -446,7 +446,7 @@
 
 .ud-input--disabled .ud-input__tag,
 .ud-input--readonly .ud-input__tag {
-  background: #dadcdd;
+  background: var(--ud-color-fill-secondary-pressed);
 }
 
 .ud-input__clear {
@@ -833,18 +833,18 @@
   --ud-input-message-color: var(--ud-color-danger);
 }
 
-/* Disabled and read-only chip fill #DADCDD is one step darker than the box and not in the palette. */
+/* Measured disabled and read-only chip fill #DADCDD is one step darker than the box. */
 .ud-input-area--disabled {
   --ud-input-bg: var(--ud-color-fill-disabled);
   --ud-input-color: var(--ud-color-text-placeholder);
   --ud-input-border-color-focus: var(--ud-color-border);
-  --ud-input-area-count-bg: #dadcdd;
+  --ud-input-area-count-bg: var(--ud-color-fill-secondary-pressed);
 }
 
 .ud-input-area--readonly {
   --ud-input-bg: var(--ud-color-fill-disabled);
   --ud-input-border-color-focus: var(--ud-color-border);
-  --ud-input-area-count-bg: #dadcdd;
+  --ud-input-area-count-bg: var(--ud-color-fill-secondary-pressed);
 }
 
 .ud-input-area__control {

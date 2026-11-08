@@ -1,0 +1,132 @@
+/*
+ * The spec fixes illustration sizes, the 250 px description cap, and that buttons
+ * share a row until they run out of room. Every length below 24 px is inferred from
+ * the 4N rule in empty.md and marked as such.
+ */
+.ud-empty {
+  --ud-empty-image-size: 120px;
+  --ud-empty-gap: 8px;
+  --ud-empty-description-max: 250px;
+
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--ud-empty-gap);
+  text-align: center;
+}
+
+.ud-empty__copy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--ud-empty-gap);
+}
+
+.ud-empty__image {
+  flex: none;
+  width: var(--ud-empty-image-size);
+  height: var(--ud-empty-image-size);
+  color: var(--ud-color-text-placeholder);
+}
+
+.ud-empty__image > img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.ud-empty__glyph {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.ud-empty__title {
+  font-size: var(--ud-font-size-body);
+  font-weight: var(--ud-font-weight-medium);
+  line-height: var(--ud-line-body);
+  color: var(--ud-color-text);
+}
+
+.ud-empty__description {
+  max-width: var(--ud-empty-description-max);
+  font-size: var(--ud-font-size-body-sm);
+  line-height: var(--ud-line-body-sm);
+  color: var(--ud-color-text-secondary);
+}
+
+.ud-empty__subtitle {
+  color: var(--ud-color-text);
+  font-size: var(--ud-font-size-body);
+  font-weight: var(--ud-font-weight-medium);
+  line-height: var(--ud-line-body);
+}
+
+.ud-empty__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ud-empty-gap);
+  align-items: center;
+  justify-content: center;
+  margin-top: calc(var(--ud-empty-gap) * 2);
+}
+
+/* Specified in empty.md: 350 illustration, 24 Semibold title, 14 Medium subtitle,
+ * 14 Regular description and 40px actions, laid out side by side. */
+.ud-empty--initial {
+  --ud-empty-gap: 16px;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 40px;
+  text-align: left;
+}
+
+.ud-empty--initial.ud-empty--reverse {
+  flex-direction: row-reverse;
+}
+
+.ud-empty--initial .ud-empty__copy {
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.ud-empty--initial .ud-empty__title {
+  font-size: 24px;
+  font-weight: var(--ud-font-weight-semibold);
+  line-height: var(--ud-line-h1);
+}
+
+.ud-empty--initial .ud-empty__description {
+  max-width: 350px;
+  color: var(--ud-color-text);
+  font-size: var(--ud-font-size-body);
+  line-height: var(--ud-line-body);
+}
+
+.ud-empty--initial .ud-empty__actions {
+  justify-content: flex-start;
+  margin-top: 16px;
+}
+
+.ud-empty--initial .ud-empty__actions .ud-button {
+  height: 40px;
+}
+
+@media (max-width: 600px) {
+  .ud-empty--initial,
+  .ud-empty--initial.ud-empty--reverse {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .ud-empty--initial .ud-empty__copy {
+    align-items: center;
+  }
+
+  .ud-empty--initial .ud-empty__image {
+    --ud-empty-image-size: 250px;
+  }
+}

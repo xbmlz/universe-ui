@@ -4,6 +4,7 @@ import { Check, Close, Right } from '@icon-park/vue-next'
 import { computed, inject, watch } from 'vue'
 import ParkIcon from '../../internal/park-icon.vue'
 import { STEPS_KEY } from './context'
+import { lineKind as lineKindOf, stepStatus } from './status'
 
 const props = defineProps<{
   title: string
@@ -17,15 +18,8 @@ if (!steps)
 
 const { id, index, setStatus } = steps.register()
 
-const status = computed<StepStatus>(() => {
-  if (props.status)
-    return props.status
-  if (index.value < steps.active.value)
-    return 'finish'
-  if (index.value === steps.active.value)
-    return 'process'
-  return 'wait'
-})
+const status = computed<StepStatus>(() =>
+  stepStatus(index.value, steps.active.value, props.status))
 
 watch(status, value => setStatus(value), { immediate: true })
 
@@ -38,15 +32,8 @@ const nextStatus = computed(() => {
     ? undefined
     : steps.statuses.value[following]
 })
-const lineKind = computed(() => {
-  if (dotted.value)
-    return 'muted'
-  if (nextStatus.value === 'error')
-    return 'danger'
-  if (status.value === 'finish')
-    return 'brand'
-  return 'muted'
-})
+const lineKind = computed(() =>
+  lineKindOf(status.value, nextStatus.value, dotted.value))
 
 function pick() {
   if (!steps.clickable.value)

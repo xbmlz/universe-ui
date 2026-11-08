@@ -2,6 +2,7 @@
 import { More } from '@icon-park/vue-next'
 import { computed, onBeforeUnmount, onMounted, provide, shallowRef, useTemplateRef, watch } from 'vue'
 import ParkIcon from '../../internal/park-icon.vue'
+import { Tooltip } from '../tooltip'
 import { AVATAR_GROUP } from './context'
 
 const { size = 32, max = 5 } = defineProps<{
@@ -17,21 +18,27 @@ provide(AVATAR_GROUP, {
 
 const root = useTemplateRef<HTMLElement>('root')
 const rest = shallowRef(0)
+const hiddenNames = shallowRef<string[]>([])
 
 function layout() {
   const el = root.value
   if (!el)
     return
   const avatars = [
-    ...el.querySelectorAll<HTMLElement>(':scope > .ud-avatar'),
+    ...el.querySelectorAll<HTMLElement>(':scope > .ud-avatar-tooltip > .ud-avatar'),
   ]
   const shown = avatars.length <= max + 1
     ? avatars.length
     : max
   avatars.forEach((avatar, index) => {
-    avatar.hidden = index >= shown
+    const host = avatar.closest<HTMLElement>('.ud-avatar-tooltip') ?? avatar
+    host.hidden = index >= shown
   })
   rest.value = avatars.length - shown
+  hiddenNames.value = avatars
+    .slice(shown)
+    .map(avatar => avatar.dataset.name ?? '')
+    .filter(Boolean)
 }
 
 let observer: MutationObserver | undefined
@@ -46,6 +53,7 @@ watch(() => max, layout)
 const overflow = computed(() => rest.value > (size >= 32
   ? 999
   : 99))
+const moreContent = computed(() => hiddenNames.value.join('、'))
 
 const style = computed(() => ({ '--ud-avatar-size': `${size}px` }))
 </script>
@@ -58,20 +66,25 @@ const style = computed(() => ({ '--ud-avatar-size': `${size}px` }))
     :style="style"
   >
     <slot />
-    <button
+    <Tooltip
       v-if="rest > 0"
-      type="button"
-      class="ud-avatar-group__more"
-      :aria-label="`还有 ${rest} 人`"
-      @click="emit('more', $event)"
+      class="ud-avatar-group__more-tooltip"
+      :content="moreContent"
     >
-      <ParkIcon
-        v-if="overflow"
-        :icon="More"
-      />
-      <template v-else>
-        +{{ rest }}
-      </template>
-    </button>
+      <button
+        type="button"
+        class="ud-avatar-group__more"
+        :aria-label="`还有 ${rest} 人`"
+        @click="emit('more', $event)"
+      >
+        <ParkIcon
+          v-if="overflow"
+          :icon="More"
+        />
+        <template v-else>
+          +{{ rest }}
+        </template>
+      </button>
+    </Tooltip>
   </div>
 </template>

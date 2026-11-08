@@ -1,0 +1,100 @@
+/*
+ * Specified in stepper.md: 28 / 32 / 40px heights, 160px default width, Radius-S,
+ * 16px icons, 14px Regular text, disabled step buttons at both bounds.
+ * Inferred: the equal-width step buttons and the 8px icon-to-edge padding below 24px.
+ */
+.ud-stepper {
+  --ud-stepper-width: 160px;
+  --ud-stepper-height: 32px;
+  --ud-stepper-radius: var(--ud-radius-s);
+  --ud-stepper-icon-size: 16px;
+  --ud-stepper-font-size: var(--ud-font-size-body);
+  --ud-stepper-line-height: var(--ud-line-body);
+  --ud-stepper-bg: var(--ud-color-bg-white);
+  --ud-stepper-border: var(--ud-color-border);
+  --ud-stepper-color: var(--ud-color-text);
+  --ud-stepper-btn-color: var(--ud-color-icon);
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: var(--ud-stepper-width);
+  color: var(--ud-stepper-color);
+  font-family: var(--ud-font-family);
+  font-size: var(--ud-stepper-font-size);
+  line-height: var(--ud-stepper-line-height);
+}
+
+.ud-stepper--sm {
+  --ud-stepper-height: 28px;
+}
+
+.ud-stepper--lg {
+  --ud-stepper-height: 40px;
+}
+
+.ud-stepper__control {
+  box-sizing: border-box;
+  display: flex;
+  align-items: stretch;
+  height: var(--ud-stepper-height);
+  overflow: hidden;
+  border: 1px solid var(--ud-stepper-border);
+  border-radius: var(--ud-stepper-radius);
+  background: var(--ud-stepper-bg);
+}
+
+.ud-stepper__control:hover {
+  --ud-stepper-border: var(--ud-color-brand);
+}
+
+.ud-stepper__field {
+  flex: 1;
+  min-width: 0;
+  margin: 0;
+  padding: 0 4px;
+  border: 0;
+  background: transparent;
+  color: var(--ud-stepper-color);
+  font: inherit;
+  text-align: center;
+}
+
+.ud-stepper__field:focus {
+  outline: none;
+}
+
+.ud-stepper__btn {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: var(--ud-stepper-height);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--ud-stepper-btn-color);
+  font-size: var(--ud-stepper-icon-size);
+  line-height: 0;
+  cursor: pointer;
+}
+
+.ud-stepper__btn:disabled {
+  color: var(--ud-color-icon-disabled);
+  cursor: not-allowed;
+}
+
+.ud-stepper--error {
+  --ud-stepper-border: var(--ud-color-danger);
+}
+
+.ud-stepper--disabled {
+  --ud-stepper-bg: var(--ud-color-fill-disabled);
+  --ud-stepper-border: var(--ud-color-border);
+  --ud-stepper-color: var(--ud-color-text-disabled);
+}
+
+.ud-stepper--disabled .ud-stepper__field {
+  cursor: not-allowed;
+}

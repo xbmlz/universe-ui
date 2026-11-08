@@ -3,3 +3,7 @@ dist
 .vite
 *.local
 .DS_Store
+docs/.nuxt
+docs/.output
+docs/.data
+docs/.content

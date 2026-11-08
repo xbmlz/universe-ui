@@ -1,58 +1,36 @@
 # Backlog
 
-Deferred work, collected per component. Group A has a clear spec and can be done
-directly. Group B needs a decision, assets, or is a feature of its own. Group C
-lists the components with a spec in `docs/design` but no implementation yet.
+Deferred work. The implementation backlog is the Cascader, TreeSelect and
+Transfer group at the end; the other items are blocked on artwork, test
+tooling, or a dependency decision.
 
-## A. Clear spec
+## Blocked on assets, measurements, or test tooling
 
-- **Toast** — duration by text length. Spec ranges: without actions, 0–40 chars 3–5s, 40–80 chars 6–8s; with actions, 0–40 chars 4–6s, 40–80 chars 6–10s. Today it uses fixed defaults (4s, 6s with actions). The picked point inside each range is inferred, not specified.
-- **Notice** — show a Tooltip on the ellipsis when text is clamped. Reuse the `only-overflow` Tooltip that Radio uses.
-- **Dialog** — adaptive width mode: width follows the viewport with a 180px gap on each side (specified default), clamped by min/max width.
-- **Drawer** — header actions: show at most three, turn the third into a "more" button, and collect the rest in its menu. Today the `actions` slot renders whatever it gets.
-- **Button, Select, Switch** — replace their hand-drawn spinners with `Spin`. Check each one's measured size still matches.
-- **Tag** — the other 10 colours. The written spec says 13 palettes for property tags; the figure shows 12 (neutral + 11 colour). Settle the count against the figures first, then measure each swatch and add primitive tokens as needed (palette decision: "measure"). Each colour needs an opaque variant for non-standard backgrounds (specified).
-- **Tag** — condition the colours on the four tag types from the spec (property / option / status / avatar). Option tags are low-saturation and must not carry system-level meaning; status tags map blue=pending, green=success, red=failure, orange=awaiting action, grey=negative.
-- **Tag** — interactive icon as an optional part (the property-tag figures pair a text tag with an icon tag for every colour).
-- **Tag** — status tags (with a status icon or dot).
-- **Tag** — avatar tags. Avatar now exists. Spec adds hover / pressed / disabled states and a two-colour organization variant.
-- **Toast** — merge toasts with identical content into one (specified suggestion).
-- **Toast** — surface a close button when text exceeds 20 chars (specified suggestion).
-- **Dropdown** — contextual menu. It opens beside the pointer, prefers right then down, and when the bottom runs out it aligns to the 16px page edge instead of the pointer.
-- **Button** — icon, float, round, and split-button-with-menu variants (`button_icon.md`, `button_float.md`, `button_round.md`, `button_splitbutton_menu.md`). Text and basic variants exist.
-- **Collapse** — text expand/collapse (“展开/收起”) for a paragraph, usually 3 or 5 lines, with the trigger at the lower left or right and a 4px gap once expanded.
+- **Avatar** — anonymous external-company avatars need five brand illustrations that are not in the repo. The name tooltip and the +N overflow list are built, and `more` is exposed for a host popover. Badge now carries the 39 sampled collaboration tones and the 2px white ring for a collaborator badge around an avatar.
+- **Loading** — illustration loading needs the 125×125 brand animation asset. The image placeholder is built as `Skeleton variant="image"` with an N200 fill, grey spinner, 48px minimum and 180×120 default.
+- **Empty** — the brand illustrations are not in the repo. `image` and the `image` slot take the real artwork; the fallback outline is inferred.
+- **Tests** — component tests need a DOM environment (jsdom or happy-dom) and `@vue/test-utils`; neither is installed, so only the plain-TS helpers are covered.
 
-## B. Needs a decision or more work
+## Dependencies and remaining components
 
-- **Dialog** — switching between level 1 and level 2 inside one dialog (same width, height anchored on the header). Needs an interaction and API design.
-- **Notification, Toast service** — custom content through the service API. Needs a choice: render function or component.
-- **Toast** — 72px top offset in the PC client, and placement inside dialogs or separate windows. Depends on the host; `toast.config({ top })` covers it for now.
-- **Badge, Avatar** — 39-colour collaboration badge (2px white ring). Needs the 39-colour palette.
-- **Badge** — icon badges and corner badges. The spec leaves colours to the scenario.
-- **Avatar** — Japanese names should use the first character of the surname. The code cannot tell Japanese names from Chinese ones, so it uses the Chinese rule (last two characters).
-- **Avatar** — five random avatars for anonymous external companies, a name tooltip on hover, and a member list from "+N". These can be composed today with `Tooltip` and the `more` event.
-- **Loading** — illustration loading. Needs the 125×125 brand illustration animation asset.
-- **Loading** — image loading placeholder: N200 fill, grey spinner, minimum 48, default 180×120. Build it into the image component when that exists.
-- **Tabs** — overflow scrolling and the "more" dropdown, badges on tabs (including the fixed-width case), card tabs with add and close.
-- **Drawer** — in the PC client, switch between overlay and push with the window size. The spec gives no breakpoint.
-- **Drawer** — header tabs that overflow go into "more", opened on hover. Depends on the Tabs overflow work above.
-- **Progress** — upload card layouts with captions and actions. These are business compositions, not part of the component.
+Two data-entry components still need dayjs, Form needs Zod, and Table needs TanStack Table. Each dependency still needs a yes before install.
 
-## C. Remaining components (spec exists, not started)
+- **data-entry**: Form, DatePicker, TimePicker
+- **data-display**: Table
 
-19 components still to build. Do the small data-display ones next (Empty,
-Timeline, Card), then the entry components that need dependency decisions
-(dayjs for DatePicker / TimePicker, Zod for Form, TanStack Table for Table —
-each still needs a yes before install).
+## Documentation
 
-- **data-entry**: Form, DatePicker, TimePicker, Upload, Cascader, TreeSelect, Transfer, Slider, Stepper, Rate, ColorPicker
-- **data-display**: Table, Card, Empty, ImageViewer, Timeline
-- **navigation**: Anchor, ScrollBar, NavigationMenu
+- **Docs site** — the docs package now uses the Nuxt UI v4 docs app structure with Nuxt Content. Guides and Components are wired, and Button is the first component page. Design specs live outside the site at the repository root.
+- **Component docs** — add one component page at a time. Each page should follow the Button page shape: overview, features, anatomy, usage guidance, examples, API, and accessibility. Examples use `ComponentExample`, resolved by name from `docs/app/components/content/examples/`, with live preview and Shiki-highlighted source from the same SFC.
 
-Note: there is no `image.md` in `docs/design`; the Loading image-placeholder work
-under Group B expects an image component. Check with the spec source before
-building one.
+## Design
 
-## Environment
+- **Dark theme** — `docs/design` has no dark palette. The `.dark` values in `packages/tokens/src/color.css` are inferred from the light neutral roles and need a design review before they become normative.
 
-- pnpm 12.4.2 pinned by the repo ships a launcher without a shebang. On macOS `pnpm install` and `pnpm dev` fail with ENOEXEC. Run pnpm through `sh`, or run `vite` inside `playground/`.
+## Complex components (keep for now)
+
+- **Cascader** — base single-select clicking a selectable parent should also expand its children while keeping the panel open, and there is no "parent not selectable" mode (`cascader.md` state rules). Any-level multi-select is built. No search field is required by the doc, and lazy-loaded levels are not built.
+- **TreeSelect** — the chosen tags scroll inside a 188px field, as the doc allows, but the "fixed height keeps only the overflow count" variant is not offered.
+- **TreeSelect** — rows are a flat list with indentation; there is no custom node slot for icons or avatars.
+- **Transfer** — the left panel lists every option with a checkbox (checked = chosen) and the right panel mirrors the chosen keys, so a check shows on the right at once and the right close button sends it back; the floating move button was removed because the composition figure draws only a divider. That no-move reading is inferred from the figure + interaction text and should be confirmed against a figure that shows a selection.
+- **Transfer** — only the flat list option area is built: the optional tree structure, custom group layout, drag-reorder of chosen rows, and the breadcrumb/custom header slot are not implemented.

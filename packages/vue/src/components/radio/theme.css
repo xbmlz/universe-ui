@@ -5,7 +5,7 @@
   --ud-radio-line: var(--ud-line-body);
   --ud-radio-border: var(--ud-color-icon-tertiary);
   --ud-radio-bg: var(--ud-color-bg-white);
-  --ud-radio-dot: var(--ud-color-bg-white);
+  --ud-radio-dot: var(--ud-color-text-inverse);
   --ud-radio-color: var(--ud-color-text);
 
   position: relative;

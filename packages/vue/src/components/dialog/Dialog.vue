@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { ButtonType } from '../button/types'
-import type { DialogCloseReason, DialogFooterDirection, DialogSize, DialogType } from './types'
+import type { DialogCloseReason, DialogFooterDirection, DialogLevel, DialogSize, DialogType } from './types'
 import { Attention, CheckOne, Close, CloseOne, Info } from '@icon-park/vue-next'
 import { computed, nextTick, onBeforeUnmount, shallowRef, useSlots, useTemplateRef, watch } from 'vue'
 import ParkIcon from '../../internal/park-icon.vue'
@@ -12,7 +12,10 @@ const {
   description = '',
   type,
   size = 'sm',
+  level = 1,
   width,
+  adaptive = false,
+  adaptiveGap = 180,
   minWidth,
   maxWidth,
   minHeight,
@@ -31,7 +34,13 @@ const {
   description?: string
   type?: DialogType
   size?: DialogSize
+  /** Switch contents in place; level two retains the level-one width and height. */
+  level?: DialogLevel
   width?: number | string
+  /** Let the dialog width follow the viewport instead of a fixed size. */
+  adaptive?: boolean
+  /** Gap between the adaptive dialog and each side of the page. The spec default is 180px. */
+  adaptiveGap?: number | string
   minWidth?: number | string
   maxWidth?: number | string
   minHeight?: number | string
@@ -54,8 +63,10 @@ const open = defineModel<boolean>('open', { default: false })
 const slots = useSlots()
 
 const rootRef = useTemplateRef<HTMLElement>('root')
+const panelRef = useTemplateRef<HTMLElement>('panel')
 const bodyRef = useTemplateRef<HTMLElement>('body')
 const overflowing = shallowRef(false)
+const levelOneSize = shallowRef<{ width: number, height: number } | null>(null)
 const pending = shallowRef(false)
 const zIndex = shallowRef(0)
 let locked = false
@@ -81,15 +92,31 @@ const hasFooter = computed(() => !!okText || !!cancelText || !!slots.footer || !
 const hasIcon = computed(() => !!type || !!slots.icon)
 
 const panelStyle = computed(() => ({
-  '--ud-dialog-width': length(width),
-  'minWidth': length(minWidth),
-  'maxWidth': maxWidth === undefined
+  '--ud-dialog-width': adaptive && width === undefined
+    ? `calc(100vw - ${length(adaptiveGap)} - ${length(adaptiveGap)})`
+    : length(width),
+  'minWidth': level === 2 && levelOneSize.value
     ? undefined
-    : `min(${length(maxWidth)}, 100%)`,
-  'minHeight': length(minHeight),
-  'maxHeight': maxHeight === undefined
+    : length(minWidth),
+  'maxWidth': level === 2 && levelOneSize.value
     ? undefined
-    : `min(${length(maxHeight)}, 100%)`,
+    : maxWidth === undefined
+      ? undefined
+      : `min(${length(maxWidth)}, 100%)`,
+  'width': level === 2 && levelOneSize.value
+    ? `${levelOneSize.value.width}px`
+    : undefined,
+  'height': level === 2 && levelOneSize.value
+    ? `${levelOneSize.value.height}px`
+    : undefined,
+  'minHeight': level === 2 && levelOneSize.value
+    ? `${levelOneSize.value.height}px`
+    : length(minHeight),
+  'maxHeight': level === 2 && levelOneSize.value
+    ? `${levelOneSize.value.height}px`
+    : maxHeight === undefined
+      ? undefined
+      : `min(${length(maxHeight)}, 100%)`,
 }))
 const rootStyle = computed(() => ({
   'zIndex': zIndex.value,
@@ -138,6 +165,9 @@ async function onOkButton() {
 function measure() {
   const body = bodyRef.value
   overflowing.value = !!body && body.scrollHeight > body.clientHeight + 1
+  const panel = panelRef.value
+  if (level === 1 && panel)
+    levelOneSize.value = { width: panel.offsetWidth, height: panel.offsetHeight }
 }
 
 let observer: ResizeObserver | undefined
@@ -150,6 +180,8 @@ function observe() {
     return
   observer.observe(body)
   for (const child of body.children) observer.observe(child)
+  if (panelRef.value)
+    observer.observe(panelRef.value)
   measure()
 }
 
@@ -206,9 +238,11 @@ onBeforeUnmount(onAfterLeave)
           @click="onMask"
         />
         <div
+          ref="panel"
           class="ud-dialog"
           :class="[
             `ud-dialog--${size}`,
+            `ud-dialog--level-${level}`,
             {
               'ud-dialog--icon': hasIcon,
               'ud-dialog--overflow': overflowing,
