@@ -5,6 +5,10 @@ dist
 .DS_Store
 docs/.vitepress/dist
 docs/.vitepress/cache
+# Stale Nuxt build outputs from before the VitePress migration.
+docs/.nuxt
+docs/.data
+docs/.output
 
 # Local tool/editor state (not part of the library)
 .claude/
