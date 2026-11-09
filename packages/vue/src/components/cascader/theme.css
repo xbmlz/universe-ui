@@ -168,7 +168,7 @@
 }
 
 .ud-cascader__tag-remove:hover {
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
 }
 
 .ud-cascader__suffix {
@@ -203,7 +203,7 @@
 }
 
 .ud-cascader__clear:hover {
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
 }
 
 .ud-cascader__arrow {
@@ -288,11 +288,11 @@
 
 .ud-cascader__option.is-active {
   background: var(--ud-color-bg-1);
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
 }
 
 .ud-cascader__option.is-selected {
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
   font-weight: var(--ud-font-weight-medium);
 }
 
@@ -324,7 +324,7 @@
 
 .ud-cascader__mark {
   flex: none;
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
   font-size: 16px;
 }
 

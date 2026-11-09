@@ -1,7 +1,7 @@
 .ud-tag {
   /*
    * Option tag size callouts: height 16 / 20 / 24 / 32, inline padding 4 / 6 / 6 / 8, gap 2 / 4 / 4 / 4, radius Radius-XS.
-   * Font sizes 10 / 12 / 14 / 16 measured from cap height. Property tags measure the same as XS.
+   * Font sizes 10 / 12 / 14 / 16 measured from cap height. All variants use the same size scale; md is the default.
    */
   --ud-tag-height: 16px;
   --ud-tag-padding-inline: 4px;
@@ -36,7 +36,7 @@
   white-space: nowrap;
 }
 
-/* The text figure labels the small status tag as 10px Medium. Property tags share that size, so Medium is inferred. */
+/* Property tags use Medium weight and secondary text, independent of size. */
 .ud-tag--property {
   --ud-tag-font-weight: var(--ud-font-weight-medium);
   --ud-tag-color: var(--ud-color-text-secondary);
@@ -218,9 +218,21 @@
   justify-content: center;
 }
 
+/*
+ * Size callout: 2px start padding, 4px inner gap, 8px end padding, 24px height.
+ * The avatar tag is a full-radius pill in the type overview, size and state figures;
+ * the other three variants stay rectangular with Radius-XS. The circular avatar
+ * sits inside the left semicircle, so its centre lines up with the pill's centre.
+ */
 .ud-tag--avatar {
   --ud-tag-padding-inline: 2px;
   --ud-tag-gap: 4px;
+  border-radius: var(--ud-radius-full);
+}
+
+/* The 8px callout is drawn on the 24px tag only; the other sizes are unspecified. */
+.ud-tag--avatar.ud-tag--md {
+  padding-right: 8px;
 }
 
 .ud-tag--avatar .ud-tag__avatar {
@@ -314,6 +326,11 @@
 
 .ud-tag--neutral.ud-tag--disabled {
   --ud-tag-color: var(--ud-color-text-disabled);
+}
+
+/* The Disabled figure fades the avatar with the label; 40% is inferred from the figure. */
+.ud-tag--avatar.ud-tag--neutral.ud-tag--disabled .ud-tag__avatar {
+  opacity: 0.4;
 }
 
 /* Disabled coloured tags drop text, icon and close glyph to 30%; the fill is unchanged. */

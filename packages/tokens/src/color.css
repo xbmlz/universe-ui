@@ -1,4 +1,5 @@
 :root {
+  color-scheme: light;
   /* Brand ramp, dark to light. The figure has no step names; step 4 is the one marked as the brand colour. */
   --ud-blue-1: #002270;
   --ud-blue-2: #002f9e;
@@ -15,10 +16,14 @@
   --ud-color-brand-hover: var(--ud-blue-5);
   --ud-color-brand-pressed: var(--ud-blue-3);
   --ud-color-brand-loading: var(--ud-blue-8);
+  --ud-color-brand-text: var(--ud-blue-4);
+  --ud-color-brand-text-hover: var(--ud-blue-5);
+  --ud-color-brand-text-pressed: var(--ud-blue-3);
   --ud-color-focus-ring: #aec5fb;
   /* Measured breadcrumb link hover / pressed fills. */
   --ud-color-brand-subtle: #e4ebfb;
   --ud-color-brand-subtle-active: #d1defb;
+  --ud-color-brand-disabled: #c2d4ff;
 
   /*
    * Old palette steps, measured from component figures and added only as they are needed.
@@ -128,11 +133,13 @@
   /* Functional colours. *-text is for text, the plain one for fills. Error is #F54A45 in both. */
   --ud-color-success-text: #32a645;
   --ud-color-success: #35bd4b;
+  --ud-color-success-pressed: #2ea121;
   --ud-color-warning-text: #ed6d0c;
   --ud-color-warning: #ff811a;
   --ud-color-danger-text: #f54a45;
   --ud-color-danger: #f54a45;
   --ud-color-info: var(--ud-color-brand);
+  --ud-color-info-subtle: #f0f4ff;
 
   /*
    * Text and icons. text-inverse is for content drawn on a brand, danger,
@@ -220,6 +227,7 @@
  * surfaces. Apply .dark to an ancestor, conventionally html.dark.
  */
 .dark {
+  color-scheme: dark;
   /* Brand */
   --ud-color-brand: var(--ud-blue-4);
   --ud-color-brand-hover: var(--ud-blue-5);
@@ -228,6 +236,10 @@
   --ud-color-focus-ring: #aec5fb;
   --ud-color-brand-subtle: #20305a;
   --ud-color-brand-subtle-active: #29417a;
+  --ud-color-brand-disabled: #3a4a70;
+  --ud-color-brand-text: var(--ud-blue-7);
+  --ud-color-brand-text-hover: var(--ud-blue-8);
+  --ud-color-brand-text-pressed: var(--ud-blue-7);
 
   /* Text and icons */
   --ud-color-text: #e8eaed;
@@ -241,7 +253,7 @@
   --ud-color-icon-disabled: #60656d;
 
   /* Backgrounds */
-  --ud-color-bg-1: #2d3035;
+  --ud-color-bg-1: #222429;
   --ud-color-bg-2: #202226;
   --ud-color-bg-3: #1b1d20;
   --ud-color-bg-page: #151619;
@@ -268,7 +280,7 @@
 
   /* Shadows */
   --ud-color-shadow: #000000;
-  --ud-color-shadow-brand: #245bdb;
+  --ud-color-shadow-brand: #336df4;
 
   /* Neutral alphas become light-on-dark so the same semantic role survives. */
   --ud-color-text-a5: rgb(255 255 255 / 5%);
@@ -328,9 +340,18 @@
   --ud-orange-50: #3a2b1b;
   --ud-color-success-text: #5ad36a;
   --ud-color-success: #35bd4b;
+  --ud-color-success-pressed: #2a9e3a;
   --ud-color-warning-text: #ffa940;
   --ud-color-warning: #ff811a;
   --ud-color-danger-text: #ff7a75;
   --ud-color-danger: #f54a45;
   --ud-color-info: var(--ud-color-brand);
+  --ud-color-info-subtle: #1d2a4b;
+
+  /* Dark variants for collaboration swatches that lose contrast on #24262b (inferred). */
+  --ud-collab-17: #9a63f7;
+  --ud-collab-21: #c94a92;
+  --ud-collab-22: #8552e0;
+  --ud-collab-25: #4c7ae0;
+  --ud-collab-32: #5a63e8;
 }

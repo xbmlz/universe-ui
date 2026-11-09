@@ -29,6 +29,7 @@ const {
   emptyText = '无选项',
   noResultText = '无搜索结果',
   optionLines = 1,
+  variant = 'default',
 } = defineProps<{
   options: SelectOption[]
   size?: InputSize
@@ -47,6 +48,7 @@ const {
   emptyText?: string
   noResultText?: string
   optionLines?: 1 | 2
+  variant?: 'default' | 'underline' | 'borderless'
 }>()
 
 const model = defineModel<string | string[] | null>({ default: null })
@@ -319,6 +321,8 @@ defineExpose({ focus })
         'ud-select--disabled': resolvedDisabled,
         'ud-select--readonly': resolvedReadonly,
         'ud-select--error': resolvedError,
+        'ud-select--underline': variant === 'underline',
+        'ud-select--borderless': variant === 'borderless',
       },
     ]"
   >
@@ -403,6 +407,7 @@ defineExpose({ focus })
           >{{ hasValue ? singleLabel : placeholder }}</span>
         </span>
         <span class="ud-select__suffix">
+          <slot name="suffix" />
           <button
             v-if="showClear"
             type="button"
@@ -469,16 +474,22 @@ defineExpose({ focus })
                   :content="option.label"
                 >
                   <span class="ud-select__option-label">
-                    <template
-                      v-for="(part, partIndex) in matchParts(option.label, query)"
-                      :key="partIndex"
+                    <slot
+                      name="option"
+                      :option="option"
+                      :selected="isSelected(option.value)"
                     >
-                      <span
-                        v-if="part.match"
-                        class="ud-select__match"
-                      >{{ part.text }}</span>
-                      <template v-else>{{ part.text }}</template>
-                    </template>
+                      <template
+                        v-for="(part, partIndex) in matchParts(option.label, query)"
+                        :key="partIndex"
+                      >
+                        <span
+                          v-if="part.match"
+                          class="ud-select__match"
+                        >{{ part.text }}</span>
+                        <template v-else>{{ part.text }}</template>
+                      </template>
+                    </slot>
                   </span>
                 </Tooltip>
                 <ParkIcon
@@ -489,6 +500,7 @@ defineExpose({ focus })
                 />
               </button>
             </template>
+            <slot name="menu-footer" />
           </div>
         </Transition>
       </Teleport>

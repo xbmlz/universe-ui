@@ -21,7 +21,7 @@
   --ud-color-picker-area-height: 128px;
   --ud-color-picker-hue-size: 26px;
   --ud-color-picker-field-height: 26px;
-  --ud-color-picker-hover-ring: var(--ud-blue-7);
+  --ud-color-picker-hover-ring: var(--ud-color-focus-ring);
 
   display: flex;
   flex-direction: column;
@@ -117,7 +117,7 @@
   --ud-color-picker-area-height: 128px;
   --ud-color-picker-hue-size: 26px;
   --ud-color-picker-field-height: 26px;
-  --ud-color-picker-hover-ring: var(--ud-blue-7);
+  --ud-color-picker-hover-ring: var(--ud-color-focus-ring);
 
   position: fixed;
   box-sizing: border-box;
@@ -219,7 +219,7 @@
 }
 
 .ud-color-picker__swatch.is-light {
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
 }
 
 .ud-color-picker__check {
@@ -298,7 +298,7 @@
 }
 
 .ud-color-picker__more:hover {
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
 }
 
 .ud-color-picker__rainbow {

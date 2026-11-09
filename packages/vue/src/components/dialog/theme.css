@@ -100,7 +100,7 @@
   flex: none;
   align-items: center;
   height: var(--ud-line-h4);
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
   font-size: 24px;
 }
 

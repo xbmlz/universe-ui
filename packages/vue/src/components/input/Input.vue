@@ -5,6 +5,7 @@ import ParkIcon from '../../internal/park-icon.vue'
 import { INPUT_GROUP } from './context'
 
 const {
+  type = 'text',
   size = 'md',
   disabled = false,
   readonly = false,
@@ -16,6 +17,7 @@ const {
   placeholder,
   message,
 } = defineProps<{
+  type?: 'text' | 'password'
   size?: 'sm' | 'md' | 'lg'
   disabled?: boolean
   readonly?: boolean
@@ -128,6 +130,7 @@ defineExpose({ focus })
           ref="field"
           v-model="model"
           class="ud-input__field"
+          :type="type"
           :placeholder="placeholder"
           :disabled="resolvedDisabled"
           :readonly="resolvedReadonly"

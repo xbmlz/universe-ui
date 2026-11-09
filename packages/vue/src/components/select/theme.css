@@ -95,6 +95,42 @@
   --ud-select-color: var(--ud-color-text-placeholder);
 }
 
+.ud-select--borderless .ud-select__trigger {
+  border: 0;
+  background: transparent;
+  outline: none;
+}
+
+.ud-select--borderless .ud-select__trigger:hover,
+.ud-select--borderless.ud-select--open .ud-select__trigger,
+.ud-select--borderless:focus-within .ud-select__trigger {
+  border: 0;
+  background: var(--ud-color-fill-tertiary);
+}
+
+.ud-select--underline .ud-select__trigger {
+  border: 0;
+  border-bottom: 1px solid var(--ud-select-border-color);
+  border-radius: 0;
+  background: transparent;
+  padding-inline: 0;
+}
+
+.ud-select--underline .ud-select__trigger:hover,
+.ud-select--underline.ud-select--open .ud-select__trigger,
+.ud-select--underline:focus-within .ud-select__trigger {
+  border-bottom-color: var(--ud-select-border-color-hover);
+}
+
+.ud-select--borderless.ud-select--disabled .ud-select__trigger {
+  border: 0;
+  background: transparent;
+}
+
+.ud-select--underline.ud-select--disabled .ud-select__trigger {
+  background: transparent;
+}
+
 .ud-select__field {
   position: relative;
 }
@@ -322,7 +358,7 @@
 
 .ud-select__clear:hover,
 .ud-select__tag-remove:hover {
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
 }
 
 .ud-select__suffix {
@@ -339,8 +375,8 @@
   --ud-select-menu-min-width: 120px;
   --ud-select-menu-max-height: 246px;
   --ud-select-radius: var(--ud-radius-s);
-  /* Measured from the state figure: the active row fill is #EDEEEF, not in the palette. */
-  --ud-select-option-bg-active: #edeeef;
+  /* Measured from the state figure: the active row fill maps to the tertiary fill. */
+  --ud-select-option-bg-active: var(--ud-color-fill-tertiary);
 
   position: fixed;
   box-sizing: border-box;
@@ -421,7 +457,7 @@
 }
 
 .ud-select__option.is-selected {
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
 }
 
 .ud-select__option.is-disabled {
@@ -439,7 +475,7 @@
 }
 
 .ud-select__match {
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
 }
 
 /* Measured at 2x from the search and state figures: loading, no-result and empty menus are 38px tall, leaving 28px after the 4px padding and border. */

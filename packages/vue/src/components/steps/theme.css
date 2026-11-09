@@ -57,7 +57,7 @@
 .ud-steps__item.is-finish .ud-steps__node {
   border-color: var(--ud-color-brand);
   background: var(--ud-color-bg-white);
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
 }
 
 .ud-steps__item.is-error .ud-steps__node {
@@ -158,7 +158,7 @@
 
 .ud-steps--horizontal.ud-steps--simple .ud-steps__item.is-process .ud-steps__title,
 .ud-steps--horizontal.ud-steps--simple .ud-steps__item.is-process .ud-steps__description {
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
 }
 
 .ud-steps__sep {

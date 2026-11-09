@@ -4,7 +4,7 @@
    * 8 from icon to text, close button centred 24 from the right, 4 between title, text and the action row.
    * Two older figures draw the single line with actions 44 tall; the other figures agree on 40.
    */
-  --ud-notice-bg: var(--ud-blue-11);
+  --ud-notice-bg: var(--ud-color-info-subtle);
   --ud-notice-icon: var(--ud-color-brand);
   --ud-notice-content-max-width: none;
 
@@ -97,12 +97,12 @@
 }
 
 .ud-notice__content a {
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
   text-decoration: none;
 }
 
 .ud-notice__content a:hover {
-  color: var(--ud-color-brand-hover);
+  color: var(--ud-color-brand-text-hover);
 }
 
 .ud-notice__actions {
@@ -126,17 +126,17 @@
   padding: 0;
   border: 0;
   background: none;
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
   font: inherit;
   cursor: pointer;
 }
 
 .ud-notice__action:hover {
-  color: var(--ud-color-brand-hover);
+  color: var(--ud-color-brand-text-hover);
 }
 
 .ud-notice__action:active {
-  color: var(--ud-color-brand-pressed);
+  color: var(--ud-color-brand-text-pressed);
 }
 
 /* Specified: the close button stays on the first text line, always rightmost. Measured: 12 after the actions. */

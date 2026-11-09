@@ -17,6 +17,7 @@ const {
   placement = 'bottom-end',
   menuWidth,
   ariaLabel = '更多操作',
+  block = false,
 } = defineProps<{
   text?: string
   type?: ButtonType
@@ -27,6 +28,7 @@ const {
   placement?: DropdownPlacement
   menuWidth?: number | string
   ariaLabel?: string
+  block?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -36,7 +38,10 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <span class="ud-split-button">
+  <span
+    class="ud-split-button"
+    :class="{ 'ud-split-button--block': block }"
+  >
     <Button
       class="ud-split-button__main"
       :type="type"

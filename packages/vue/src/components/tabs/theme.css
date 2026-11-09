@@ -218,7 +218,7 @@
   /* Measured "Tab 2" at 54 (md) and 49 (sm) wide; subtracting the text width gives 8 inline padding for both. */
   --ud-tabs-padding-inline: 8px;
   --ud-tabs-bg: var(--ud-color-text-a10);
-  --ud-tabs-bg-active: var(--ud-blue-10);
+  --ud-tabs-bg-active: var(--ud-color-brand-subtle);
   --ud-tabs-color-disabled: var(--ud-color-text-placeholder);
 
   align-items: center;

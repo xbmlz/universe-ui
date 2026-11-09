@@ -11,6 +11,8 @@ const {
   size,
   disabled = false,
   loading = false,
+  ghost = false,
+  selected,
   block = false,
   round = false,
   htmlType = 'button',
@@ -26,6 +28,8 @@ const {
   size?: ButtonSize
   disabled?: boolean
   loading?: boolean
+  ghost?: boolean
+  selected?: boolean
   block?: boolean
   round?: boolean
   htmlType?: 'button' | 'submit' | 'reset'
@@ -53,6 +57,8 @@ const classes = computed(() => [
   `ud-button--${type}`,
   `ud-button--${resolvedSize.value}`,
   {
+    'ud-button--ghost': ghost && type === 'secondary',
+    'ud-button--selected': selected === true,
     'ud-button--block': block,
     'ud-button--round': round,
     'ud-button--loading': loading,
@@ -91,6 +97,7 @@ defineExpose({ focus })
     :type="htmlType"
     :disabled="disabled"
     :aria-busy="loading || undefined"
+    :aria-pressed="selected"
     @click="onClick"
   >
     <span

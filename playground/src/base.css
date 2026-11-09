@@ -1,4 +1,12 @@
+html,
+body,
+#app {
+  min-height: 100%;
+}
+
 body {
   margin: 0;
   background: var(--ud-color-bg-page);
+  color: var(--ud-color-text);
+  font-family: var(--ud-font-family);
 }

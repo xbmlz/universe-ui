@@ -3,7 +3,10 @@ dist
 .vite
 *.local
 .DS_Store
-docs/.nuxt
-docs/.output
-docs/.data
-docs/.content
+docs/.vitepress/dist
+docs/.vitepress/cache
+
+# Local tool/editor state (not part of the library)
+.claude/
+.codegraph/
+.workbuddy/

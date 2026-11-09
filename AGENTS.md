@@ -16,11 +16,12 @@ Visual specification: `design`. Implemented colours and metrics:
 - `packages/vue/` — components. Public API is `src/index.ts`. One component per
   `src/components/<name>/` (`*.vue`, `theme.css`, `types.ts`, `index.ts`).
   Shared internals live in `src/internal/` (`park-icon.vue` renders IconPark).
-- `docs/` — Nuxt Content documentation site (`@universe-ui/docs`), adapted from
-  Nuxt UI v4 docs. Content is split into `guides/` and `components/`; component
-  pages are added one at a time. Live examples live in
-  `docs/app/components/content/examples/` and their source is shown by
-  `ComponentExample.vue`. Run it with `pnpm docs:dev`.
+- `docs/` — VitePress documentation site (`@universe-ui/docs`), modelled on
+  Element Plus docs. Pages live in `guide/` and `components/`; component pages
+  are added one at a time. Examples live in `docs/examples/<component>/` and are
+  pulled into pages with `:::demo <component>/<example>`, rendered by
+  `Demo.vue` with a live preview and highlighted source. Sidebar data is
+  `docs/.vitepress/sidebar.ts`. Run it with `pnpm docs:dev`.
 - `playground/` — Vite app for visual checks. `pnpm dev` runs it. It imports
   `@universe-ui/tokens`, not `tailwind.css`. `src/App.vue` is the shell plus the
   page CSS; one SFC per component group lives in `src/sections/`, and `src/demo.ts`
@@ -88,6 +89,7 @@ Visual specification: `design`. Implemented colours and metrics:
 
 - `pnpm install` — install the workspace.
 - `pnpm dev` — run the playground.
+- `pnpm docs:dev` — run the VitePress docs site.
 - `pnpm lint` — ESLint (`@antfu/eslint-config`, same shape as reka-ui).
 - `pnpm typecheck` — `tsc` over the plain TypeScript in `packages/vue/src`; `.vue`
   files are resolved through a shim, so SFC internals are not checked.

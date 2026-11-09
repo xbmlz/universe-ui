@@ -238,7 +238,7 @@
   padding: 0;
   border: 0;
   background: transparent;
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
   font: inherit;
   font-size: var(--ud-font-size-caption);
   line-height: var(--ud-line-caption);

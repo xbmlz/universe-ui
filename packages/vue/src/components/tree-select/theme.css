@@ -193,7 +193,7 @@
 }
 
 .ud-tree-select__clear:hover {
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
 }
 
 .ud-tree-select__arrow {
@@ -314,7 +314,7 @@
 }
 
 .ud-tree-select__row.is-selected {
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
 }
 
 .ud-tree-select__row.is-disabled {

@@ -10,6 +10,7 @@ export function useDemo() {
   const types: { type: ButtonType, label: string }[] = [
     { type: 'primary', label: '主要' },
     { type: 'danger', label: '主要危险' },
+    { type: 'success', label: '成功' },
     { type: 'secondary-primary', label: '蓝色次要' },
     { type: 'secondary-danger', label: '次要危险' },
     { type: 'secondary', label: '次要' },

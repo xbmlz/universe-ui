@@ -1,0 +1,201 @@
+html,
+body,
+#app {
+  height: 100%;
+}
+
+.repl-shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  color: var(--ud-color-text);
+  background: var(--ud-color-bg-page);
+  font-family: var(--ud-font-family);
+}
+
+.repl-header {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: 56px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--ud-color-border-card);
+  background: var(--ud-color-bg-surface);
+}
+
+.repl-header__brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.repl-header__mark {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--ud-radius-s);
+  background: var(--ud-color-brand);
+  color: var(--ud-color-text-inverse);
+  font-size: 14px;
+  font-weight: var(--ud-font-weight-semibold);
+}
+
+.repl-header__brand strong {
+  display: block;
+  font-size: 14px;
+  font-weight: var(--ud-font-weight-semibold);
+  line-height: 20px;
+}
+
+.repl-header__brand small {
+  display: block;
+  color: var(--ud-color-text-secondary);
+  font-size: 11px;
+  line-height: 16px;
+}
+
+.repl-header__actions {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 8px;
+}
+
+.repl-button {
+  height: 28px;
+  padding: 0 10px;
+  border: 1px solid var(--ud-color-border);
+  border-radius: var(--ud-radius-xs);
+  background: var(--ud-color-bg-surface);
+  color: var(--ud-color-text);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.repl-button:hover {
+  background: var(--ud-color-fill-secondary);
+}
+
+.repl-button--active {
+  border-color: var(--ud-color-brand-text);
+  background: var(--ud-color-brand-subtle);
+  color: var(--ud-color-brand-text);
+}
+
+.repl-body {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.repl-body .vue-repl {
+  height: 100% !important;
+}
+
+.vue-repl {
+  --color-branding: var(--ud-color-brand) !important;
+}
+
+.dark .vue-repl {
+  --color-branding: var(--ud-color-brand-text) !important;
+}
+
+.console-panel {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  height: 200px;
+  border-top: 1px solid var(--ud-color-border-card);
+  background: var(--ud-color-bg-surface);
+}
+
+.console-panel__header {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 6px 12px;
+  border-bottom: 1px solid var(--ud-color-divider);
+  color: var(--ud-color-text-secondary);
+  font-size: 12px;
+}
+
+.console-panel__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  padding: 8px 12px;
+  overflow: auto;
+}
+
+.console-panel__empty {
+  margin: 0;
+  color: var(--ud-color-text-placeholder);
+  font-size: 12px;
+}
+
+.console-panel__line {
+  margin: 0 0 4px;
+  color: var(--ud-color-text);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+  line-height: 18px;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.console-panel__line--warn {
+  color: var(--ud-color-warning-text);
+}
+
+.console-panel__line--error {
+  color: var(--ud-color-danger-text);
+}
+
+.theme-toggle {
+  display: inline-flex;
+  padding: 2px;
+  border: 1px solid var(--ud-color-border);
+  border-radius: var(--ud-radius-s);
+  background: var(--ud-color-bg-2);
+}
+
+.theme-toggle__option {
+  height: 24px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: var(--ud-radius-xs);
+  background: transparent;
+  color: var(--ud-color-text-secondary);
+  font: inherit;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.theme-toggle__option--active {
+  background: var(--ud-color-bg-surface);
+  color: var(--ud-color-text);
+  box-shadow: var(--ud-shadow-down-s1);
+}
+
+@media (max-width: 720px) {
+  .repl-header {
+    height: auto;
+    padding: 8px 12px;
+  }
+
+  .repl-header__brand small {
+    display: none;
+  }
+}

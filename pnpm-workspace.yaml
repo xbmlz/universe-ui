@@ -1,5 +1,12 @@
 minimumReleaseAgeExcludePrune: true
+
 trustPolicy: no-downgrade
+
+# VitePress 1.6 pins Vite 5 while the playground uses Vite 8. Allow that one
+# deliberate downgrade inside the docs workspace.
+trustPolicyExclude:
+  - vite@5.4.21
+
 shellEmulator: true
 
 packages:

@@ -61,7 +61,7 @@
 }
 
 .ud-anchor__link.is-active {
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
   font-weight: var(--ud-font-weight-medium);
 }
 
@@ -85,7 +85,7 @@
 }
 
 .ud-anchor__link--sub.is-active {
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
 }
 
 .ud-anchor__loading {
@@ -112,13 +112,13 @@
   padding: 0;
   border: 0;
   background: none;
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
   font: inherit;
   cursor: pointer;
 }
 
 .ud-anchor__retry:hover {
-  color: var(--ud-color-brand-hover);
+  color: var(--ud-color-brand-text-hover);
 }
 
 .ud-anchor__spinner {

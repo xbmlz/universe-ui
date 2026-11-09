@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { AvatarColor, AvatarKind, AvatarNameLocale, AvatarShape } from './types'
 import { ApplicationOne, BuildingOne, Peoples, User } from '@icon-park/vue-next'
-import { computed, inject, shallowRef, watch } from 'vue'
+import { computed, inject, onMounted, shallowRef, watch } from 'vue'
 import ParkIcon from '../../internal/park-icon.vue'
 import { Tooltip } from '../tooltip'
 import { AVATAR_GROUP } from './context'
@@ -38,9 +38,20 @@ const DEFAULT_ICONS = {
 }
 
 const status = shallowRef<'idle' | 'loading' | 'loaded' | 'error'>('idle')
+const imageRef = shallowRef<HTMLImageElement | null>(null)
 watch(() => src, (value) => {
   status.value = value ? 'loading' : 'idle'
 }, { immediate: true })
+
+// A cached image can finish loading before hydration attaches @load.
+onMounted(() => {
+  const image = imageRef.value
+  if (!image?.complete)
+    return
+  status.value = image.naturalWidth > 0
+    ? 'loaded'
+    : 'error'
+})
 
 const resolvedSize = computed(() => size ?? group?.size() ?? 32)
 const resolvedShape = computed(() => shape ?? (kind === 'app' || kind === 'enterprise'
@@ -84,6 +95,7 @@ const style = computed(() => ({
     >
       <img
         v-if="showImage"
+        ref="imageRef"
         class="ud-avatar__image"
         :src="src"
         :alt="name"

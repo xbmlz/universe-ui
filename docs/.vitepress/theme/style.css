@@ -1,0 +1,113 @@
+/* Only the demo component styles. VitePress theme variables are left untouched. */
+
+.ud-demo-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.ud-demo-col {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ud-demo-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ud-demo {
+  margin: 16px 0;
+  overflow: hidden;
+  border: 1px solid var(--ud-color-border-card);
+  border-radius: 8px;
+}
+
+.ud-demo__preview {
+  display: flex;
+  min-height: 120px;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background: var(--ud-color-bg-2);
+}
+
+.ud-demo__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 16px;
+  border-top: 1px solid var(--ud-color-divider);
+  color: var(--ud-color-text-secondary);
+  font-size: 13px;
+}
+
+.ud-demo__actions {
+  display: flex;
+  gap: 4px;
+}
+
+.ud-demo__actions button {
+  padding: 4px 8px;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--vp-c-text-2);
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.ud-demo__actions button:hover {
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-1);
+}
+
+.ud-demo__code {
+  border-top: 1px solid var(--vp-c-divider);
+  background: var(--vp-code-block-bg);
+}
+
+.ud-demo__code:not(.is-expanded) {
+  position: relative;
+  max-height: 200px;
+  overflow: hidden;
+}
+
+.ud-demo__code:not(.is-expanded)::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 64px;
+  background: linear-gradient(to top, var(--vp-code-block-bg), transparent);
+  content: '';
+  pointer-events: none;
+}
+
+.ud-demo__code pre {
+  margin: 0;
+  padding: 16px 20px;
+  overflow-x: auto;
+  background: transparent !important;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.ud-demo__code .shiki span {
+  color: var(--shiki-light);
+}
+
+html.dark .ud-demo__code .shiki span {
+  color: var(--shiki-dark);
+}
+
+.ud-demo__missing {
+  padding: 16px;
+  color: var(--vp-c-danger-1);
+  font-size: 13px;
+}

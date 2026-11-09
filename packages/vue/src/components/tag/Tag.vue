@@ -79,7 +79,7 @@ const classes = computed(() => [
   'ud-tag',
   `ud-tag--${variant}`,
   `ud-tag--${resolvedColor.value}`,
-  variant !== 'property' && `ud-tag--${size}`,
+  `ud-tag--${size}`,
   {
     'ud-tag--solid': solid && (variant === 'property' || variant === 'status'),
     'ud-tag--disabled': disabled,

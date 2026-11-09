@@ -4,7 +4,7 @@
    * Measured at 2x: 14/22 text, 16 icons, 12 from icon to text, about 40 from text to buttons and 20 to the close button.
    */
   --ud-toast-border: var(--ud-color-brand);
-  --ud-toast-bg: var(--ud-blue-11);
+  --ud-toast-bg: var(--ud-color-info-subtle);
   --ud-toast-icon: var(--ud-color-brand);
 
   display: inline-flex;
@@ -81,7 +81,7 @@
 }
 
 .ud-toast__content a {
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
   text-decoration: none;
 }
 
@@ -96,17 +96,17 @@
   padding: 0;
   border: 0;
   background: none;
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
   font: inherit;
   cursor: pointer;
 }
 
 .ud-toast__action:hover {
-  color: var(--ud-color-brand-hover);
+  color: var(--ud-color-brand-text-hover);
 }
 
 .ud-toast__action:active {
-  color: var(--ud-color-brand-pressed);
+  color: var(--ud-color-brand-text-pressed);
 }
 
 /* Specified: the close button stays on the first text line. */

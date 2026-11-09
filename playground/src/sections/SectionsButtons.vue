@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { Button, ButtonGroup } from '@universe-ui/vue'
-import { useTemplateRef } from 'vue'
+import { Search } from '@icon-park/vue-next'
+import { Button, ButtonGroup, DropdownItem, MenuButton, SplitButton, Tooltip } from '@universe-ui/vue'
+import { ref, useTemplateRef } from 'vue'
 import { useDemo } from '../demo'
 
 const { types } = useDemo()
+const view = ref('list')
 
 // The template ref belongs to this panel, so the focus button drives its own primary button.
 const primaryRef = useTemplateRef<{ focus: () => void }>('primary')
@@ -70,6 +72,78 @@ function focusPrimary() {
       </Button>
       <Button>取消</Button>
     </ButtonGroup>
+  </section>
+
+  <section class="panel">
+    <h2>补全变体</h2>
+    <div class="row">
+      <Button
+        :selected="view === 'list'"
+        @click="view = 'list'"
+      >
+        列表
+      </Button>
+      <Button
+        :selected="view === 'board'"
+        @click="view = 'board'"
+      >
+        看板
+      </Button>
+    </div>
+    <div
+      class="row"
+      style="background: var(--ud-color-bg-1); padding: 12px; border-radius: 8px"
+    >
+      <Button type="secondary">
+        普通次要
+      </Button>
+      <Button
+        type="secondary"
+        ghost
+      >
+        透明次要
+      </Button>
+    </div>
+    <div class="row">
+      <MenuButton
+        type="secondary"
+        text="更多"
+      >
+        <template #menu>
+          <DropdownItem command="edit">
+            编辑
+          </DropdownItem>
+          <DropdownItem command="copy">
+            复制
+          </DropdownItem>
+        </template>
+      </MenuButton>
+      <Tooltip
+        content="搜索"
+        style="flex: 0 0 auto"
+      >
+        <Button
+          type="secondary"
+          icon-only
+          :icon="Search"
+          aria-label="搜索"
+        />
+      </Tooltip>
+    </div>
+    <SplitButton
+      text="保存"
+      type="primary"
+      block
+    >
+      <template #menu>
+        <DropdownItem command="save-as">
+          另存为
+        </DropdownItem>
+        <DropdownItem command="export">
+          导出
+        </DropdownItem>
+      </template>
+    </SplitButton>
   </section>
 
   <section class="panel">

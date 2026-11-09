@@ -144,18 +144,18 @@
   padding: 0;
   border: 0;
   background: transparent;
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
   font: inherit;
   line-height: inherit;
   cursor: pointer;
 }
 
 .ud-collapse__item--text .ud-collapse__text-toggle:hover {
-  color: var(--ud-color-brand-hover);
+  color: var(--ud-color-brand-text-hover);
 }
 
 .ud-collapse__item--text .ud-collapse__text-toggle:active {
-  color: var(--ud-color-brand-pressed);
+  color: var(--ud-color-brand-text-pressed);
 }
 
 .ud-collapse__item--text .ud-collapse__text-toggle:disabled {

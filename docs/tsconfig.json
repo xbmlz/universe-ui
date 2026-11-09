@@ -1,3 +1,7 @@
 {
-  "extends": "./.nuxt/tsconfig.json"
+  "extends": "../tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["vitepress/client"]
+  },
+  "include": [".vitepress/**/*.ts"]
 }

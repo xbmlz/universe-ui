@@ -1,6 +1,7 @@
 export type ButtonType
   = | 'primary'
     | 'danger'
+    | 'success'
     | 'secondary-primary'
     | 'secondary-danger'
     | 'secondary'

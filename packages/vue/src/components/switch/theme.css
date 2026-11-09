@@ -64,7 +64,7 @@
 
 .ud-switch--checked {
   --ud-switch-track: var(--ud-color-brand);
-  --ud-switch-spinner-color: var(--ud-blue-9);
+  --ud-switch-spinner-color: var(--ud-color-white-a80);
 }
 
 .ud-switch--checked .ud-switch__knob {
@@ -81,10 +81,10 @@
   cursor: default;
 }
 
-/* Old palette #BACEFD maps to blue-9. */
+/* Old palette #BACEFD maps to the muted brand fill. */
 .ud-switch--checked.ud-switch--disabled,
 .ud-switch--checked.ud-switch--loading {
-  --ud-switch-track: var(--ud-blue-9);
+  --ud-switch-track: var(--ud-color-brand-disabled);
 }
 
 @media (prefers-reduced-motion: reduce) {

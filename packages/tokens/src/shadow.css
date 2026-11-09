@@ -112,5 +112,28 @@
 /* Dark shadows use black; brand shadows stay blue so elevation still reads. */
 .dark {
   --ud-shadow-rgb: 0 0 0;
-  --ud-shadow-brand-rgb: 36 91 219;
+  --ud-shadow-brand-rgb: 51 109 244;
+
+  /* Stronger black alphas so elevation reads on #24262b (inferred). */
+  --ud-shadow-down-s1:
+    0 1px 2px -2px rgb(var(--ud-shadow-rgb) / 4%), 0 2px 4px 0 rgb(var(--ud-shadow-rgb) / 4%),
+    0 2px 8px 2px rgb(var(--ud-shadow-rgb) / 4%);
+  --ud-shadow-down-s2:
+    0 2px 4px -4px rgb(var(--ud-shadow-rgb) / 4%), 0 4px 8px 0 rgb(var(--ud-shadow-rgb) / 4%),
+    0 4px 16px 4px rgb(var(--ud-shadow-rgb) / 4%);
+  --ud-shadow-down-s3:
+    0 3px 6px -6px rgb(var(--ud-shadow-rgb) / 10%), 0 4px 8px 0 rgb(var(--ud-shadow-rgb) / 6%),
+    0 6px 18px 6px rgb(var(--ud-shadow-rgb) / 6%);
+  --ud-shadow-down-s4:
+    0 4px 8px -8px rgb(var(--ud-shadow-rgb) / 12%), 0 6px 12px 0 rgb(var(--ud-shadow-rgb) / 8%),
+    0 8px 24px 8px rgb(var(--ud-shadow-rgb) / 8%);
+  --ud-shadow-down-s5:
+    0 6px 12px -10px rgb(var(--ud-shadow-rgb) / 12%), 0 8px 24px 0 rgb(var(--ud-shadow-rgb) / 8%),
+    0 10px 36px 10px rgb(var(--ud-shadow-rgb) / 8%);
+  --ud-shadow-up-s4:
+    0 -4px 8px -8px rgb(var(--ud-shadow-rgb) / 12%), 0 -6px 12px 0 rgb(var(--ud-shadow-rgb) / 8%),
+    0 -8px 24px 8px rgb(var(--ud-shadow-rgb) / 8%);
+  --ud-shadow-left-s4:
+    -4px 0 8px -8px rgb(var(--ud-shadow-rgb) / 12%), -6px 0 12px 0 rgb(var(--ud-shadow-rgb) / 8%),
+    -8px 0 24px 8px rgb(var(--ud-shadow-rgb) / 8%);
 }

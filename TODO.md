@@ -20,12 +20,17 @@ Two data-entry components still need dayjs, Form needs Zod, and Table needs TanS
 
 ## Documentation
 
-- **Docs site** — the docs package now uses the Nuxt UI v4 docs app structure with Nuxt Content. Guides and Components are wired, and Button is the first component page. Design specs live outside the site at the repository root.
-- **Component docs** — add one component page at a time. Each page should follow the Button page shape: overview, features, anatomy, usage guidance, examples, API, and accessibility. Examples use `ComponentExample`, resolved by name from `docs/app/components/content/examples/`, with live preview and Shiki-highlighted source from the same SFC.
+- **Docs site** — the docs package is now a VitePress site modelled on Element Plus docs. Pages live in `guide/` and `components/`; examples live in `docs/examples/<component>/` and are rendered by `:::demo <component>/<example>` through `Demo.vue`. Sidebar data is `docs/.vitepress/sidebar.ts`. Design specs stay at the repository root.
+- **Component docs** — add one component page at a time. Pages cover usage, examples and handwritten API tables. Eight pages exist (Button, Input, Select, Checkbox, Radio, Switch, Tag, Badge); the remaining components in `packages/vue` still need pages.
 
 ## Design
 
 - **Dark theme** — `docs/design` has no dark palette. The `.dark` values in `packages/tokens/src/color.css` are inferred from the light neutral roles and need a design review before they become normative.
+- **Button tokens** — `success` hover/pressed and ghost background tokens are missing; the button infers hover/pressed from the green ramp and uses `--ud-color-fill-secondary` for ghost hover. Needs design tokens before it is normative.
+- **Button tooltip** — `Button` has no tooltip prop; docs compose `Tooltip`, which has no focus/ARIA and no wrapper layout hook.
+- **Button float** — website/message float styles and a `floatShape` option are not implemented; `float` always uses full radius.
+- **Tag avatar sizes** — the size callout states 2px start padding, 4px gap, 8px end padding and 24px height only for the `md` tag. `xs`/`sm`/`lg` keep the 2px end padding because no figure states their values. Needs a decision before those sizes are normative.
+- **Tag avatar Disabled** — the 40% avatar fade is inferred from the state figure, and the container fill stays unchanged. Confirm against the design whether the fill should lighten too.
 
 ## Complex components (keep for now)
 

@@ -147,7 +147,7 @@
   padding: 0;
   border: 0;
   background: transparent;
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
   font: inherit;
   cursor: pointer;
 }

@@ -1,7 +1,8 @@
-import { createVaporApp, vaporInteropPlugin } from 'vue'
+import { createApp } from 'vue'
 import App from './App.vue'
 import '@universe-ui/tokens'
+import '@vue/repl/style.css'
 import './base.css'
+import './styles/repl.css'
 
-// Library components are normal SFCs. This Vapor app mounts them through the interop plugin.
-createVaporApp(App).use(vaporInteropPlugin).mount('#app')
+createApp(App).mount('#app')

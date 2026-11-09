@@ -377,7 +377,7 @@
 }
 
 .ud-input-addon__option.is-selected {
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
 }
 
 .ud-input-addon__check {
@@ -469,7 +469,7 @@
 }
 
 .ud-input__clear:hover {
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
 }
 
 .ud-input__clear:focus {
@@ -509,8 +509,8 @@
 
 .ud-input--number {
   --ud-input-stepper-width: 32px;
-  /* Fill of the hovered half in the state figure. The blue is the old brand colour. */
-  --ud-input-stepper-bg-hover: #e1eaff;
+  /* Fill of the hovered half in the state figure. The blue maps to the brand-subtle fill. */
+  --ud-input-stepper-bg-hover: var(--ud-color-brand-subtle);
 }
 
 .ud-input--number .ud-input__control {
@@ -548,7 +548,7 @@
 
 .ud-input__step:hover:not(:disabled) {
   background: var(--ud-input-stepper-bg-hover);
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
 }
 
 .ud-input--number:has(.ud-input__step:hover:not(:disabled)) {

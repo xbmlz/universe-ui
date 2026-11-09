@@ -84,7 +84,7 @@
 }
 
 .ud-dropdown__item.is-selected:not(.is-disabled) {
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
 }
 
 .ud-dropdown__icon,

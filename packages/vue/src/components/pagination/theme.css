@@ -39,14 +39,14 @@
 
 .ud-pagination__btn.is-current {
   border-color: var(--ud-color-brand);
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
 }
 
 .ud-pagination__btn:hover:not(:disabled):not(.is-current) {
-  /* Hover fill sampled #E1EAFF, one step off --ud-blue-10 #E0E9FF. Border and text are the old brand blue. */
+  /* Hover fill sampled #E1EAFF maps to brand-subtle. Border and text are the old brand blue. */
   border-color: var(--ud-color-brand);
-  background: var(--ud-blue-10);
-  color: var(--ud-color-brand);
+  background: var(--ud-color-brand-subtle);
+  color: var(--ud-color-brand-text);
 }
 
 .ud-pagination__btn:focus {
@@ -124,7 +124,7 @@
 .ud-pagination--sm .ud-pagination__btn.is-current {
   border-color: transparent;
   background: transparent;
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
 }
 
 .ud-pagination--sm .ud-pagination__btn:hover:not(:disabled):not(.is-current) {

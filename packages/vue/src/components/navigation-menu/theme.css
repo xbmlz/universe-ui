@@ -99,7 +99,7 @@
 
 .ud-navigation-menu--vertical .ud-navigation-menu__side-item.is-active .ud-navigation-menu__side-link {
   background: var(--ud-color-text-a5);
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
   font-weight: var(--ud-font-weight-medium);
 }
 
@@ -126,7 +126,7 @@
 }
 
 .ud-navigation-menu__side-item.is-active .ud-navigation-menu__side-icon {
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
 }
 
 .ud-navigation-menu__side-icon--fallback {
@@ -264,7 +264,7 @@
 }
 
 .ud-navigation-menu__link:hover {
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
 }
 
 .ud-navigation-menu__label {
@@ -279,7 +279,7 @@
 }
 
 .ud-navigation-menu__item.is-active .ud-navigation-menu__link {
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
   font-weight: var(--ud-font-weight-medium);
 }
 
@@ -296,7 +296,7 @@
 
 /* dropdown.md: the trigger shows its active state while the menu is open. */
 .ud-navigation-menu__item.is-open .ud-navigation-menu__link {
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
 }
 
 .ud-navigation-menu__badge {
@@ -386,7 +386,7 @@
 }
 
 .ud-navigation-menu__option.is-active {
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
   font-weight: var(--ud-font-weight-medium);
 }
 

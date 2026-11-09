@@ -9,6 +9,8 @@
   --ud-button-bg-hover: var(--ud-button-bg);
   --ud-button-bg-active: var(--ud-button-bg);
   --ud-button-color: var(--ud-color-text);
+  --ud-button-color-hover: var(--ud-button-color);
+  --ud-button-color-active: var(--ud-button-color);
   --ud-button-border-color: transparent;
   --ud-button-focus-ring: var(--ud-color-focus-ring);
   --ud-button-spinner-color: currentColor;
@@ -37,10 +39,12 @@
 
 .ud-button:hover:not(:disabled) {
   background: var(--ud-button-bg-hover);
+  color: var(--ud-button-color-hover);
 }
 
 .ud-button:active:not(:disabled) {
   background: var(--ud-button-bg-active);
+  color: var(--ud-button-color-active);
 }
 
 .ud-button:focus {
@@ -135,12 +139,6 @@
   line-height: 0;
 }
 
-.ud-button__label {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 /* Floating sizes are specified as 48 / 40 / 36; the offset follows the 4N rule. */
 .ud-button--float {
   position: fixed;
@@ -204,16 +202,34 @@
   --ud-button-color: var(--ud-color-text-inverse);
 }
 
+.ud-button--success {
+  --ud-button-bg: var(--ud-color-success);
+  --ud-button-bg-hover: var(--ud-color-success-text);
+  --ud-button-bg-active: var(--ud-color-success-pressed);
+  --ud-button-color: var(--ud-color-text-inverse);
+}
+
 .ud-button--secondary {
   --ud-button-bg: var(--ud-color-bg-white);
+  --ud-button-bg-hover: var(--ud-color-fill-hover);
+  --ud-button-bg-active: var(--ud-color-fill-secondary-hover);
   --ud-button-border-color: var(--ud-color-border);
   --ud-button-color: var(--ud-color-text);
 }
 
+/* The spec covers a ghost secondary button but ships no ghost background token;
+   transparent plus fill hover is inferred from radio-button. */
+.ud-button--secondary.ud-button--ghost:not(:disabled) {
+  --ud-button-bg: transparent;
+  --ud-button-border-color: var(--ud-color-border);
+  --ud-button-bg-hover: var(--ud-color-fill-secondary);
+  --ud-button-bg-active: var(--ud-color-fill-secondary-hover);
+}
+
 .ud-button--secondary-primary {
   --ud-button-bg: var(--ud-color-bg-white);
-  --ud-button-border-color: var(--ud-color-brand);
-  --ud-button-color: var(--ud-color-brand);
+  --ud-button-border-color: var(--ud-color-brand-text);
+  --ud-button-color: var(--ud-color-brand-text);
 }
 
 .ud-button--secondary-danger {
@@ -222,8 +238,28 @@
   --ud-button-color: var(--ud-color-danger);
 }
 
+.ud-button--text {
+  --ud-button-bg: transparent;
+  --ud-button-bg-hover: var(--ud-color-bg-1);
+  --ud-button-bg-active: var(--ud-color-fill-hover);
+}
+
 .ud-button--link {
-  --ud-button-color: var(--ud-color-brand);
+  --ud-button-padding-inline: 0;
+  --ud-button-color: var(--ud-color-brand-text);
+  --ud-button-color-hover: var(--ud-color-brand-text-hover);
+  --ud-button-color-active: var(--ud-color-brand-text-pressed);
+}
+
+/* Selected styling is inferred: the spec names Selected as a state, not a palette. */
+.ud-button--selected:not(:disabled) {
+  --ud-button-bg: var(--ud-color-brand-subtle);
+  --ud-button-bg-hover: var(--ud-color-brand-subtle-active);
+  --ud-button-bg-active: var(--ud-color-brand-subtle-active);
+  --ud-button-color: var(--ud-color-brand-text);
+  --ud-button-color-hover: var(--ud-color-brand-text);
+  --ud-button-color-active: var(--ud-color-brand-text);
+  --ud-button-border-color: transparent;
 }
 
 .ud-button--text:disabled,
@@ -267,6 +303,9 @@
 }
 
 .ud-split-button__toggle {
+  aspect-ratio: 1;
+  height: auto;
+  width: auto;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   border-left: 0;
@@ -275,10 +314,60 @@
 .ud-split-button__divider {
   flex: none;
   width: 1px;
+  margin-left: -1px;
   background: var(--ud-color-divider);
+}
+
+.ud-split-button--block {
+  display: flex;
+  width: 100%;
+}
+
+.ud-split-button--block .ud-split-button__main {
+  flex: 1 1 auto;
+  width: auto;
+}
+
+.ud-split-button--block .ud-split-button__toggle {
+  flex: none;
 }
 
 .ud-split-button__main.ud-button--primary,
 .ud-split-button__toggle.ud-button--primary {
   --ud-button-border-color: transparent;
+}
+
+.ud-menu-button {
+  display: inline-flex;
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+/* The arrow lives in Button's label slot, so align text and icon as flex items. */
+.ud-menu-button .ud-button__label {
+  display: inline-flex;
+  align-items: center;
+}
+
+.ud-menu-button--block,
+.ud-menu-button--block .ud-dropdown-ref {
+  display: flex;
+  width: 100%;
+}
+
+.ud-menu-button__icon,
+.ud-menu-button__arrow {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  font-size: var(--ud-button-icon-size);
+  line-height: 0;
+}
+
+.ud-menu-button__icon {
+  margin-right: var(--ud-button-gap);
+}
+
+.ud-menu-button__arrow {
+  margin-left: var(--ud-button-gap);
 }

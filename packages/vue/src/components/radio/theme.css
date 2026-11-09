@@ -193,34 +193,34 @@
   white-space: nowrap;
 }
 
-/* Unselected hover fill #E9E9EA maps to Background 1; pressed #D2D3D4 maps to the border colour. */
+/* Unselected hover fill #E9E9EA maps to the hover fill; pressed #D2D3D4 maps to the border colour. */
 .ud-radio--button:hover:not(.ud-radio--disabled):not(.ud-radio--checked),
 .ud-radio--button:focus-within:not(.ud-radio--disabled):not(.ud-radio--checked) {
-  background: var(--ud-color-bg-1);
+  background: var(--ud-color-fill-hover);
 }
 
 .ud-radio--button:active:not(.ud-radio--disabled):not(.ud-radio--checked) {
   background: var(--ud-color-border);
 }
 
-/* Selected fill #EBF1FF maps to blue-11; pressed #D6E2FF to blue-10. Text and border are the old brand blue. */
+/* Selected fill #EBF1FF maps to brand-subtle; pressed #D6E2FF to brand-subtle-active. Text and border are the old brand blue. */
 .ud-radio--button.ud-radio--checked {
   border-color: var(--ud-color-brand);
-  background: var(--ud-blue-11);
-  color: var(--ud-color-brand);
+  background: var(--ud-color-brand-subtle);
+  color: var(--ud-color-brand-text);
 }
 
 .ud-radio--button.ud-radio--checked:hover:not(.ud-radio--disabled),
 .ud-radio--button.ud-radio--checked:focus-within:not(.ud-radio--disabled) {
   border-color: var(--ud-color-brand);
-  background: var(--ud-blue-11);
-  color: var(--ud-color-brand);
+  background: var(--ud-color-brand-subtle);
+  color: var(--ud-color-brand-text);
 }
 
 .ud-radio--button.ud-radio--checked:active:not(.ud-radio--disabled) {
   border-color: var(--ud-color-brand-pressed);
-  background: var(--ud-blue-10);
-  color: var(--ud-color-brand-pressed);
+  background: var(--ud-color-brand-subtle-active);
+  color: var(--ud-color-brand-text-pressed);
 }
 
 .ud-radio--button.ud-radio--disabled {

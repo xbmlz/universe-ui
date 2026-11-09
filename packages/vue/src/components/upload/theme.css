@@ -45,7 +45,7 @@
 .ud-upload__drop:hover,
 .ud-upload__drop.is-dragging {
   border-color: var(--ud-color-brand);
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
 }
 
 .ud-upload__drop.is-disabled {
@@ -84,7 +84,7 @@
 
 .ud-upload__button:hover {
   border-color: var(--ud-color-brand);
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
 }
 
 .ud-upload__button:disabled {
@@ -206,7 +206,7 @@
 }
 
 .ud-upload__percent {
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
 }
 
 .ud-upload__progress {
@@ -230,7 +230,7 @@
   padding: 0;
   border: 0;
   background: transparent;
-  color: var(--ud-color-brand);
+  color: var(--ud-color-brand-text);
   font: inherit;
   font-size: var(--ud-font-size-caption);
   cursor: pointer;

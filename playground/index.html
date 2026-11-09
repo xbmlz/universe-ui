@@ -3,7 +3,17 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>universe-ui</title>
+    <title>universe-ui · Playground</title>
+    <script>
+      try {
+        const stored = localStorage.getItem('vitepress-theme-appearance')
+        const mode = stored === 'light' || stored === 'dark' || stored === 'auto' ? stored : 'auto'
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+        document.documentElement.classList.toggle('dark', mode === 'dark' || (mode === 'auto' && prefersDark))
+      } catch {
+        // Storage and matchMedia are best-effort before the app mounts.
+      }
+    </script>
   </head>
   <body>
     <div id="app"></div>

@@ -5,8 +5,11 @@ export default defineConfig({
   plugins: [
     vue(),
   ],
+  optimizeDeps: {
+    exclude: ['@vue/repl'],
+  },
   server: {
-    port: 5173,
+    port: 5174,
     fs: {
       allow: ['..'],
     },
