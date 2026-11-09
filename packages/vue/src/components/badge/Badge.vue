@@ -7,7 +7,6 @@ import ParkIcon from '../../internal/park-icon.vue'
 
 const {
   count,
-  max = 999,
   dot = false,
   dotSize = 'md',
   color = 'red',
@@ -24,7 +23,6 @@ const {
   cornerPlacement = 'top-right',
 } = defineProps<{
   count?: number | string
-  max?: number
   dot?: boolean
   dotSize?: BadgeDotSize
   color?: BadgeColor
@@ -45,7 +43,8 @@ const {
 }>()
 
 const slots = useSlots()
-const overflow = computed(() => typeof count === 'number' && count > max)
+/* Specified: quantities above 999 collapse to the "···" glyph. The spec has no `max+` form. */
+const overLimit = computed(() => typeof count === 'number' && count > 999)
 const hasIcon = computed(() => !!icon || !!slots.icon)
 const hasCornerContent = computed(() => !!count || count === 0 || !!slots.corner)
 
@@ -106,12 +105,12 @@ const classes = computed(() => [
             :icon="icon"
           />
           <ParkIcon
-            v-if="overflow"
+            v-if="overLimit"
             class="ud-badge__more"
             :icon="More"
           />
         </slot>
-        <template v-if="!hasIcon && !overflow">{{ count }}</template>
+        <template v-if="!hasIcon && !overLimit">{{ count }}</template>
       </template>
     </span>
     <span

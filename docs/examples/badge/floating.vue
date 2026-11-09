@@ -4,10 +4,10 @@ import { Avatar, Badge, Button } from '@universe-ui/vue'
 
 <template>
   <div class="ud-demo-row">
-    <Badge :count="3">
+    <Badge round :count="3">
       <Avatar name="张三" />
     </Badge>
-    <Badge dot>
+    <Badge dot dot-size="lg">
       <Avatar name="李四" shape="square" />
     </Badge>
     <Badge :count="8" color="green">

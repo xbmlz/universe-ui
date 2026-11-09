@@ -5,12 +5,12 @@ import { Avatar, Badge } from '@universe-ui/vue'
 
 <template>
   <div class="ud-demo-row">
-    <Badge :icon="SettingTwo">
+    <Badge round :icon="SettingTwo">
       <Avatar name="张三" />
     </Badge>
-    <Badge color="blue">
+    <Badge round color="blue">
       <template #icon>
-        <SettingTwo :size="14" />
+        <SettingTwo :size="8" />
       </template>
       <Avatar name="李四" />
     </Badge>

@@ -8,6 +8,10 @@
 }
 
 .ud-badge__corner {
+  /* The corner ribbon sits outside .ud-badge__mark, so it needs its own colour fallbacks. */
+  --ud-badge-bg: var(--ud-color-danger);
+  --ud-badge-color: var(--ud-color-text-inverse);
+
   position: absolute;
   z-index: 2;
   display: inline-flex;
@@ -81,11 +85,11 @@
   padding: 0;
 }
 
-/* Specified: icon badges use a 14px square and retain the normal badge height. */
+/* Specified: the 14px container always holds an 8x8 glyph ("Icon size: Universal 8 * 8px"). */
 .ud-badge__mark--icon {
   width: var(--ud-badge-size);
   padding: 0;
-  font-size: 14px;
+  font-size: 8px;
 }
 
 .ud-badge__mark--sm {

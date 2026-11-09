@@ -31,6 +31,8 @@ Two data-entry components still need dayjs, Form needs Zod, and Table needs TanS
 - **Button float** — website/message float styles and a `floatShape` option are not implemented; `float` always uses full radius.
 - **Tag avatar sizes** — the size callout states 2px start padding, 4px gap, 8px end padding and 24px height only for the `md` tag. `xs`/`sm`/`lg` keep the 2px end padding because no figure states their values. Needs a decision before those sizes are normative.
 - **Tag avatar Disabled** — the 40% avatar fade is inferred from the state figure, and the container fill stays unchanged. Confirm against the design whether the fill should lighten too.
+- **Badge multi-char height** — `badge.md` says 14px in "尺寸说明" and 16px in "位置说明". The figure measures 20×14px for "99", so 14px is implemented; the 16px line needs to be corrected at the source.
+- **Badge count cap** — the spec only collapses counts above 999 to "···" and never defines a `max+` form, so the `max` prop was removed. If a configurable cap is wanted later it needs a spec line first.
 
 ## Complex components (keep for now)
 

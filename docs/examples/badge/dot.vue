@@ -6,7 +6,7 @@ const sizes = ['sm', 'md', 'lg'] as const
 
 <template>
   <div class="ud-demo-row">
-    <Badge v-for="size in sizes" :key="size" dot :dot-size="size">
+    <Badge v-for="size in sizes" :key="size" round dot :dot-size="size">
       <Avatar name="张三" />
     </Badge>
   </div>
