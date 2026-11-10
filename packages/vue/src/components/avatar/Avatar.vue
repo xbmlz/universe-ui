@@ -92,6 +92,9 @@ const style = computed(() => ({
       :role="showImage ? undefined : 'img'"
       :aria-label="showImage ? undefined : name || label || undefined"
       :data-name="name || undefined"
+      :data-src="src || undefined"
+      :data-color="color || undefined"
+      :data-kind="kind || undefined"
     >
       <img
         v-if="showImage"

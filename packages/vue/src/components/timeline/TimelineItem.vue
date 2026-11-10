@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { TimelineStatus } from './types'
 import { Attention, Check, Close } from '@icon-park/vue-next'
-import { computed, inject } from 'vue'
+import { computed, inject, useSlots } from 'vue'
 import ParkIcon from '../../internal/park-icon.vue'
 import { TIMELINE_KEY } from './context'
 
@@ -15,6 +15,7 @@ const {
   status?: TimelineStatus
 }>()
 
+const slots = useSlots()
 const timeline = inject(TIMELINE_KEY)
 if (!timeline)
   throw new Error('TimelineItem must be used inside Timeline')
@@ -35,6 +36,7 @@ const hidden = computed(() => timeline.collapseTail.value > 0
   && !timeline.expanded.value
   && index.value >= timeline.ids.value.length - timeline.collapseTail.value)
 
+const customIcon = computed(() => !!slots.icon)
 const badge = computed(() => {
   if (status === 'success' || status === 'warning' || status === 'error' || status === 'failed' || status === 'loading')
     return status
@@ -46,7 +48,7 @@ const badge = computed(() => {
   <li
     v-if="!hidden"
     class="ud-timeline__item"
-    :class="[`is-${side}`, `is-${status}`]"
+    :class="[`is-${side}`, `is-${status}`, { 'is-custom': customIcon }]"
   >
     <div class="ud-timeline__rail">
       <span

@@ -1,7 +1,7 @@
 export { Anchor } from './components/anchor'
 export type { AnchorItem } from './components/anchor'
 export { Avatar, AvatarGroup } from './components/avatar'
-export type { AvatarColor, AvatarKind, AvatarShape } from './components/avatar'
+export type { AvatarColor, AvatarGroupPerson, AvatarKind, AvatarShape } from './components/avatar'
 export { Badge } from './components/badge'
 export type { BadgeColor, BadgeDotSize, BadgePlacement } from './components/badge'
 export { Breadcrumb } from './components/breadcrumb'
@@ -15,7 +15,13 @@ export type { CascaderOption } from './components/cascader'
 export { Checkbox, CheckboxGroup } from './components/checkbox'
 export type { CheckboxAlign, CheckboxDirection } from './components/checkbox'
 export { Collapse, CollapseItem } from './components/collapse'
-export type { CollapseArrow, CollapseName } from './components/collapse'
+export type {
+  CollapseArrow,
+  CollapseHitArea,
+  CollapseItemMode,
+  CollapseName,
+  CollapseTextPlacement,
+} from './components/collapse'
 export { ColorPicker } from './components/color-picker'
 export type { ColorPickerSize, Hsv, Rgb } from './components/color-picker'
 export { Dialog } from './components/dialog'
@@ -77,6 +83,7 @@ export type { TimelineDirection, TimelineSpacing, TimelineStatus } from './compo
 export { Toast, toast } from './components/toast'
 export type { ToastAction, ToastConfig, ToastHandle, ToastOptions, ToastType } from './components/toast'
 export { Tooltip } from './components/tooltip'
+export type { TooltipPlacement, TooltipProps } from './components/tooltip'
 export { Transfer } from './components/transfer'
 export type { TransferItem } from './components/transfer'
 export { TreeSelect } from './components/tree-select'

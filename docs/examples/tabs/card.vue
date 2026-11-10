@@ -72,7 +72,7 @@ function remove(value: string) {
   border: 1px solid var(--ud-color-border-card);
   border-top: 0;
   border-radius: 0 0 var(--ud-radius-s) var(--ud-radius-s);
-  background: var(--ud-color-bg-3);
+  background: var(--ud-color-bg-white);
   color: var(--ud-color-text-secondary);
   font-size: var(--ud-font-size-body);
   line-height: var(--ud-line-body);

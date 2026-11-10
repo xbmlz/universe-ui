@@ -32,7 +32,8 @@
   align-items: center;
   justify-content: center;
   padding: 24px;
-  background: var(--ud-color-bg-2);
+  /* Match Element Plus: preview stays on the page surface; only the code block is tinted. */
+  background: var(--ud-color-bg-white);
 }
 
 .ud-demo__toolbar {
@@ -42,6 +43,7 @@
   gap: 12px;
   padding: 10px 16px;
   border-top: 1px solid var(--ud-color-divider);
+  background: var(--ud-color-bg-white);
   color: var(--ud-color-text-secondary);
   font-size: 13px;
 }

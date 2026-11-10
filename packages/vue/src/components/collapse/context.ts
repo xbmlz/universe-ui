@@ -1,8 +1,10 @@
 import type { InjectionKey } from 'vue'
-import type { CollapseArrow, CollapseName } from './types'
+import type { CollapseArrow, CollapseHitArea, CollapseName } from './types'
 
 export interface CollapseContext {
   arrow: () => CollapseArrow
+  hitArea: () => CollapseHitArea
+  nested: () => boolean
   isOpen: (name: CollapseName) => boolean
   toggle: (name: CollapseName) => void
 }

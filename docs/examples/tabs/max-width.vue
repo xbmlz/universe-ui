@@ -1,32 +1,40 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Tab, Tabs } from '@universe-ui/vue'
+import { Tab, Tabs, Tooltip } from '@universe-ui/vue'
 
 const limited = ref('a')
-const tighter = ref('a')
+const stretched = ref('a')
 
-const longLabel = '这是一个非常长的标签页标题，用于演示超长文案'
+const longTitle = 'This is a long tab title to show how the label is clipped'
 </script>
 
 <template>
   <div class="tabs-maxwidth">
     <div class="tabs-maxwidth__row">
-      <span class="tabs-maxwidth__label">默认最大宽度 240px（推荐）</span>
-      <Tabs v-model="limited" divider overflow="none">
-        <Tab value="a">{{ longLabel }}</Tab>
-        <Tab value="b">Tab 2</Tab>
+      <span class="tabs-maxwidth__label">限制最大宽度 240px（推荐）</span>
+      <Tabs v-model="limited" variant="card" overflow="none">
+        <Tab value="a">
+          <Tooltip only-overflow :content="longTitle">{{ longTitle }}</Tooltip>
+        </Tab>
+        <Tab value="b">This is a tab</Tab>
+        <Tab value="c">Tab</Tab>
+        <Tab value="d">Tab</Tab>
+        <Tab value="e">Tab</Tab>
       </Tabs>
+      <div class="tabs-maxwidth__panel">
+        Content of Tab Panel 1
+      </div>
     </div>
     <div class="tabs-maxwidth__row">
-      <span class="tabs-maxwidth__label">最大宽度 96px</span>
-      <Tabs v-model="tighter" divider :label-max-width="96" overflow="none">
-        <Tab value="a">{{ longLabel }}</Tab>
-        <Tab value="b">Tab 2</Tab>
+      <span class="tabs-maxwidth__label">不限制最大宽度（避免）</span>
+      <Tabs v-model="stretched" variant="card" :label-max-width="2000" overflow="none">
+        <Tab value="a">This month's personal news and operation records</Tab>
+        <Tab value="b">This is a long tab</Tab>
       </Tabs>
+      <div class="tabs-maxwidth__panel">
+        Content of Tab Panel 1
+      </div>
     </div>
-    <p class="tabs-maxwidth__note">
-      超出部分用省略号截断，标签宽度不会把整行撑开；设计稿把「不限制最大宽度」标为避免使用。
-    </p>
   </div>
 </template>
 
@@ -35,25 +43,40 @@ const longLabel = '这是一个非常长的标签页标题，用于演示超长�
   display: flex;
   width: 100%;
   flex-direction: column;
-  gap: 28px;
+  gap: 32px;
 }
 
 .tabs-maxwidth__row {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
   min-width: 0;
+  flex-direction: column;
+  gap: 0;
 }
 
 .tabs-maxwidth__label {
+  margin-bottom: 10px;
   color: var(--ud-color-text-secondary);
   font-size: var(--ud-font-size-body-sm);
 }
 
-.tabs-maxwidth__note {
-  margin: 0;
-  color: var(--ud-color-text-secondary);
-  font-size: var(--ud-font-size-body-sm);
+.tabs-maxwidth__panel {
+  box-sizing: border-box;
+  min-height: 120px;
+  padding: 28px 16px;
+  border: 1px solid var(--ud-color-border-card);
+  border-top: 0;
+  background: var(--ud-color-bg-white);
+  color: var(--ud-color-text);
+  font-size: var(--ud-font-size-body);
   line-height: var(--ud-line-body);
+  text-align: center;
+}
+
+.tabs-maxwidth :deep(.ud-tooltip) {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>

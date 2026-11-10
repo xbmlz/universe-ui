@@ -7,67 +7,62 @@ const selected = ref('tab')
 
 <template>
   <div class="tabs-states">
-    <div class="tabs-states__grid">
-      <div class="tabs-states__cell">
-        <Tabs model-value="other" overflow="none">
-          <Tab value="tab">Tab</Tab>
-        </Tabs>
-        <span class="tabs-states__label">Normal</span>
-      </div>
-      <div class="tabs-states__cell">
-        <Tabs v-model="selected" overflow="none">
-          <Tab value="tab">Tab</Tab>
-        </Tabs>
-        <span class="tabs-states__label">Selected</span>
-      </div>
-      <div class="tabs-states__cell">
-        <Tabs model-value="other" overflow="none">
-          <Tab value="tab" disabled>Tab</Tab>
-        </Tabs>
-        <span class="tabs-states__label">Disabled</span>
-      </div>
-      <div class="tabs-states__cell">
-        <Tabs model-value="other" overflow="none">
-          <Tab value="tab">Tab</Tab>
-        </Tabs>
-        <span class="tabs-states__label tabs-states__label--hint">Hover（移入上方标签）</span>
-      </div>
+    <div class="tabs-states__cell">
+      <Tabs model-value="other" overflow="none">
+        <Tab value="tab">Tab</Tab>
+      </Tabs>
+      <span class="tabs-states__label">Normal</span>
+    </div>
+    <div class="tabs-states__cell">
+      <Tabs v-model="selected" overflow="none">
+        <Tab value="tab">Tab</Tab>
+      </Tabs>
+      <span class="tabs-states__label">Selected</span>
+    </div>
+    <div class="tabs-states__cell">
+      <Tabs model-value="other" overflow="none">
+        <Tab value="tab" disabled>Tab</Tab>
+      </Tabs>
+      <span class="tabs-states__label">Disable</span>
+    </div>
+    <div class="tabs-states__cell tabs-states__cell--hover">
+      <Tabs model-value="other" overflow="none">
+        <Tab value="tab">Tab</Tab>
+      </Tabs>
+      <span class="tabs-states__label">Hover</span>
     </div>
   </div>
 </template>
 
 <style scoped>
 .tabs-states {
-  width: 100%;
-}
-
-.tabs-states__grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px 16px;
+  width: 100%;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
 }
 
 .tabs-states__cell {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 28px;
   min-width: 0;
 }
 
-/* The tab lives inside the viewport, not directly inside the root. */
 .tabs-states__cell :deep(.ud-tabs),
 .tabs-states__cell :deep(.ud-tabs__viewport) {
   justify-content: center;
 }
 
-.tabs-states__label {
-  color: var(--ud-color-text-secondary);
-  font-size: var(--ud-font-size-body-sm);
-  text-align: center;
+/* State figure draws Hover as blue text with no indicator, in the same row as the other three. */
+.tabs-states__cell--hover :deep(.ud-tab) {
+  color: var(--ud-color-brand);
 }
 
-.tabs-states__label--hint {
-  font-size: var(--ud-font-size-caption);
+.tabs-states__label {
+  color: var(--ud-color-text);
+  font-size: var(--ud-font-size-body);
+  text-align: center;
 }
 </style>

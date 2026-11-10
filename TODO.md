@@ -6,7 +6,7 @@ tooling, or a dependency decision.
 
 ## Blocked on assets, measurements, or test tooling
 
-- **Avatar** — anonymous external-company avatars need five brand illustrations that are not in the repo. The name tooltip and the +N overflow list are built, and `more` is exposed for a host popover. Badge now carries the 39 sampled collaboration tones and the 2px white ring for a collaborator badge around an avatar.
+- **Avatar** — anonymous external-company avatars need five brand illustrations that are not in the repo. Name tooltip, +N overflow, and the click-to-open remaining-people list are built; `more` still fires for hosts, and the `more` slot can replace the default list. Badge carries the 39 sampled collaboration tones and the 2px white ring for a collaborator badge around an avatar.
 - **Loading** — illustration loading needs the 125×125 brand animation asset. The image placeholder is built as `Skeleton variant="image"` with an N200 fill, grey spinner, 48px minimum and 180×120 default.
 - **Empty** — the brand illustrations are not in the repo. `image` and the `image` slot take the real artwork; the fallback outline is inferred.
 - **Tests** — component tests need a DOM environment (jsdom or happy-dom) and `@vue/test-utils`; neither is installed, so only the plain-TS helpers are covered.
@@ -21,7 +21,8 @@ Two data-entry components still need dayjs, Form needs Zod, and Table needs TanS
 ## Documentation
 
 - **Docs site** — the docs package is now a VitePress site modelled on Element Plus docs. Pages live in `guide/` and `components/`; examples live in `docs/examples/<component>/` and are rendered by `:::demo <component>/<example>` through `Demo.vue`. Sidebar data is `docs/.vitepress/sidebar.ts`. Design specs stay at the repository root.
-- **Component docs** — add one component page at a time. Pages cover usage, examples and handwritten API tables. Fourteen pages exist (Icon, Button, Input, Select, Checkbox, Radio, Switch, Slider, Rate, Stepper, Card, Tabs, Tag, Badge); the remaining components in `packages/vue` still need pages.
+- **Component docs** — add one component page at a time. Pages cover usage, examples and handwritten API tables. Twenty-two pages exist (Icon, Button, Input, Select, Checkbox, Radio, Switch, Slider, Rate, Stepper, Avatar, Timeline, Card, Tabs, Tag, Badge, Tooltip, Popover, Collapse, Steps, Pagination, Breadcrumb); the remaining components in `packages/vue` still need pages.
+- **Popover enter/leave** — CSS `<Transition>` under `Teleport` could stick at `opacity: 0` (enter-from never cleared). Animation removed until a reliable approach is found; duration is unspecified in the design anyway.
 
 ## Design
 
@@ -51,7 +52,7 @@ Two data-entry components still need dayjs, Form needs Zod, and Table needs TanS
 - **Tabs brand blue** — every Tabs figure samples #3370FF (B500 in the original Feishu palette) for the selected ink, indicator and capsule text, while `design/design-language/color.md` explicitly defines the project brand colour as #1456F0 and the shared token is `--ud-color-brand: #1456f0`. The component uses the shared token so Tabs matches Button, Input and Slider on the same page. Needs a decision: either the figures are an older palette and should be republished, or the whole brand ramp has to move.
 - **Tabs capsule B100** — the capsule state figure samples #D6E2FF for Selected. `--ud-color-brand-subtle-strong` is #D8E2FC (from the stepper pressed figure), a ≤3/255 difference, so it is reused rather than adding a fifth brand-wash token. This also means the "Brand wash family" item now covers three figures instead of two.
 - **Tabs badge clipping in scroll mode** — the badge sits above the text and is absolutely positioned. `overflow="scroll"` puts `overflow-x:auto` on the viewport, which clips anything above it. Callers using badges with paging need top padding on the container; a component-level fix needs a spec for how much vertical space the row reserves.
-- **Tabs card panel** — the composition and type-overview figures draw the selected card tab joined to a #F8F9FA panel below. Tabs only renders the tab row; the panel is composed in the example with `--ud-color-bg-3` and `border-top: 0`. The spec presents the panel as part of the control, so it may need to become a `panel` slot.
+- **Tabs card panel** — the type-overview figure samples a #F8F9FA panel under the selected card tab, while the selected tab shell is white so a continuous surface needs the same fill. The docs example therefore uses `--ud-color-bg-white` with `border-top: 0`. Tabs still only renders the tab row; the spec presents the panel as part of the control, so it may need a `panel` slot, and design should confirm white vs #F8F9FA.
 - **Tabs card visual change** — the previous implementation drew each card tab as its own bordered 6px pill, which matches no figure. It now draws one continuous row with a folder-shaped selected tab, vertical rules between the others and a bottom rule joining the caller's panel. This is a visible change for existing callers.
 - **Tabs focus ring** — no figure specifies a focus style on tabs; the 2px `--ud-color-focus-ring` outline is borrowed from Button.
 - **Tabs size labels** — `tabs.md` calls the capsule sizes "中尺寸 14px / 小尺寸 12px" while its callout labels them "Media / Small"; the component maps them to `md` / `sm` and downgrades `lg` to `md`.

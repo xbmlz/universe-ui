@@ -1,38 +1,59 @@
 <script setup lang="ts">
 import type { TimelineDirection, TimelineSpacing } from './types'
-import { computed, onBeforeUnmount, provide, shallowRef } from 'vue'
+import { Down, Up } from '@icon-park/vue-next'
+import { computed, nextTick, onBeforeUnmount, provide, shallowRef, watch } from 'vue'
+import ParkIcon from '../../internal/park-icon.vue'
+import Spin from '../spin/Spin.vue'
 import { TIMELINE_KEY } from './context'
 
-const {
-  direction = 'right',
-  spacing = 'normal',
-  collapseTail = 0,
-  expandText = '展开',
-  collapseText = '收起',
-} = defineProps<{
+const props = withDefaults(defineProps<{
   direction?: TimelineDirection
   spacing?: TimelineSpacing
   /** Collapse this many trailing nodes behind an expand control. */
   collapseTail?: number
+  /** Prefix before the count. Default label is `已收起 N 个节点`. */
   expandText?: string
   collapseText?: string
+  /** Shown with a spinner while `collapseLoading` is true. */
+  loadingText?: string
+  /** Host-driven loading while folded nodes are being prepared. */
+  collapseLoading?: boolean
+}>(), {
+  direction: 'right',
+  spacing: 'normal',
+  collapseTail: 0,
+  collapseText: '收起',
+  // Figure copy: "It is unfolding."
+  loadingText: '正在展开',
+  collapseLoading: false,
+})
+
+const emit = defineEmits<{
+  expand: []
+  collapse: []
 }>()
 
 let seed = 0
 const ids = shallowRef<number[]>([])
 const expanded = shallowRef(false)
+const expandRequested = shallowRef(false)
 
 const hiddenCount = computed(() => Math.min(
-  Math.max(0, collapseTail),
+  Math.max(0, props.collapseTail),
   Math.max(0, ids.value.length - 1),
 ))
 
+// Figure copy: "N nodes are collected" — same string for normal and hover.
+const expandLabel = computed(() => props.expandText
+  ? `${props.expandText} ${hiddenCount.value} 个节点`
+  : `已收起 ${hiddenCount.value} 个节点`)
+
 provide(TIMELINE_KEY, {
-  direction: computed(() => direction),
-  spacing: computed(() => spacing),
+  direction: computed(() => props.direction),
+  spacing: computed(() => props.spacing),
   ids,
   expanded,
-  collapseTail: computed(() => Math.max(0, collapseTail)),
+  collapseTail: computed(() => Math.max(0, props.collapseTail)),
   register() {
     const id = ++seed
     ids.value = [...ids.value, id]
@@ -46,12 +67,42 @@ provide(TIMELINE_KEY, {
     }
   },
 })
+
+function openExpanded() {
+  expanded.value = true
+  expandRequested.value = false
+}
+
+function onExpandClick() {
+  if (props.collapseLoading || expandRequested.value)
+    return
+  expandRequested.value = true
+  emit('expand')
+  // Sync expand when the host does not flip collapseLoading in this turn.
+  nextTick(() => {
+    if (expandRequested.value && !props.collapseLoading)
+      openExpanded()
+  })
+}
+
+function onCollapseClick() {
+  if (props.collapseLoading)
+    return
+  expanded.value = false
+  expandRequested.value = false
+  emit('collapse')
+}
+
+watch(() => props.collapseLoading, (loading, was) => {
+  if (was && !loading && expandRequested.value)
+    openExpanded()
+})
 </script>
 
 <template>
   <ol
     class="ud-timeline"
-    :class="[`ud-timeline--${direction}`, `ud-timeline--${spacing}`]"
+    :class="[`ud-timeline--${props.direction}`, `ud-timeline--${props.spacing}`]"
   >
     <slot />
     <li
@@ -61,9 +112,25 @@ provide(TIMELINE_KEY, {
       <button
         type="button"
         class="ud-timeline__collapse-button"
-        @click="expanded = true"
+        :class="{ 'is-loading': props.collapseLoading }"
+        :disabled="props.collapseLoading"
+        :aria-busy="props.collapseLoading || undefined"
+        @click="onExpandClick"
       >
-        {{ expandText }} {{ hiddenCount }} 个节点
+        <template v-if="props.collapseLoading">
+          <span>{{ props.loadingText }}</span>
+          <Spin
+            size="sm"
+            label="正在展开"
+          />
+        </template>
+        <template v-else>
+          <span>{{ expandLabel }}</span>
+          <ParkIcon
+            class="ud-timeline__collapse-chevron"
+            :icon="Down"
+          />
+        </template>
       </button>
     </li>
     <li
@@ -73,9 +140,13 @@ provide(TIMELINE_KEY, {
       <button
         type="button"
         class="ud-timeline__collapse-button"
-        @click="expanded = false"
+        @click="onCollapseClick"
       >
-        {{ collapseText }}
+        <span>{{ props.collapseText }}</span>
+        <ParkIcon
+          class="ud-timeline__collapse-chevron"
+          :icon="Up"
+        />
       </button>
     </li>
   </ol>

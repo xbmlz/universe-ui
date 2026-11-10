@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { TabsItem } from './context'
 import type { TabsOverflow, TabsSize, TabsVariant, TabValue } from './types'
-import { Left, More, Plus, Right } from '@icon-park/vue-next'
+import { Down, Left, Plus, Right, Up } from '@icon-park/vue-next'
 import { computed, nextTick, onBeforeUnmount, onMounted, provide, shallowReactive, shallowRef, useTemplateRef, watch } from 'vue'
 import ParkIcon from '../../internal/park-icon.vue'
 import { Dropdown, DropdownItem } from '../dropdown'
@@ -38,6 +38,8 @@ const hiddenValues = shallowRef<TabValue[]>([])
 const promoted = shallowRef<TabValue | null>(null)
 const canScrollBack = shallowRef(false)
 const canScrollForward = shallowRef(false)
+const moreOpen = shallowRef(false)
+const moreMeasureRef = useTemplateRef<HTMLElement>('moreMeasure')
 
 function register(item: TabsItem) {
   if (!items.some(current => current.value === item.value))
@@ -136,7 +138,8 @@ function layout() {
   }
 
   const gap = Number.parseFloat(getComputedStyle(root).columnGap) || 0
-  const controlWidth = 24
+  /* "More" + chevron is wider than the old 24px icon; measure the hidden sizer. */
+  const controlWidth = Math.ceil(moreMeasureRef.value?.getBoundingClientRect().width ?? 56)
   /* Fractional widths avoid a one-pixel flip when the row sits on the fit boundary. */
   const widths = items.map(item => item.button.value?.getBoundingClientRect().width ?? 0)
   const fit = fitTabs(widths, gap, root.getBoundingClientRect().width, controlWidth)
@@ -169,8 +172,10 @@ function scroll(direction: -1 | 1) {
   viewport.scrollBy({ left: direction * viewport.clientWidth, behavior: 'smooth' })
 }
 
-function selectMore(index: number) {
-  const item = moreItems.value[index]
+function selectMore(command: string | undefined) {
+  if (command == null || command === '')
+    return
+  const item = moreItems.value[Number(command)]
   if (!item || item.disabled())
     return
   model.value = item.value
@@ -216,6 +221,25 @@ watch(() => [
     ]"
     :style="{ '--ud-tabs-label-max': `${labelMaxWidth}px` }"
   >
+    <!-- Hidden sizer so fitTabs can reserve the real "More" width before the trigger mounts. -->
+    <span
+      ref="moreMeasure"
+      class="ud-tabs__more-measure"
+      aria-hidden="true"
+    >
+      More
+      <ParkIcon :icon="Down" />
+    </span>
+    <button
+      v-if="overflowing && overflow === 'scroll'"
+      type="button"
+      class="ud-tabs__control"
+      aria-label="向前滚动"
+      :disabled="!canScrollBack"
+      @click="scroll(-1)"
+    >
+      <ParkIcon :icon="Left" />
+    </button>
     <div
       ref="viewport"
       class="ud-tabs__viewport"
@@ -225,41 +249,32 @@ watch(() => [
     >
       <slot />
     </div>
-    <div
+    <button
       v-if="overflowing && overflow === 'scroll'"
-      class="ud-tabs__scroll"
+      type="button"
+      class="ud-tabs__control"
+      aria-label="向后滚动"
+      :disabled="!canScrollForward"
+      @click="scroll(1)"
     >
-      <button
-        type="button"
-        class="ud-tabs__control"
-        aria-label="向前滚动"
-        :disabled="!canScrollBack"
-        @click="scroll(-1)"
-      >
-        <ParkIcon :icon="Left" />
-      </button>
-      <button
-        type="button"
-        class="ud-tabs__control"
-        aria-label="向后滚动"
-        :disabled="!canScrollForward"
-        @click="scroll(1)"
-      >
-        <ParkIcon :icon="Right" />
-      </button>
-    </div>
+      <ParkIcon :icon="Right" />
+    </button>
     <Dropdown
       v-else-if="overflowing && overflow === 'more'"
+      v-model:open="moreOpen"
       class="ud-tabs__more"
       placement="bottom-end"
+      @select="selectMore"
     >
       <button
         type="button"
-        class="ud-tabs__control"
+        class="ud-tabs__more-trigger"
         aria-label="更多标签页"
         aria-haspopup="menu"
+        :aria-expanded="moreOpen"
       >
-        <ParkIcon :icon="More" />
+        More
+        <ParkIcon :icon="moreOpen ? Up : Down" />
       </button>
       <template #menu>
         <DropdownItem
@@ -268,7 +283,6 @@ watch(() => [
           :command="String(index)"
           :disabled="item.disabled()"
           :selected="item.value === model"
-          @click="selectMore(index)"
         >
           {{ item.label() }}
         </DropdownItem>

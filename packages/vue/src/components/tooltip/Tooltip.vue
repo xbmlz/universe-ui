@@ -1,11 +1,20 @@
 <script setup lang="ts">
-import type { TooltipProps } from './types'
+import type { TooltipPlacement } from './types'
 import { useEventListener } from '@vueuse/core'
 import { nextTick, onBeforeUnmount, onMounted, shallowRef, useTemplateRef } from 'vue'
 import { nextLayerZ } from '../dialog/scroll-lock'
 import { placeTooltip } from './position'
 
-const { content, onlyOverflow = false } = defineProps<TooltipProps>()
+/* Inline the prop type so Vue can emit a runtime props declaration; an imported
+ * interface alone leaves `placement` as a fallthrough attribute and always tops. */
+const props = withDefaults(defineProps<{
+  content: string
+  placement?: TooltipPlacement
+  onlyOverflow?: boolean
+}>(), {
+  placement: 'top',
+  onlyOverflow: false,
+})
 
 const triggerRef = useTemplateRef<HTMLElement>('trigger')
 const bubbleRef = useTemplateRef<HTMLElement>('bubble')
@@ -15,7 +24,7 @@ onMounted(() => {
   windowTarget.value = window
 })
 const shown = shallowRef(false)
-const placement = shallowRef<'top' | 'bottom'>('top')
+const placement = shallowRef<TooltipPlacement>(props.placement)
 const bubbleStyle = shallowRef<Record<string, string>>({})
 
 let timer = 0
@@ -53,23 +62,34 @@ function place() {
   const bubble = bubbleRef.value
   if (!trigger || !bubble)
     return
-  const placed = placeTooltip(trigger.getBoundingClientRect(), {
+  const rect = trigger.getBoundingClientRect()
+  const placed = placeTooltip({
+    top: rect.top,
+    bottom: rect.bottom,
+    left: rect.left,
+    right: rect.right,
+    width: rect.width,
+    height: rect.height,
+  }, {
     width: bubble.offsetWidth,
     height: bubble.offsetHeight,
-  }, window.innerWidth)
+  }, {
+    width: window.innerWidth,
+    height: window.innerHeight,
+  }, props.placement)
   placement.value = placed.placement
   bubbleStyle.value = {
     'top': `${placed.top}px`,
     'left': `${placed.left}px`,
     'zIndex': String(layer),
-    '--ud-tooltip-arrow-left': `${placed.arrow}px`,
+    '--ud-tooltip-arrow-along': `${placed.arrow}px`,
   }
 }
 
 function show() {
   window.clearTimeout(timer)
   timer = window.setTimeout(() => {
-    if (!content || (onlyOverflow && !overflowing()))
+    if (!props.content || (props.onlyOverflow && !overflowing()))
       return
     layer = nextLayerZ()
     shown.value = true
@@ -115,7 +135,7 @@ onBeforeUnmount(() => {
           @pointerenter="show"
           @pointerleave="hide"
         >
-          {{ content }}
+          {{ props.content }}
           <span class="ud-tooltip__arrow" />
         </span>
       </Transition>

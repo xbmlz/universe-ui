@@ -13,6 +13,7 @@
   --ud-tabs-divider: var(--ud-color-divider);
   --ud-tabs-focus-ring: var(--ud-color-focus-ring);
 
+  position: relative;
   display: flex;
   box-sizing: border-box;
   align-items: flex-end;
@@ -30,7 +31,8 @@
   display: flex;
   flex: 1 1 auto;
   align-items: inherit;
-  gap: inherit;
+  /* Keep tab spacing on the viewport so scroll arrows can sit outside with the root gap. */
+  gap: var(--ud-tabs-gap);
   min-width: 0;
   max-width: 100%;
 }
@@ -74,15 +76,56 @@
   cursor: not-allowed;
 }
 
-.ud-tabs__scroll {
-  display: inline-flex;
-  flex: none;
-  align-items: center;
-  gap: 4px;
+/* Lift the 24px arrow so it lines up with the label row, not the indicator band. */
+.ud-tabs--line .ud-tabs__control {
+  margin-bottom: var(--ud-tabs-bottom);
+}
+
+/* Lift the 24px arrow so it lines up with the label row, not the indicator band. */
+.ud-tabs--line .ud-tabs__control {
+  margin-bottom: var(--ud-tabs-bottom);
 }
 
 .ud-tabs__more {
   flex: none;
+  align-self: inherit;
+}
+
+/* Off-layout copy of the More trigger so fitTabs can reserve its width before overflow mounts it. */
+.ud-tabs__more-measure {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  visibility: hidden;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+.ud-tabs__more-trigger {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  gap: 4px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0 0 var(--ud-tabs-bottom);
+  border: 0;
+  background: transparent;
+  color: var(--ud-tabs-color);
+  font: inherit;
+  font-weight: var(--ud-font-weight-regular);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.ud-tabs__more-trigger:hover,
+.ud-dropdown-ref.is-open .ud-tabs__more-trigger {
+  color: var(--ud-tabs-color-active);
+}
+
+.ud-tabs__more-trigger .i-icon {
+  font-size: 14px;
 }
 
 /* The overflow modifier has to be on the root: the viewport's scrolling only
@@ -277,6 +320,23 @@
   border-radius: var(--ud-radius-s);
 }
 
+.ud-tabs--capsule .ud-tabs__more-measure,
+.ud-tabs--capsule .ud-tabs__more-trigger {
+  min-width: 48px;
+  height: var(--ud-tabs-height);
+  padding: 0 var(--ud-tabs-padding-inline);
+  border-radius: var(--ud-radius-s);
+}
+
+.ud-tabs--capsule .ud-tabs__more-trigger {
+  background: var(--ud-tabs-bg);
+}
+
+.ud-tabs--capsule .ud-tabs__more-trigger:hover,
+.ud-tabs--capsule .ud-dropdown-ref.is-open .ud-tabs__more-trigger {
+  color: var(--ud-tabs-color-active);
+}
+
 /*
  * Card tabs. Both the composition figure and the type overview draw one continuous
  * 32px row: the selected tab is a folder tab whose top corners are rounded and whose
@@ -373,9 +433,4 @@
 .ud-tab__close:disabled {
   color: var(--ud-color-text-disabled);
   cursor: not-allowed;
-}
-
-/* The selected tab's close affordance is a visible grey tile in the figure. */
-.ud-tab-shell--selected .ud-tab__close {
-  background: var(--ud-color-bg-1);
 }

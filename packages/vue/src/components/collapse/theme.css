@@ -1,4 +1,8 @@
 .ud-collapse {
+  /* Specified B500*8% for nested-table select. Brand is --ud-blue-4 #1456F0. */
+  --ud-collapse-select-bg: rgb(20 86 240 / 8%);
+  --ud-collapse-icon-hit: 24px;
+
   color: var(--ud-color-text);
   font-family: var(--ud-font-family);
   font-size: var(--ud-font-size-body);
@@ -6,16 +10,60 @@
   line-height: var(--ud-line-body);
 }
 
-.ud-collapse__trigger {
+.ud-collapse--caret {
+  /* Caret glyph is 10px; hit square follows icon-button xs. */
+  --ud-collapse-icon-hit: 20px;
+}
+
+.ud-collapse__header {
   display: flex;
   align-items: center;
-  gap: 8px;
   box-sizing: border-box;
   width: 100%;
   /* Header pitch measured 48px from divider to divider on the line figure. */
   min-height: 48px;
   /* Text inset measured about 17px, so 16px padding. */
   padding: 0 16px;
+  gap: 8px;
+}
+
+/* Icon / area hit: the unused header padding is not a control. */
+.ud-collapse__item--hit-icon .ud-collapse__header,
+.ud-collapse__item--hit-area .ud-collapse__header {
+  cursor: default;
+}
+
+.ud-collapse__item--hit-icon .ud-collapse__title {
+  cursor: default;
+  font-weight: var(--ud-font-weight-medium);
+}
+
+/* Icon hit keeps the title outside the button — mirror disabled colour onto it. */
+.ud-collapse__item.is-disabled .ud-collapse__title {
+  color: var(--ud-color-text-disabled);
+}
+
+.ud-collapse__item.is-loading .ud-collapse__icon-btn:disabled {
+  cursor: default;
+  opacity: 1;
+  color: inherit;
+}
+
+.ud-collapse--bordered .ud-collapse__header {
+  border-bottom: 1px solid var(--ud-color-divider);
+}
+
+.ud-collapse--filled .ud-collapse__header {
+  background: var(--ud-color-bg-2);
+}
+
+.ud-collapse__trigger,
+.ud-collapse__area {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-sizing: border-box;
+  margin: 0;
   border: 0;
   background: transparent;
   color: inherit;
@@ -26,34 +74,78 @@
   cursor: pointer;
 }
 
-.ud-collapse--filled .ud-collapse__trigger {
-  background: var(--ud-color-bg-2);
+.ud-collapse__trigger {
+  flex: 1 1 auto;
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  /* Pull to the header edges so the wash covers the full row. */
+  margin: 0 -16px;
+  padding: 0 16px;
 }
 
-.ud-collapse--filled .ud-collapse__trigger:hover:not(:disabled) {
-  background: var(--ud-color-text-a10);
+.ud-collapse__area {
+  flex: 0 1 auto;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 32px;
+  padding: 4px;
+  border-radius: var(--ud-radius-xs);
 }
 
-.ud-collapse--filled .ud-collapse__trigger:active:not(:disabled) {
-  background: var(--ud-color-text-a20);
-}
-
-.ud-collapse__trigger:focus {
+.ud-collapse__trigger:focus,
+.ud-collapse__area:focus,
+.ud-collapse__icon-btn:focus {
   outline: none;
 }
 
-.ud-collapse__trigger:focus-visible {
+.ud-collapse__trigger:focus-visible,
+.ud-collapse__area:focus-visible,
+.ud-collapse__icon-btn:focus-visible {
   outline: 2px solid var(--ud-color-focus-ring);
   outline-offset: -2px;
 }
 
-.ud-collapse__trigger:disabled {
+.ud-collapse__trigger:disabled,
+.ud-collapse__area:disabled,
+.ud-collapse__icon-btn:disabled {
   color: var(--ud-color-text-disabled);
   cursor: not-allowed;
 }
 
-.ud-collapse--bordered .ud-collapse__trigger {
-  border-bottom: 1px solid var(--ud-color-divider);
+/* Row hit: no panel fill → pointer only (specified). */
+.ud-collapse--hit-row:not(.ud-collapse--filled):not(.ud-collapse--nested) .ud-collapse__trigger:hover:not(:disabled) {
+  cursor: pointer;
+}
+
+/* Row hit with filled header: N900*10% / *20%. */
+.ud-collapse--filled.ud-collapse--hit-row .ud-collapse__trigger:hover:not(:disabled) {
+  background: var(--ud-color-text-a10);
+}
+
+.ud-collapse--filled.ud-collapse--hit-row .ud-collapse__trigger:active:not(:disabled) {
+  background: var(--ud-color-text-a20);
+}
+
+/* Nested-table row: N900*8% hover, B500*8% select. */
+.ud-collapse--nested.ud-collapse--hit-row .ud-collapse__trigger:hover:not(:disabled) {
+  background: var(--ud-color-text-a8);
+}
+
+.ud-collapse--nested.ud-collapse--hit-row .ud-collapse__header.is-selected .ud-collapse__trigger,
+.ud-collapse--nested.ud-collapse--hit-row .ud-collapse__header.is-selected .ud-collapse__trigger:hover:not(:disabled) {
+  background: var(--ud-collapse-select-bg);
+}
+
+/* Nested row + icon hover: icon wash sits on top of the row wash. */
+.ud-collapse--nested.ud-collapse--hit-row .ud-collapse__trigger:hover:not(:disabled) .ud-collapse__icon {
+  border-radius: var(--ud-radius-xs);
+  background: var(--ud-color-text-a10);
+}
+
+.ud-collapse--nested.ud-collapse--hit-row .ud-collapse__header.is-selected .ud-collapse__trigger:hover:not(:disabled) .ud-collapse__icon {
+  /* Darker brand wash over the select row; inferred as brand at 15%. */
+  background: rgb(20 86 240 / 15%);
 }
 
 .ud-collapse__title {
@@ -61,8 +153,23 @@
   min-width: 0;
 }
 
-.ud-collapse--line .ud-collapse__icon {
+.ud-collapse__item--hit-icon .ud-collapse__title,
+.ud-collapse__item--hit-area .ud-collapse__title {
+  flex: 0 1 auto;
+}
+
+.ud-collapse--line .ud-collapse__item--hit-icon .ud-collapse__title {
+  flex: 1 1 auto;
+}
+
+/* Only the hit control itself is pushed right — not the glyph nested inside it. */
+.ud-collapse--line .ud-collapse__icon-btn,
+.ud-collapse--line .ud-collapse__trigger > .ud-collapse__icon,
+.ud-collapse--line .ud-collapse__area > .ud-collapse__icon {
   margin-left: auto;
+}
+
+.ud-collapse--line .ud-collapse__icon {
   font-size: 16px;
 }
 
@@ -75,10 +182,49 @@
   flex: none;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
   color: var(--ud-color-icon-secondary);
+  line-height: 0;
+  border-radius: var(--ud-radius-xs);
 }
 
-.ud-collapse__trigger:disabled .ud-collapse__icon {
+.ud-collapse__icon-btn {
+  display: inline-flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: var(--ud-collapse-icon-hit);
+  height: var(--ud-collapse-icon-hit);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: 0;
+  cursor: pointer;
+  border-radius: var(--ud-radius-xs);
+}
+
+/* Nested row: give the in-row icon a hit square so the wash has a place to sit. */
+.ud-collapse--nested.ud-collapse--hit-row .ud-collapse__icon {
+  width: var(--ud-collapse-icon-hit);
+  height: var(--ud-collapse-icon-hit);
+}
+
+/* Icon hit: N900*10% / *20% on the icon square (follows icon-button). */
+.ud-collapse__icon-btn:hover:not(:disabled) {
+  background: var(--ud-color-text-a10);
+}
+
+.ud-collapse__icon-btn:active:not(:disabled) {
+  background: var(--ud-color-text-a20);
+}
+
+.ud-collapse__trigger:disabled .ud-collapse__icon,
+.ud-collapse__area:disabled .ud-collapse__icon,
+.ud-collapse__icon-btn:disabled .ud-collapse__icon {
   color: var(--ud-color-text-disabled);
 }
 

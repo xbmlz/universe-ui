@@ -1,3 +1,4 @@
+.ud-popover-root,
 .ud-popover-ref {
   display: inline-flex;
   max-width: 100%;
@@ -162,13 +163,3 @@
   margin-top: -4.24px;
 }
 
-/* Timing is unspecified (inferred, same as Tooltip). */
-.ud-popover-enter-active,
-.ud-popover-leave-active {
-  transition: opacity 0.15s ease-out;
-}
-
-.ud-popover-enter-from,
-.ud-popover-leave-to {
-  opacity: 0;
-}

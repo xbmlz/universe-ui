@@ -1,8 +1,8 @@
 .ud-tooltip {
-  display: block;
-  flex: 1 1 auto;
-  min-width: 0;
+  display: inline-flex;
   max-width: 100%;
+  min-width: 0;
+  vertical-align: middle;
 }
 
 .ud-tooltip__bubble {
@@ -24,21 +24,61 @@
 
 .ud-tooltip__arrow {
   position: absolute;
-  left: var(--ud-tooltip-arrow-left);
-  width: 12px;
-  height: 6px;
-  margin-left: -6px;
   background: var(--ud-color-bg-inverse);
 }
 
-.ud-tooltip__bubble--top .ud-tooltip__arrow {
+/* Top / bottom: 12×6 arrow from the size figure. */
+.ud-tooltip__bubble--top .ud-tooltip__arrow,
+.ud-tooltip__bubble--topLeft .ud-tooltip__arrow,
+.ud-tooltip__bubble--topRight .ud-tooltip__arrow,
+.ud-tooltip__bubble--bottom .ud-tooltip__arrow,
+.ud-tooltip__bubble--bottomLeft .ud-tooltip__arrow,
+.ud-tooltip__bubble--bottomRight .ud-tooltip__arrow {
+  left: var(--ud-tooltip-arrow-along);
+  width: 12px;
+  height: 6px;
+  margin-left: -6px;
+}
+
+.ud-tooltip__bubble--top .ud-tooltip__arrow,
+.ud-tooltip__bubble--topLeft .ud-tooltip__arrow,
+.ud-tooltip__bubble--topRight .ud-tooltip__arrow {
   bottom: -6px;
   clip-path: polygon(0 0, 100% 0, 50% 100%);
 }
 
-.ud-tooltip__bubble--bottom .ud-tooltip__arrow {
+.ud-tooltip__bubble--bottom .ud-tooltip__arrow,
+.ud-tooltip__bubble--bottomLeft .ud-tooltip__arrow,
+.ud-tooltip__bubble--bottomRight .ud-tooltip__arrow {
   top: -6px;
   clip-path: polygon(50% 0, 0 100%, 100% 100%);
+}
+
+/* Left / right: the same triangle rotated, so 6×12. */
+.ud-tooltip__bubble--left .ud-tooltip__arrow,
+.ud-tooltip__bubble--leftTop .ud-tooltip__arrow,
+.ud-tooltip__bubble--leftBottom .ud-tooltip__arrow,
+.ud-tooltip__bubble--right .ud-tooltip__arrow,
+.ud-tooltip__bubble--rightTop .ud-tooltip__arrow,
+.ud-tooltip__bubble--rightBottom .ud-tooltip__arrow {
+  top: var(--ud-tooltip-arrow-along);
+  width: 6px;
+  height: 12px;
+  margin-top: -6px;
+}
+
+.ud-tooltip__bubble--left .ud-tooltip__arrow,
+.ud-tooltip__bubble--leftTop .ud-tooltip__arrow,
+.ud-tooltip__bubble--leftBottom .ud-tooltip__arrow {
+  right: -6px;
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.ud-tooltip__bubble--right .ud-tooltip__arrow,
+.ud-tooltip__bubble--rightTop .ud-tooltip__arrow,
+.ud-tooltip__bubble--rightBottom .ud-tooltip__arrow {
+  left: -6px;
+  clip-path: polygon(100% 0, 0 50%, 100% 100%);
 }
 
 /* Timing is unspecified (inferred). */

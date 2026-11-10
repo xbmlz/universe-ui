@@ -163,16 +163,16 @@
 }
 
 .ud-avatar-group > .ud-avatar-tooltip > .ud-avatar,
-.ud-avatar-group__more-tooltip > .ud-avatar-group__more {
+.ud-avatar-group__more-ref .ud-avatar-group__more {
   --ud-avatar-ring: 0 0 0 2px var(--ud-avatar-group-stroke);
 }
 
 .ud-avatar-group > * + .ud-avatar-tooltip,
-.ud-avatar-group > * + .ud-avatar-group__more-tooltip {
+.ud-avatar-group > * + .ud-avatar-group__more-ref {
   margin-left: calc(var(--ud-avatar-group-overlap) * -1);
 }
 
-.ud-avatar-group__more-tooltip {
+.ud-avatar-group__more-ref {
   display: inline-flex;
   flex: none;
   width: auto;
@@ -218,4 +218,31 @@
 .ud-avatar-group__more:focus-visible {
   outline: 2px solid var(--ud-color-focus-ring);
   outline-offset: 2px;
+}
+
+/*
+ * Overflow list from the +N interaction figure: 20px avatars, name beside.
+ * Row pitch and inset follow the dropdown option metrics (inferred).
+ */
+.ud-avatar-group__people {
+  display: flex;
+  flex-direction: column;
+  min-width: 120px;
+  padding: 0;
+}
+
+.ud-avatar-group__person {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  box-sizing: border-box;
+  min-height: 32px;
+  padding: 0 12px;
+}
+
+.ud-avatar-group__person-name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }

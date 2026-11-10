@@ -59,6 +59,7 @@ const hasFooter = computed(() => !!slots.footer)
 
 let timer = 0
 let layer = 0
+let suppressClick = false
 let observer: ResizeObserver | undefined
 
 const SIDES: PopoverPlacement[] = ['top', 'bottom', 'left', 'right']
@@ -162,9 +163,18 @@ function hide() {
 }
 
 function onClick() {
-  if (props.trigger !== 'click' || props.disabled)
+  if (props.trigger !== 'click' || props.disabled || suppressClick)
     return
   open.value = !open.value
+}
+
+function armClickSuppress() {
+  // Closing removes the card under the cursor; the same gesturing click can
+  // land on the trigger and reopen. Keep the trigger inert briefly.
+  suppressClick = true
+  window.setTimeout(() => {
+    suppressClick = false
+  }, 100)
 }
 
 function onPointerDown(event: PointerEvent) {
@@ -192,6 +202,9 @@ watch(open, (value) => {
   if (value) {
     layer = nextLayerZ()
     nextTick(place)
+  }
+  else {
+    armClickSuppress()
   }
 })
 
@@ -225,77 +238,78 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <span
-    ref="trigger"
-    class="ud-popover-ref"
-    @pointerenter="show"
-    @pointerleave="hide"
-    @click="onClick"
-  >
-    <slot />
+  <span class="ud-popover-root">
+    <span
+      ref="trigger"
+      class="ud-popover-ref"
+      @pointerenter="show"
+      @pointerleave="hide"
+      @click="onClick"
+    >
+      <slot />
+    </span>
     <Teleport to="body">
-      <Transition name="ud-popover">
-        <div
-          v-if="open"
-          ref="card"
-          class="ud-popover"
-          :class="[`ud-popover--${side}`, `ud-popover--${size}`, { 'ud-popover--divided': divided }]"
-          role="dialog"
-          :style="cardStyle"
-          @pointerenter="show"
-          @pointerleave="hide"
-        >
-          <div class="ud-popover__panel">
-            <div class="ud-popover__main">
-              <span
-                v-if="hasIcon"
-                class="ud-popover__icon"
-                :class="type ? `ud-popover__icon--${type}` : undefined"
+      <!-- No CSS Transition: Teleport + Transition could stick at opacity 0. -->
+      <div
+        v-if="open"
+        ref="card"
+        class="ud-popover"
+        :class="[`ud-popover--${side}`, `ud-popover--${size}`, { 'ud-popover--divided': divided }]"
+        role="dialog"
+        :style="cardStyle"
+        @pointerenter="show"
+        @pointerleave="hide"
+      >
+        <div class="ud-popover__panel">
+          <div class="ud-popover__main">
+            <span
+              v-if="hasIcon"
+              class="ud-popover__icon"
+              :class="type ? `ud-popover__icon--${type}` : undefined"
+            >
+              <slot name="icon">
+                <ParkIcon
+                  v-if="type"
+                  :icon="ICONS[type]"
+                  theme="filled"
+                />
+              </slot>
+            </span>
+            <div class="ud-popover__text">
+              <div
+                v-if="hasTitle"
+                class="ud-popover__title"
+                :class="{ 'ud-popover__title--strong': titleStrong }"
               >
-                <slot name="icon">
-                  <ParkIcon
-                    v-if="type"
-                    :icon="ICONS[type]"
-                    theme="filled"
-                  />
-                </slot>
-              </span>
-              <div class="ud-popover__text">
-                <div
-                  v-if="hasTitle"
-                  class="ud-popover__title"
-                  :class="{ 'ud-popover__title--strong': titleStrong }"
-                >
-                  <slot name="title">{{ title }}</slot>
-                </div>
-                <div
-                  v-if="loading"
-                  class="ud-popover__loading"
-                >
-                  <Spin label="加载中" />
-                </div>
-                <div
-                  v-else-if="hasBody"
-                  ref="body"
-                  class="ud-popover__body"
-                >
-                  <slot name="content">{{ content }}</slot>
-                </div>
+                <slot name="title">{{ title }}</slot>
+              </div>
+              <div
+                v-if="loading"
+                class="ud-popover__loading"
+              >
+                <Spin label="加载中" />
+              </div>
+              <div
+                v-else-if="hasBody"
+                ref="body"
+                class="ud-popover__body"
+              >
+                <slot name="content">{{ content }}</slot>
               </div>
             </div>
-            <div
-              v-if="hasFooter"
-              class="ud-popover__footer"
-            >
-              <slot name="footer" />
-            </div>
           </div>
-          <span
-            v-if="showArrow"
-            class="ud-popover__arrow"
-          />
+          <div
+            v-if="hasFooter"
+            class="ud-popover__footer"
+          >
+            <slot name="footer" />
+          </div>
         </div>
-      </Transition>
+        <span
+          v-if="showArrow"
+          class="ud-popover__arrow"
+        />
+      </div>
     </Teleport>
   </span>
 </template>

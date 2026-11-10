@@ -2,4 +2,5 @@ import './theme.css'
 
 export { default as Avatar } from './Avatar.vue'
 export { default as AvatarGroup } from './AvatarGroup.vue'
+export type { AvatarGroupPerson } from './AvatarGroup.vue'
 export type { AvatarColor, AvatarKind, AvatarNameLocale, AvatarShape } from './types'

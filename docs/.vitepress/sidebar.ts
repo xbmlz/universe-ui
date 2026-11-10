@@ -40,10 +40,23 @@ export const sidebar: DefaultTheme.Sidebar = {
     {
       text: '数据显示',
       items: [
+        { text: 'Avatar 头像', link: '/components/avatar' },
+        { text: 'Timeline 时间轴', link: '/components/timeline' },
         { text: 'Card 卡片', link: '/components/card' },
         { text: 'Tabs 标签页', link: '/components/tabs' },
         { text: 'Tag 标签', link: '/components/tag' },
         { text: 'Badge 徽标', link: '/components/badge' },
+        { text: 'Tooltip 文字提示', link: '/components/tooltip' },
+        { text: 'Popover 气泡卡片', link: '/components/popover' },
+        { text: 'Collapse 折叠面板', link: '/components/collapse' },
+      ],
+    },
+    {
+      text: '导航',
+      items: [
+        { text: 'Steps 步骤条', link: '/components/steps' },
+        { text: 'Pagination 分页', link: '/components/pagination' },
+        { text: 'Breadcrumb 面包屑', link: '/components/breadcrumb' },
       ],
     },
   ],

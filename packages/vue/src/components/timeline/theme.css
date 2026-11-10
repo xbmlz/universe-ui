@@ -146,6 +146,14 @@
   background: var(--ud-color-bg-white);
 }
 
+/* Custom icons follow the 16px badge size from the custom-node figure. */
+.ud-timeline__item.is-custom .ud-timeline__dot {
+  width: var(--ud-timeline-badge);
+  height: var(--ud-timeline-badge);
+  margin-top: 3px;
+  overflow: hidden;
+}
+
 .ud-timeline__dot .ud-park {
   font-size: 12px;
 }
@@ -192,7 +200,8 @@
 .ud-timeline__item.is-success .ud-timeline__line--after,
 .ud-timeline__item.is-warning .ud-timeline__line--after,
 .ud-timeline__item.is-error .ud-timeline__line--after,
-.ud-timeline__item.is-loading .ud-timeline__line--after {
+.ud-timeline__item.is-loading .ud-timeline__line--after,
+.ud-timeline__item.is-custom .ud-timeline__line--after {
   top: 19px;
 }
 
@@ -234,13 +243,50 @@
   margin-left: calc(var(--ud-timeline-rail) + var(--ud-timeline-content-gap));
 }
 
+/*
+ * Collapse trigger from the interaction figure: N600 text + chevron at rest,
+ * brand text on hover (no fill), loading keeps N600 text with a brand spinner.
+ */
 .ud-timeline__collapse-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  box-sizing: border-box;
+  margin: 0;
   padding: 0;
   border: 0;
   background: transparent;
-  color: var(--ud-color-brand-text);
+  color: var(--ud-color-text-secondary);
   font: inherit;
   font-size: var(--ud-font-size-caption);
   line-height: var(--ud-line-caption);
   cursor: pointer;
+}
+
+.ud-timeline__collapse-button:hover:not(:disabled) {
+  color: var(--ud-color-brand-text);
+}
+
+.ud-timeline__collapse-button:focus {
+  outline: none;
+}
+
+.ud-timeline__collapse-button:focus-visible {
+  border-radius: var(--ud-radius-xs);
+  outline: 2px solid var(--ud-color-focus-ring);
+  outline-offset: 2px;
+}
+
+.ud-timeline__collapse-button:disabled,
+.ud-timeline__collapse-button.is-loading {
+  color: var(--ud-color-text-secondary);
+  cursor: default;
+}
+
+.ud-timeline__collapse-chevron {
+  font-size: 12px;
+}
+
+.ud-timeline__collapse-button .ud-spin {
+  color: var(--ud-color-brand);
 }

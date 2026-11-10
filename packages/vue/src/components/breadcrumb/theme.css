@@ -8,7 +8,8 @@
   line-height: var(--ud-line-body);
 }
 
-.ud-breadcrumb__list {
+/* Beat host rules like .vp-doc ol / li + li / a that shift items and paint doc links. */
+.ud-breadcrumb .ud-breadcrumb__list {
   display: flex;
   align-items: center;
   width: max-content;
@@ -17,16 +18,18 @@
   list-style: none;
 }
 
-.ud-breadcrumb__item {
+.ud-breadcrumb .ud-breadcrumb__item {
   display: inline-flex;
   flex: none;
   align-items: center;
+  margin: 0;
   min-width: 0;
 }
 
-.ud-breadcrumb__link,
-.ud-breadcrumb__current,
-.ud-breadcrumb__more {
+.ud-breadcrumb .ud-breadcrumb__link,
+.ud-breadcrumb .ud-breadcrumb__current,
+.ud-breadcrumb .ud-breadcrumb__more,
+.ud-breadcrumb__tray .ud-breadcrumb__link {
   display: inline-flex;
   align-items: center;
   max-width: 162px;
@@ -42,20 +45,23 @@
   cursor: pointer;
 }
 
-.ud-breadcrumb__current {
+.ud-breadcrumb .ud-breadcrumb__current {
   color: var(--ud-color-text);
   cursor: default;
 }
 
-.ud-breadcrumb__link:hover,
-.ud-breadcrumb__more:hover {
+.ud-breadcrumb .ud-breadcrumb__link:hover,
+.ud-breadcrumb .ud-breadcrumb__more:hover,
+.ud-breadcrumb__tray .ud-breadcrumb__link:hover {
   /* Hover fill measured #E4EBFB. The text is the old brand blue, mapped to the brand token. */
   background: var(--ud-color-brand-subtle);
   color: var(--ud-color-brand-text);
+  text-decoration: none;
 }
 
-.ud-breadcrumb__link:active,
-.ud-breadcrumb__more:active {
+.ud-breadcrumb .ud-breadcrumb__link:active,
+.ud-breadcrumb .ud-breadcrumb__more:active,
+.ud-breadcrumb__tray .ud-breadcrumb__link:active {
   /* Pressed fill measured #D1DEFB. */
   background: var(--ud-color-brand-subtle-active);
   color: var(--ud-color-brand-text);
@@ -74,11 +80,14 @@
   white-space: nowrap;
 }
 
-.ud-breadcrumb__sep {
+.ud-breadcrumb .ud-breadcrumb__sep,
+.ud-breadcrumb__tray .ud-breadcrumb__sep {
   display: inline-flex;
   flex: none;
+  align-items: center;
   color: var(--ud-color-icon-secondary);
   font-size: 16px;
+  line-height: 0;
 }
 
 .ud-breadcrumb__tray {
