@@ -57,6 +57,7 @@ export const sidebar: DefaultTheme.Sidebar = {
         { text: 'Steps 步骤条', link: '/components/steps' },
         { text: 'Pagination 分页', link: '/components/pagination' },
         { text: 'Breadcrumb 面包屑', link: '/components/breadcrumb' },
+        { text: 'Dropdown 下拉菜单', link: '/components/dropdown' },
       ],
     },
   ],

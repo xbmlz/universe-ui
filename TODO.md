@@ -21,7 +21,7 @@ Two data-entry components still need dayjs, Form needs Zod, and Table needs TanS
 ## Documentation
 
 - **Docs site** — the docs package is now a VitePress site modelled on Element Plus docs. Pages live in `guide/` and `components/`; examples live in `docs/examples/<component>/` and are rendered by `:::demo <component>/<example>` through `Demo.vue`. Sidebar data is `docs/.vitepress/sidebar.ts`. Design specs stay at the repository root.
-- **Component docs** — add one component page at a time. Pages cover usage, examples and handwritten API tables. Twenty-two pages exist (Icon, Button, Input, Select, Checkbox, Radio, Switch, Slider, Rate, Stepper, Avatar, Timeline, Card, Tabs, Tag, Badge, Tooltip, Popover, Collapse, Steps, Pagination, Breadcrumb); the remaining components in `packages/vue` still need pages.
+- **Component docs** — add one component page at a time. Pages cover usage, examples and handwritten API tables. Twenty-three pages exist (Icon, Button, Input, Select, Checkbox, Radio, Switch, Slider, Rate, Stepper, Avatar, Timeline, Card, Tabs, Tag, Badge, Tooltip, Popover, Collapse, Steps, Pagination, Breadcrumb, Dropdown); the remaining components in `packages/vue` still need pages.
 - **Popover enter/leave** — CSS `<Transition>` under `Teleport` could stick at `opacity: 0` (enter-from never cleared). Animation removed until a reliable approach is found; duration is unspecified in the design anyway.
 
 ## Design

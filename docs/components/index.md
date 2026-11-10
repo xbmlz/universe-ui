@@ -48,7 +48,8 @@ description: 按飞书 Universe Design 规范实现的 Universe UI 组件。
 | [Steps 步骤条](/components/steps) | 引导按步骤完成任务，基础 / 简单，横纵向 |
 | [Pagination 分页](/components/pagination) | 普通 / 小型分页，总量、每页条数与跳转 |
 | [Breadcrumb 面包屑](/components/breadcrumb) | 层级路径、超长折叠与单层级省略 |
+| [Dropdown 下拉菜单](/components/dropdown) | 悬停 / 点击 / 右键，级联与分组操作列表 |
 
 ## 规划中
 
-以下组件已在 `packages/vue` 中实现，但文档页尚未补齐：Dialog、Drawer、Notice、Notification、Progress、Spin / Skeleton、Empty、Placeholder、Dropdown、ImageViewer、Anchor、NavigationMenu、ScrollBar、Cascader、TreeSelect、Transfer、Upload、ColorPicker。
+以下组件已在 `packages/vue` 中实现，但文档页尚未补齐：Dialog、Drawer、Notice、Notification、Progress、Spin / Skeleton、Empty、Placeholder、ImageViewer、Anchor、NavigationMenu、ScrollBar、Cascader、TreeSelect、Transfer、Upload、ColorPicker。
