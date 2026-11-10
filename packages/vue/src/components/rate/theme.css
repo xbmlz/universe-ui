@@ -1,22 +1,34 @@
 /*
- * Specified in rate.md: 32x32 item, 16px gap, 28px icon growing to 32px on hover,
- * N300 unselected, Y500 hover/selected.
- * Inferred: N300 as --ud-color-border-card (#DEE0E3, the card border step).
+ * rate.md plus its figures: a 32x32 item, a 16px gap, a 28px icon that grows to 32px
+ * on hover, and 12px between the star row and the hint, with the hint centred under
+ * the stars rather than beside them.
+ * Measured from the 2x figures: selected #FFC60A (the token is #FFC60C, a 2/255
+ * rounding difference inside the same yellow step), unselected N300 #D7D9DB, hint
+ * #646A73 at 14px. The idle star uses --ud-color-border-muted, the sampled N300
+ * step shared with the slider rail.
  */
 .ud-rate {
   --ud-rate-item: 32px;
   --ud-rate-gap: 16px;
   --ud-rate-icon: 28px;
   --ud-rate-icon-active: 32px;
-  --ud-rate-idle: var(--ud-color-border-card);
+  --ud-rate-text-gap: 12px;
+  --ud-rate-idle: var(--ud-color-border-muted);
   --ud-rate-active: var(--ud-yellow-500);
   --ud-rate-disabled: var(--ud-color-text-disabled);
 
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
-  gap: var(--ud-rate-gap);
+  gap: var(--ud-rate-text-gap);
   font-family: var(--ud-font-family);
   color: var(--ud-color-text);
+}
+
+.ud-rate__stars {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ud-rate-gap);
 }
 
 .ud-rate__item {
@@ -56,7 +68,8 @@
   color: var(--ud-rate-active);
 }
 
-.ud-rate__item:hover .ud-rate__icon {
+/* rate.md grows the icon only while the user is choosing, so the static states skip it. */
+.ud-rate:not(.ud-rate--disabled):not(.ud-rate--readonly) .ud-rate__item:hover .ud-rate__icon {
   font-size: var(--ud-rate-icon-active);
 }
 
@@ -70,9 +83,12 @@
   color: var(--ud-rate-disabled);
 }
 
+/* The hint may run long (rate.md allows wrapping), so it breaks rather than clips. */
 .ud-rate__text {
-  margin-left: 4px;
+  max-width: 100%;
   color: var(--ud-color-text-secondary);
-  font-size: var(--ud-font-size-body-sm);
-  line-height: var(--ud-line-body-sm);
+  font-size: var(--ud-font-size-body);
+  line-height: var(--ud-line-body);
+  text-align: center;
+  overflow-wrap: break-word;
 }

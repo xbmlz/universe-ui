@@ -23,14 +23,19 @@ description: 按飞书 Universe Design 规范实现的 Universe UI 组件。
 | [Checkbox 多选框](/components/checkbox) | 独立选项与多选框组 |
 | [Radio 单选框](/components/radio) | 单选组与按钮样式 |
 | [Switch 开关](/components/switch) | 布尔状态切换 |
+| [Slider 滑块](/components/slider) | 单滑块、双滑块、竖向与节点 |
+| [Rate 评分](/components/rate) | 星级评分、半星、即时提示与自定义图标 |
+| [Stepper 步进器](/components/stepper) | 整数增减、边界禁用、步长与长按 |
 
 ## 数据显示
 
 | 组件 | 说明 |
 | --- | --- |
+| [Card 卡片](/components/card) | 容器、描边与投影、圆角、封面、操作区与拖拽态 |
+| [Tabs 标签页](/components/tabs) | 线条式、胶囊式、卡片式，状态、徽标与溢出处理 |
 | [Tag 标签](/components/tag) | 属性、选项、状态与身份标签 |
 | [Badge 徽标](/components/badge) | 数字、圆点与角标 |
 
 ## 规划中
 
-以下组件已在 `packages/vue` 中实现，但文档页尚未补齐：Avatar、Card、Tabs、Collapse、Timeline、Steps、Pagination、Breadcrumb、Dialog、Drawer、Notice、Notification、Progress、Spin / Skeleton、Empty、Placeholder、Popover、Dropdown、Tooltip、ImageViewer、Anchor、NavigationMenu、ScrollBar、Cascader、TreeSelect、Transfer、Upload、ColorPicker、Slider、Rate、Stepper。
+以下组件已在 `packages/vue` 中实现，但文档页尚未补齐：Avatar、Collapse、Timeline、Steps、Pagination、Breadcrumb、Dialog、Drawer、Notice、Notification、Progress、Spin / Skeleton、Empty、Placeholder、Popover、Dropdown、Tooltip、ImageViewer、Anchor、NavigationMenu、ScrollBar、Cascader、TreeSelect、Transfer、Upload、ColorPicker。

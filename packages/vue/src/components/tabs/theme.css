@@ -85,13 +85,16 @@
   flex: none;
 }
 
-.ud-tabs--scroll .ud-tabs__viewport {
+/* The overflow modifier has to be on the root: the viewport's scrolling only
+ * exists while `scroll` is selected, so paging buttons work without a layout pass
+ * toggling the container. */
+.ud-tabs--overflow-scroll .ud-tabs__viewport {
   overflow-x: auto;
   overscroll-behavior-inline: contain;
   scrollbar-width: none;
 }
 
-.ud-tabs--scroll .ud-tabs__viewport::-webkit-scrollbar {
+.ud-tabs--overflow-scroll .ud-tabs__viewport::-webkit-scrollbar {
   display: none;
 }
 
@@ -163,33 +166,52 @@
   font-weight: var(--ud-font-weight-medium);
 }
 
+/* Anchored to the button, not the clipping label: its width therefore equals the
+ * label width and stops before the badge, exactly as the badge callout requires. */
 .ud-tab__indicator {
   position: absolute;
   right: 0;
-  bottom: calc(-1 * var(--ud-tabs-bottom));
+  bottom: 0;
   left: 0;
   height: var(--ud-tabs-indicator-height);
   border-radius: var(--ud-tabs-indicator-radius) var(--ud-tabs-indicator-radius) 0 0;
   background: var(--ud-tabs-color-active);
 }
 
+/*
+ * "徽标不占据单个一级标签页的宽度" — the badge is a superscript at the top-right
+ * corner, out of flow. Measured on the badge figure: a 14px #F54A45 count capsule
+ * that sits above the text, and a 6px dot whose bottom sits on the cap line.
+ */
 .ud-tab__badge {
-  flex: none;
-  margin-left: 4px;
-  color: var(--ud-color-text-secondary);
-  font-size: var(--ud-font-size-caption);
+  position: absolute;
+  right: -10px;
+  bottom: 100%;
+  display: inline-flex;
+  box-sizing: border-box;
+  min-width: 14px;
+  height: 14px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+  border-radius: 7px;
+  background: var(--ud-color-danger);
+  color: var(--ud-color-text-inverse);
+  font-size: var(--ud-font-size-label);
+  font-weight: var(--ud-font-weight-medium);
   line-height: 1;
-}
-
-.ud-tab--selected .ud-tab__badge {
-  color: var(--ud-tabs-color-active);
+  white-space: nowrap;
+  pointer-events: none;
 }
 
 .ud-tab__badge--dot {
+  right: -10px;
+  bottom: calc(100% - 5px);
+  min-width: 0;
   width: 6px;
   height: 6px;
+  padding: 0;
   border-radius: var(--ud-radius-full);
-  background: var(--ud-color-brand);
 }
 
 .ud-tab:disabled {
@@ -218,7 +240,9 @@
   /* Measured "Tab 2" at 54 (md) and 49 (sm) wide; subtracting the text width gives 8 inline padding for both. */
   --ud-tabs-padding-inline: 8px;
   --ud-tabs-bg: var(--ud-color-text-a10);
-  --ud-tabs-bg-active: var(--ud-color-brand-subtle);
+  /* The state figure samples #D6E2FF (B100) for Selected, not the 10% brand wash
+   * used by breadcrumb hover. #D8E2FC is within 3/255 of that sample. */
+  --ud-tabs-bg-active: var(--ud-color-brand-subtle-strong);
   --ud-tabs-color-disabled: var(--ud-color-text-placeholder);
 
   align-items: center;
@@ -254,40 +278,74 @@
 }
 
 /*
- * Card tabs are drawn as an interaction sample in the spec, not a fixed visual table.
- * The 32px row, 8px gap, 12px inline padding and tab surfaces here are inferred from the card-tab figure's layout.
+ * Card tabs. Both the composition figure and the type overview draw one continuous
+ * 32px row: the selected tab is a folder tab whose top corners are rounded and whose
+ * white surface runs into the panel below, while a 1px vertical rule separates the
+ * other tabs. The panel itself belongs to the caller (see the card examples).
+ * The previous version drew every tab as its own bordered pill, which is not in the figures.
  */
-.ud-tab-shell {
-  display: inline-flex;
-  flex: none;
-  align-items: center;
-  height: 32px;
-  border: 1px solid var(--ud-color-border-card);
-  border-radius: var(--ud-radius-s);
-  background: var(--ud-color-bg-1);
+.ud-tabs--card {
+  --ud-tabs-gap: 0;
+  align-items: flex-end;
+  box-shadow: inset 0 -1px 0 var(--ud-color-border-card);
 }
 
-.ud-tabs--card {
-  --ud-tabs-gap: 8px;
+.ud-tab-shell {
+  position: relative;
+  display: inline-flex;
+  box-sizing: border-box;
+  height: 32px;
+  flex: none;
   align-items: center;
+  padding: 0 4px 0 12px;
+  /* Reserved from the start so selecting a tab never shifts the row by 2px. */
+  border: 1px solid transparent;
+  border-bottom: 0;
+  border-radius: var(--ud-radius-s) var(--ud-radius-s) 0 0;
+  background: transparent;
+}
+
+.ud-tabs--card .ud-tab-shell::after {
+  position: absolute;
+  top: 8px;
+  right: 0;
+  bottom: 8px;
+  width: 1px;
+  background: var(--ud-color-border-card);
+  content: '';
+}
+
+.ud-tabs--card .ud-tab-shell--selected {
+  z-index: 1;
+  border-color: var(--ud-color-border-card);
+  background: var(--ud-color-bg-white);
+}
+
+/* The joined tab has no separating rule on either side. */
+.ud-tabs--card .ud-tab-shell--selected::after {
+  display: none;
+}
+
+/* Keep the add control next to the last tab rather than at the far edge of the row;
+   the root still spans the full width, so its bottom rule reaches the panel edge. */
+.ud-tabs--card .ud-tabs__viewport {
+  flex: 0 1 auto;
 }
 
 .ud-tabs--card .ud-tab {
   height: 100%;
-  padding: 0 8px 0 12px;
-  border-radius: var(--ud-radius-s) 0 0 var(--ud-radius-s);
+  padding: 0 8px;
 }
 
-.ud-tabs--card .ud-tab__indicator {
-  display: none;
+.ud-tabs--card .ud-tabs__add {
+  height: 32px;
+  align-self: center;
+  margin-left: 12px;
 }
 
+.ud-tabs--card .ud-tab__indicator,
 .ud-tabs--card .ud-tab__sizer {
   display: none;
-}
-
-.ud-tabs--card .ud-tab--selected {
-  background: var(--ud-color-bg-white);
 }
 
 .ud-tab__close {
@@ -317,6 +375,7 @@
   cursor: not-allowed;
 }
 
-.ud-tabs--card .ud-tab__close {
-  border-radius: 0 var(--ud-radius-s) var(--ud-radius-s) 0;
+/* The selected tab's close affordance is a visible grey tile in the figure. */
+.ud-tab-shell--selected .ud-tab__close {
+  background: var(--ud-color-bg-1);
 }

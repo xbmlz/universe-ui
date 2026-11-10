@@ -32,11 +32,16 @@ export const sidebar: DefaultTheme.Sidebar = {
         { text: 'Checkbox 多选框', link: '/components/checkbox' },
         { text: 'Radio 单选框', link: '/components/radio' },
         { text: 'Switch 开关', link: '/components/switch' },
+        { text: 'Slider 滑块', link: '/components/slider' },
+        { text: 'Rate 评分', link: '/components/rate' },
+        { text: 'Stepper 步进器', link: '/components/stepper' },
       ],
     },
     {
       text: '数据显示',
       items: [
+        { text: 'Card 卡片', link: '/components/card' },
+        { text: 'Tabs 标签页', link: '/components/tabs' },
         { text: 'Tag 标签', link: '/components/tag' },
         { text: 'Badge 徽标', link: '/components/badge' },
       ],

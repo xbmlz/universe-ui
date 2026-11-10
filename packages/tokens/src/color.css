@@ -24,6 +24,14 @@
   --ud-color-brand-subtle: #e4ebfb;
   --ud-color-brand-subtle-active: #d1defb;
   --ud-color-brand-disabled: #c2d4ff;
+  /*
+   * The stepper figure paints its step-button hover and pressed washes at
+   * #ECF1FE / #D8E2FC, one step either side of brand-subtle. The figures do not
+   * agree on a single brand wash, so both sampled pairs are kept rather than
+   * snapping one component onto the other's value.
+   */
+  --ud-color-brand-subtle-weak: #ecf1fe;
+  --ud-color-brand-subtle-strong: #d8e2fc;
 
   /*
    * Old palette steps, measured from component figures and added only as they are needed.
@@ -176,6 +184,14 @@
   /* Borders and fills */
   --ud-color-border: #d0d3d6;
   --ud-color-border-card: #dee0e3;
+  /*
+   * Two sampled neutral steps the shared border role does not cover.
+   * border-strong is the stepper control frame (N400); the input figure samples
+   * N300, so plain controls keep --ud-color-border. border-muted is the slider
+   * rail and the idle rate star, one step lighter than border.
+   */
+  --ud-color-border-strong: #bbbfc4;
+  --ud-color-border-muted: #d7d9db;
   --ud-color-fill-disabled: #eff0f1;
   /* Measured from the pagination figure. The neutral ramp has no matching step, so this stays a single sampled fill. */
   --ud-color-fill-hover: #e2e4e5;
@@ -236,6 +252,8 @@
   --ud-color-focus-ring: #aec5fb;
   --ud-color-brand-subtle: #20305a;
   --ud-color-brand-subtle-active: #29417a;
+  --ud-color-brand-subtle-weak: #223459;
+  --ud-color-brand-subtle-strong: #2a447f;
   --ud-color-brand-disabled: #3a4a70;
   --ud-color-brand-text: var(--ud-blue-7);
   --ud-color-brand-text-hover: var(--ud-blue-8);
@@ -267,6 +285,10 @@
   /* Borders and fills */
   --ud-color-border: #494d55;
   --ud-color-border-card: #383b41;
+  --ud-color-border-strong: #5f646d;
+  /* Dark has no figure to sample; this stays above the surface so an idle rate
+   * star is still visible instead of following the light ramp literally. */
+  --ud-color-border-muted: #44484f;
   --ud-color-fill-disabled: #2b2e33;
   --ud-color-fill-hover: #35383e;
   --ud-color-fill-secondary: #303338;

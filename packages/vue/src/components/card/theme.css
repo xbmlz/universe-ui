@@ -1,16 +1,30 @@
 /*
- * Specified: content padding 12px, title/content gap 12px, N300 inner border, title
- * 16/14px Medium, body 14px Regular, auxiliary text 12/14px Regular in N600, and
- * Shadow-S/M/L-down for normal / hover / drag.
- * Inferred: the 8px radius default and the radius steps below 8px.
+ * Specified in card.md: content padding 12px, a 12px gap between the title and the
+ * content, an inner 1px N300-style frame, title 16/14px Medium, body 14px Regular,
+ * auxiliary text 12/14px Regular in N600, and Shadow-S/M/L-down for the normal,
+ * hover and drag states.
+ *
+ * Measured from the figures: the frame samples #DFE0E2, which is Border 2 in style.md
+ * and matches --ud-color-border-card (#DEE0E3) — the card frame is deliberately lighter
+ * than the #D0D3D6 control frame. The 226px square card uses a 6px radius and the
+ * 240x48 list card a 4px one, matching "the larger the card, the larger the radius".
+ * The 8px and 10px steps stay available for large cards.
+ *
+ * box-shadow is the single place the frame and the shadow meet, and a list may not
+ * contain `none`, so the resting shadow is a transparent stand-in rather than `none`.
+ * Without this every card that has a frame and no shadow loses the frame entirely,
+ * because the whole declaration becomes invalid.
  */
 .ud-card {
   --ud-card-padding: 12px;
   --ud-card-gap: 12px;
-  --ud-card-radius: var(--ud-radius-m);
+  --ud-card-radius: var(--ud-radius-s);
   --ud-card-bg: var(--ud-color-bg-white);
   --ud-card-border: var(--ud-color-border-card);
-  --ud-card-shadow: none;
+  /* The frame is drawn as an inset shadow so it never changes the box size. */
+  --ud-card-ring: var(--ud-card-border);
+  --ud-card-inset: 0px;
+  --ud-card-shadow: 0 0 transparent;
   --ud-card-title-font-size: var(--ud-font-size-h4);
   --ud-card-title-line-height: var(--ud-line-h4);
   --ud-card-title-color: var(--ud-color-text);
@@ -27,7 +41,9 @@
   overflow: hidden;
   border-radius: var(--ud-card-radius);
   background: var(--ud-card-bg);
-  box-shadow: var(--ud-card-shadow);
+  box-shadow:
+    inset 0 0 0 var(--ud-card-inset) var(--ud-card-ring),
+    var(--ud-card-shadow);
   color: var(--ud-card-body-color);
   font-family: var(--ud-font-family);
   font-size: var(--ud-card-body-font-size);
@@ -35,9 +51,11 @@
 }
 
 .ud-card--border {
-  box-shadow:
-    inset 0 0 0 1px var(--ud-card-border),
-    var(--ud-card-shadow);
+  --ud-card-inset: 1px;
+}
+
+.ud-card--radius-xs {
+  --ud-card-radius: var(--ud-radius-xs);
 }
 
 .ud-card--radius-s {
@@ -58,14 +76,6 @@
 
 .ud-card--surface-muted {
   --ud-card-bg: var(--ud-color-bg-2);
-}
-
-/* card.md drag state: N00 background at 95%, N300 border, Shadow-L-down. */
-.ud-card--dragging {
-  opacity: 0.95;
-  box-shadow:
-    inset 0 0 0 1px var(--ud-card-border),
-    var(--ud-shadow-down-s3);
 }
 
 .ud-card--shadow-s1 {
@@ -96,23 +106,33 @@
   transition: box-shadow 0.2s ease;
 }
 
-/* card.md: hover and pressed keep the N300 border and lift to Shadow-M-down (S2). */
+/* card.md state table: hover and pressed lift the card to Shadow-M-down, a card that
+ * already carries a shadow goes one step further to Shadow-L-down on press. */
 .ud-card--hoverable:hover {
-  box-shadow:
-    inset 0 0 0 1px var(--ud-card-border),
-    var(--ud-shadow-down-s2);
+  --ud-card-shadow: var(--ud-shadow-down-s2);
 }
 
-/* card.md: a card that already carries a shadow goes to Shadow-L-down (S3). */
 .ud-card--hoverable:active {
-  box-shadow:
-    inset 0 0 0 1px var(--ud-card-border),
-    var(--ud-shadow-down-s3);
+  --ud-card-shadow: var(--ud-shadow-down-s3);
 }
 
-/* card.md: with no shadow, the pressed state may use the B500 blue ring to mark selection. */
+/* card.md: a card with no shadow marks the state with the B500 frame instead, which the
+ * figure labels Selected — the hover fill would be invisible without a shadow lift. */
+.ud-card--shadow-none.ud-card--hoverable:hover,
 .ud-card--shadow-none.ud-card--hoverable:active {
-  box-shadow: inset 0 0 0 1px var(--ud-color-brand);
+  --ud-card-ring: var(--ud-color-brand);
+  --ud-card-shadow: 0 0 transparent;
+}
+
+.ud-card--selected {
+  --ud-card-ring: var(--ud-color-brand);
+  --ud-card-inset: 1px;
+}
+
+/* card.md drag state: N00 background at 95%, the frame stays, Shadow-L-down. */
+.ud-card--dragging {
+  --ud-card-shadow: var(--ud-shadow-down-s3);
+  opacity: 0.95;
 }
 
 .ud-card__cover {

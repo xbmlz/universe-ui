@@ -4,18 +4,19 @@ import { computed } from 'vue'
 
 /*
  * Specified in card.md: content padding 12px, a 12px gap between the title and the
- * content, an N300 1px inner border, and Shadow-S/M/L-down for the normal, hover and
- * drag states. The radius per card size is left to the scenario; the default `m`
- * (8px) follows the layout radius scale and is inferred.
+ * content, a 1px inner frame, and Shadow-S/M/L-down for the normal, hover and drag
+ * states. The figures draw the frame at #DFE0E2 and use a 4px radius on a short list
+ * card and 6px on a mid-size one, so `s` is the default and `xs` covers list cards.
  */
 const {
   shadow = 'none',
   border = true,
-  radius = 'm',
+  radius = 's',
   padding = 12,
   surface = 'white',
   hoverable = false,
   clickable = false,
+  selected = false,
   draggable = false,
   dragging = false,
   title,
@@ -29,6 +30,8 @@ const {
   surface?: CardSurface
   hoverable?: boolean
   clickable?: boolean
+  /** Marks the card as chosen with the B500 frame from the state figure. */
+  selected?: boolean
   /** Enables native drag events; the parent list owns the reorder operation. */
   draggable?: boolean
   /** The caller is moving this card; applies the specified 95% opacity and L shadow. */
@@ -52,6 +55,7 @@ const classes = computed(() => [
     'ud-card--border': border,
     'ud-card--hoverable': hoverable,
     'ud-card--clickable': clickable,
+    'ud-card--selected': selected,
     'ud-card--dragging': dragging,
   },
 ])
@@ -83,6 +87,7 @@ function onDragEnd(event: DragEvent) {
     :style="style"
     :role="clickable ? 'button' : undefined"
     :tabindex="clickable ? 0 : undefined"
+    :aria-pressed="clickable ? selected : undefined"
     :draggable="draggable || undefined"
     @click="onClick"
     @dragstart="onDragStart"

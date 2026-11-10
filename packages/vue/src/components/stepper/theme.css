@@ -1,23 +1,43 @@
 /*
  * Specified in stepper.md: 28 / 32 / 40px heights, 160px default width, Radius-S,
  * 16px icons, 14px Regular text, disabled step buttons at both bounds.
- * Inferred: the equal-width step buttons and the 8px icon-to-edge padding below 24px.
+ * Measured from the size and state figures: each step button is 40px wide
+ * (12px + 16px icon + 12px), the control frame is N400 (#BCBFC3, one step darker
+ * than the input frame at N300), the field keeps its own 1px frame so hover, focus
+ * and error can highlight the middle cell alone, and the button fills are
+ * #ECF1FE / #D8E2FC for hover / pressed. The Disable figure paints icons and the
+ * value at N500 (#8F9594). Inferred: the 40px button holds at every height.
  */
 .ud-stepper {
   --ud-stepper-width: 160px;
   --ud-stepper-height: 32px;
+  --ud-stepper-btn-width: 40px;
   --ud-stepper-radius: var(--ud-radius-s);
   --ud-stepper-icon-size: 16px;
   --ud-stepper-font-size: var(--ud-font-size-body);
   --ud-stepper-line-height: var(--ud-line-body);
   --ud-stepper-bg: var(--ud-color-bg-white);
-  --ud-stepper-border: var(--ud-color-border);
+  --ud-stepper-border: var(--ud-color-border-strong);
   --ud-stepper-color: var(--ud-color-text);
-  --ud-stepper-btn-color: var(--ud-color-icon);
+  --ud-stepper-btn-color: var(--ud-color-icon-secondary);
+  --ud-stepper-btn-active-color: var(--ud-color-brand);
+  /* Sampled #ECF1FE / #D8E2FC; kept as their own brand washes so the figure is
+   * matched exactly instead of being snapped onto brand-subtle (#E4EBFB). */
+  --ud-stepper-btn-hover-bg: var(--ud-color-brand-subtle-weak);
+  --ud-stepper-btn-pressed-bg: var(--ud-color-brand-subtle-strong);
+  --ud-stepper-disabled-bg: var(--ud-color-fill-disabled);
+  --ud-stepper-disabled-color: var(--ud-color-icon-tertiary);
+  /*
+   * The label and message rows reuse .ud-input__label / .ud-input__message, so
+   * the stepper has to publish the Input variables those rules read.
+   */
+  --ud-input-label-gap: 8px;
+  --ud-input-message-gap: 2px;
+  --ud-input-message-color: var(--ud-color-text-secondary);
+  --ud-input-required-color: var(--ud-color-danger);
 
   display: flex;
   flex-direction: column;
-  gap: 8px;
   width: var(--ud-stepper-width);
   color: var(--ud-stepper-color);
   font-family: var(--ud-font-family);
@@ -38,30 +58,33 @@
   display: flex;
   align-items: stretch;
   height: var(--ud-stepper-height);
-  overflow: hidden;
   border: 1px solid var(--ud-stepper-border);
   border-radius: var(--ud-stepper-radius);
   background: var(--ud-stepper-bg);
 }
 
-.ud-stepper__control:hover {
-  --ud-stepper-border: var(--ud-color-brand);
-}
-
 .ud-stepper__field {
+  box-sizing: border-box;
   flex: 1;
   min-width: 0;
-  margin: 0;
+  /* The frame reaches over the control border so all four sides highlight. */
+  height: calc(100% + 2px);
+  margin: -1px 0;
   padding: 0 4px;
-  border: 0;
+  border: 1px solid var(--ud-stepper-border);
   background: transparent;
   color: var(--ud-stepper-color);
   font: inherit;
   text-align: center;
 }
 
+.ud-stepper__field:hover {
+  border-color: var(--ud-stepper-btn-active-color);
+}
+
 .ud-stepper__field:focus {
   outline: none;
+  border-color: var(--ud-stepper-btn-active-color);
 }
 
 .ud-stepper__btn {
@@ -69,10 +92,11 @@
   flex: none;
   align-items: center;
   justify-content: center;
-  width: var(--ud-stepper-height);
+  width: var(--ud-stepper-btn-width);
   margin: 0;
   padding: 0;
   border: 0;
+  border-radius: calc(var(--ud-stepper-radius) - 1px) 0 0 calc(var(--ud-stepper-radius) - 1px);
   background: transparent;
   color: var(--ud-stepper-btn-color);
   font-size: var(--ud-stepper-icon-size);
@@ -80,21 +104,55 @@
   cursor: pointer;
 }
 
+.ud-stepper__btn:last-child {
+  border-radius: 0 calc(var(--ud-stepper-radius) - 1px) calc(var(--ud-stepper-radius) - 1px) 0;
+}
+
+.ud-stepper__btn:hover:not(:disabled),
+.ud-stepper__btn.is-pressing:not(:disabled) {
+  background: var(--ud-stepper-btn-hover-bg);
+  box-shadow: inset 0 0 0 1px var(--ud-stepper-btn-active-color);
+  color: var(--ud-stepper-btn-active-color);
+}
+
+.ud-stepper__btn.is-pressing:not(:disabled),
+.ud-stepper__btn:active:not(:disabled) {
+  background: var(--ud-stepper-btn-pressed-bg);
+}
+
 .ud-stepper__btn:disabled {
-  color: var(--ud-color-icon-disabled);
+  background: var(--ud-stepper-disabled-bg);
+  color: var(--ud-stepper-disabled-color);
   cursor: not-allowed;
 }
 
+.ud-stepper--error .ud-stepper__field {
+  border-color: var(--ud-color-danger);
+}
+
+.ud-stepper--error .ud-stepper__field:hover,
+.ud-stepper--error .ud-stepper__field:focus {
+  border-color: var(--ud-color-danger);
+}
+
 .ud-stepper--error {
-  --ud-stepper-border: var(--ud-color-danger);
+  --ud-input-message-color: var(--ud-color-danger);
 }
 
 .ud-stepper--disabled {
-  --ud-stepper-bg: var(--ud-color-fill-disabled);
-  --ud-stepper-border: var(--ud-color-border);
-  --ud-stepper-color: var(--ud-color-text-disabled);
+  --ud-stepper-bg: var(--ud-stepper-disabled-bg);
+  --ud-stepper-color: var(--ud-stepper-disabled-color);
 }
 
 .ud-stepper--disabled .ud-stepper__field {
   cursor: not-allowed;
+}
+
+.ud-stepper--readonly .ud-stepper__field {
+  cursor: default;
+}
+
+.ud-stepper--disabled .ud-stepper__field:hover,
+.ud-stepper--readonly .ud-stepper__field:hover {
+  border-color: var(--ud-stepper-border);
 }

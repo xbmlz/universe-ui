@@ -69,7 +69,7 @@ export type { StepsDirection, StepStatus, StepsVariant } from './components/step
 export { Switch } from './components/switch'
 export type { SwitchSize } from './components/switch'
 export { Tab, Tabs } from './components/tabs'
-export type { TabsSize, TabsVariant, TabValue } from './components/tabs'
+export type { TabsOverflow, TabsSize, TabsVariant, TabValue } from './components/tabs'
 export { Tag } from './components/tag'
 export type { TagColor, TagSize, TagVariant } from './components/tag'
 export { Timeline, TimelineItem } from './components/timeline'

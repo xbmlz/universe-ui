@@ -90,16 +90,29 @@ function stepBy(direction: 1 | -1) {
 
 let delayTimer = 0
 let repeatTimer = 0
+/* The pointer press is tracked by hand: pointerdown calls preventDefault, which
+ * suppresses the native :active state the pressed-button figure relies on. */
+const pressing = shallowRef<1 | -1 | null>(null)
 
 function stopRepeat() {
   window.clearTimeout(delayTimer)
   window.clearInterval(repeatTimer)
   delayTimer = 0
   repeatTimer = 0
+  pressing.value = null
+}
+
+/* A long press stops as soon as the bound disables the button it started on. */
+function repeatStep(direction: 1 | -1) {
+  if ((direction === 1 && upDisabled.value) || (direction === -1 && downDisabled.value)) {
+    stopRepeat()
+    return
+  }
+  stepBy(direction)
 }
 
 function beginRepeat(direction: 1 | -1) {
-  repeatTimer = window.setInterval(stepBy, 800, direction)
+  repeatTimer = window.setInterval(repeatStep, 800, direction)
 }
 
 function startRepeat(direction: 1 | -1, event: PointerEvent) {
@@ -108,8 +121,9 @@ function startRepeat(direction: 1 | -1, event: PointerEvent) {
     return
   if (event.button !== 0)
     return
-  stepBy(direction)
   stopRepeat()
+  pressing.value = direction
+  stepBy(direction)
   delayTimer = window.setTimeout(beginRepeat, 800, direction)
 }
 
@@ -177,6 +191,7 @@ function onKeydown(event: KeyboardEvent) {
       <button
         type="button"
         class="ud-stepper__btn"
+        :class="{ 'is-pressing': pressing === -1 }"
         aria-label="减少"
         :disabled="downDisabled"
         @pointerdown="startRepeat(-1, $event)"
@@ -207,6 +222,7 @@ function onKeydown(event: KeyboardEvent) {
       <button
         type="button"
         class="ud-stepper__btn"
+        :class="{ 'is-pressing': pressing === 1 }"
         aria-label="增加"
         :disabled="upDisabled"
         @pointerdown="startRepeat(1, $event)"

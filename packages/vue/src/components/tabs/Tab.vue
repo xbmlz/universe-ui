@@ -16,6 +16,12 @@ const { value, disabled = false, badge = false, closable = false } = defineProps
 
 const emit = defineEmits<{ close: [] }>()
 const tabs = inject(TABS, null)
+/*
+ * A bare `badge` attribute reaches the component as "" because the prop's type
+ * union starts with String. Treat that as the dot shorthand; `0` stays a count.
+ */
+const hasBadge = computed(() => badge !== false && badge != null)
+const isDotBadge = computed(() => badge === true || badge === '')
 const selected = computed(() => tabs?.model.value === value)
 const button = useTemplateRef<HTMLButtonElement>('button')
 const host = shallowRef<HTMLElement | null>(null)
@@ -65,6 +71,7 @@ watch(() => value, (next, previous) => {
   <div
     v-if="closable"
     class="ud-tab-shell"
+    :class="{ 'ud-tab-shell--selected': selected }"
   >
     <button
       ref="button"
@@ -83,17 +90,21 @@ watch(() => value, (next, previous) => {
           class="ud-tab__sizer"
           aria-hidden="true"
         ><slot /></span>
-        <span
-          v-if="selected"
-          class="ud-tab__indicator"
-          aria-hidden="true"
-        />
       </span>
+      <!--
+        The label clips long text with overflow:hidden, so the indicator lives on the
+        button instead: it spans the label width but must not be clipped by it.
+      -->
       <span
-        v-if="badge"
+        v-if="selected"
+        class="ud-tab__indicator"
+        aria-hidden="true"
+      />
+      <span
+        v-if="hasBadge"
         class="ud-tab__badge"
-        :class="{ 'ud-tab__badge--dot': badge === true }"
-      >{{ badge === true ? '' : badge }}</span>
+        :class="{ 'ud-tab__badge--dot': isDotBadge }"
+      >{{ isDotBadge ? '' : badge }}</span>
     </button>
     <button
       type="button"
@@ -123,16 +134,16 @@ watch(() => value, (next, previous) => {
         class="ud-tab__sizer"
         aria-hidden="true"
       ><slot /></span>
-      <span
-        v-if="selected"
-        class="ud-tab__indicator"
-        aria-hidden="true"
-      />
     </span>
     <span
-      v-if="badge"
+      v-if="selected"
+      class="ud-tab__indicator"
+      aria-hidden="true"
+    />
+    <span
+      v-if="hasBadge"
       class="ud-tab__badge"
-      :class="{ 'ud-tab__badge--dot': badge === true }"
-    >{{ badge === true ? '' : badge }}</span>
+      :class="{ 'ud-tab__badge--dot': isDotBadge }"
+    >{{ isDotBadge ? '' : badge }}</span>
   </button>
 </template>

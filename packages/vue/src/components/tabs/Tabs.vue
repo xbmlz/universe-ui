@@ -210,6 +210,7 @@ watch(() => [
     :class="[
       `ud-tabs--${variant}`,
       `ud-tabs--${resolvedSize}`,
+      `ud-tabs--overflow-${overflow}`,
       { 'ud-tabs--divider': divider && variant === 'line' },
       { 'ud-tabs--overflowing': overflowing },
     ]"

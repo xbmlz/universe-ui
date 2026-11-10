@@ -171,7 +171,10 @@ const fillStyle = computed(() => {
       ? { bottom: `${low}%`, height: `${high - low}%` }
       : { bottom: '0%', height: `${high}%` }
   }
-  return { left: `${low}%`, width: `${high - low}%` }
+  /* A single thumb fills from the rail start; a range fills between the two thumbs. */
+  return isRange.value
+    ? { left: `${low}%`, width: `${high - low}%` }
+    : { left: '0%', width: `${high}%` }
 })
 
 function thumbStyle(index: number) {
