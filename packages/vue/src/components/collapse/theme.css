@@ -143,7 +143,10 @@
   background: var(--ud-color-text-a10);
 }
 
-.ud-collapse--nested.ud-collapse--hit-row .ud-collapse__header.is-selected .ud-collapse__trigger:hover:not(:disabled) .ud-collapse__icon {
+.ud-collapse--nested.ud-collapse--hit-row
+  .ud-collapse__header.is-selected
+  .ud-collapse__trigger:hover:not(:disabled)
+  .ud-collapse__icon {
   /* Darker brand wash over the select row; inferred as brand at 15%. */
   background: rgb(20 86 240 / 15%);
 }
