@@ -1,18 +1,11 @@
 <script setup lang="ts">
-import type { AvatarColor, AvatarKind } from './types'
+import type { AvatarGroupPerson } from './types'
 import { More } from '@icon-park/vue-next'
 import { computed, onBeforeUnmount, onMounted, provide, shallowRef, useTemplateRef, watch } from 'vue'
 import ParkIcon from '../../internal/park-icon.vue'
 import { Dropdown } from '../dropdown'
 import Avatar from './Avatar.vue'
 import { AVATAR_GROUP } from './context'
-
-export interface AvatarGroupPerson {
-  name: string
-  src?: string
-  color?: AvatarColor
-  kind?: AvatarKind
-}
 
 const { size = 32, max = 5 } = defineProps<{
   size?: number

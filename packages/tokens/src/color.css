@@ -24,6 +24,9 @@
   --ud-color-brand-subtle: #e4ebfb;
   --ud-color-brand-subtle-active: #d1defb;
   --ud-color-brand-disabled: #c2d4ff;
+  /* Brand alphas over --ud-blue-4 (#1456F0). Collapse nested select samples 8%. */
+  --ud-color-brand-a8: rgb(20 86 240 / 8%);
+  --ud-color-brand-a15: rgb(20 86 240 / 15%);
   /*
    * The stepper figure paints its step-button hover and pressed washes at
    * #ECF1FE / #D8E2FC, one step either side of brand-subtle. The figures do not
@@ -258,6 +261,8 @@
   --ud-color-brand-text: var(--ud-blue-7);
   --ud-color-brand-text-hover: var(--ud-blue-8);
   --ud-color-brand-text-pressed: var(--ud-blue-7);
+  --ud-color-brand-a8: rgb(20 86 240 / 8%);
+  --ud-color-brand-a15: rgb(20 86 240 / 15%);
 
   /* Text and icons */
   --ud-color-text: #e8eaed;

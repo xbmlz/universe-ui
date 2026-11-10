@@ -1,6 +1,6 @@
 .ud-collapse {
-  /* Specified B500*8% for nested-table select. Brand is --ud-blue-4 #1456F0. */
-  --ud-collapse-select-bg: rgb(20 86 240 / 8%);
+  /* Specified B500*8% for nested-table select. */
+  --ud-collapse-select-bg: var(--ud-color-brand-a8);
   --ud-collapse-icon-hit: 24px;
 
   color: var(--ud-color-text);
@@ -148,7 +148,7 @@
   .ud-collapse__trigger:hover:not(:disabled)
   .ud-collapse__icon {
   /* Darker brand wash over the select row; inferred as brand at 15%. */
-  background: rgb(20 86 240 / 15%);
+  background: var(--ud-color-brand-a15);
 }
 
 .ud-collapse__title {

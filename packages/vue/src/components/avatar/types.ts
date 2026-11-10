@@ -14,3 +14,11 @@ export type AvatarColor
 
 /** Optional override for the script used by a personnel name. */
 export type AvatarNameLocale = 'auto' | 'zh' | 'en' | 'ja'
+
+/** Person shown in an AvatarGroup overflow list. */
+export interface AvatarGroupPerson {
+  name: string
+  src?: string
+  color?: AvatarColor
+  kind?: AvatarKind
+}
